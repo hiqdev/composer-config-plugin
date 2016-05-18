@@ -1,0 +1,60 @@
+{
+    "name": "hiqdev/composer-config-plugin",
+    "type": "composer-plugin",
+    "description": "Composer plugin for config assembling",
+    "keywords": [
+        "composer",
+        "config",
+        "assembling",
+        "plugin"
+    ],
+    "homepage": "https://github.com/hiqdev/composer-config-plugin",
+    "license": "BSD-3-Clause",
+    "support": {
+        "email": "support@hiqdev.com",
+        "source": "https://github.com/hiqdev/composer-config-plugin",
+        "issues": "https://github.com/hiqdev/composer-config-plugin/issues",
+        "wiki": "https://github.com/hiqdev/composer-config-plugin/wiki",
+        "forum": "http://forum.hiqdev.com/"
+    },
+    "authors": [
+        {
+            "name": "Andrii Vasyliev",
+            "role": "Project lead",
+            "email": "sol@hiqdev.com",
+            "homepage": "http://hipanel.com/"
+        },
+        {
+            "name": "Dmitry Naumenko",
+            "role": "Lead backend developer",
+            "email": "silverfire@hiqdev.com",
+            "homepage": "http://silverfire.me/"
+        },
+        {
+            "name": "Andrey Klochok",
+            "role": "Lead frontend developer",
+            "email": "tafid@hiqdev.com",
+            "homepage": "http://hiqdev.com/"
+        },
+        {
+            "name": "Yuriy Myronchuk",
+            "role": "QA Lead",
+            "email": "bladeroot@hiqdev.com",
+            "homepage": "http://hiqdev.com/"
+        }
+    ],
+    "require": {
+        "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+        "composer/composer": "~1.0@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "hiqdev\\ComposerConfigPlugin\\": "src"
+        }
+    },
+    "extra": {
+        "class": "hiqdev\\ComposerConfigPlugin\\Plugin"
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "name": "test/test",
+    "type": "project",
+    "require": {
+        "hiqdev/composer-extension-plugin": "*@dev",
+        "hiqdev/hidev-vendor": "*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "test\\test\\": "src"
+        }
+    }
+}
