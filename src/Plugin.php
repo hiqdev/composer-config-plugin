@@ -169,7 +169,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             'package'   => $package,
             'extension' => $extension,
             'aliases'   => $aliases,
-            'files'     => (array)$files,
+            'files'     => (array) $files,
         ];
     }
 

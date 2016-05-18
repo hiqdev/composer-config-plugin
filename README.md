@@ -14,7 +14,8 @@ This [Composer](https://getcomposer.org/) plugin that provides assembling of con
 and thus providing extendable plugin system.
 
 - scans installed packages for extra `config-plugin` option in their `composer.json`
-- collects and writes params files
+- requires all defines files
+- collects and writes params file
 - collects and writes config files
 
 ## Installation

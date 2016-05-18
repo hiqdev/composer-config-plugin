@@ -49,13 +49,13 @@
     "require-dev": {
         "composer/composer": "~1.0@dev"
     },
-    "replace": {
-        "hiqdev/composer-extension-plugin": "*"
-    },
     "autoload": {
         "psr-4": {
             "hiqdev\\ComposerConfigPlugin\\": "src"
         }
+    },
+    "replace": {
+        "hiqdev/composer-extension-plugin": "*"
     },
     "extra": {
         "class": "hiqdev\\ComposerConfigPlugin\\Plugin"
