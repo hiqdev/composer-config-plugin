@@ -123,7 +123,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->processPackage($this->composer->getPackage());
 
         $this->assembleParams();
-
+        define('COMPOSER_CONFIG_PLUGIN_DIR', $this->getOutputDir());
         $this->assembleConfigs();
     }
 
@@ -155,6 +155,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->prepareAliases($package, 'psr-4')
         );
 
+        if (isset($files['defines'])) {
+            $this->readConfigFile($package, $files['defines']);
+            unset($files['defines']);
+        }
+
         if (isset($files['params'])) {
             $this->rawParams[] = $this->readConfigFile($package, $files['params']);
             unset($files['params']);
@@ -162,7 +167,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->raw[$package->getName()] = [
             'package'   => $package,
-            'extension' => $extensin,
+            'extension' => $extension,
             'aliases'   => $aliases,
             'files'     => (array)$files,
         ];
@@ -170,35 +175,43 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function assembleParams()
     {
-        var_dump($this->rawParams);
-        die();
-        $params = call_user_func_array(Helper::mergeConfig, $this->rawParams);
-
-        $this->writeFile('params', $params);
+        $this->assembleFile('params', $this->rawParams);
     }
 
     public function assembleConfigs()
     {
+        $allAliases = [];
+        $extensions = [];
+        $rawConfigs = [];
         foreach ($this->raw as $name => $info) {
-            $this->data['extensions'][$name] = $info['extension'];
+            $extensions[$name] = $info['extension'];
 
             $aliases = $info['aliases'];
-            $this->data['aliases'] = array_merge($this->data['aliases'], $aliases);
+            $allAliases = array_merge($allAliases, $aliases);
 
-            foreach ($info['files'] as $name => $path) {
-                $config = $this->readConfigFile($package, $path);
+            foreach ($info['files'] as $file => $path) {
+                $config = $this->readConfigFile($info['package'], $path);
                 $config['aliases'] = array_merge(
                     $aliases,
                     isset($config['aliases']) ? (array) $config['aliases'] : []
                 );
-                $this->data['aliases'] = array_merge($this->data['aliases'], $config['aliases']);
-                $this->data[$name] = isset($this->data[$name]) ? Helper::mergeConfig($this->data[$name], $config) : $config;
+                $allAliases = array_merge($allAliases, $config['aliases']);
+                $rawConfigs[$file][] = $config;
             }
         }
 
-        foreach ($this->data as $name => $data) {
-            $this->writeFile($name, $data);
+        $this->writeFile('aliases',    $allAliases);
+        $this->writeFile('extensions', $extensions);
+
+        foreach ($rawConfigs as $file => $configs) {
+            $this->assembleFile($file, $configs);
         }
+    }
+
+    protected function assembleFile($file, $configs)
+    {
+        $data = call_user_func_array([Helper::class, 'mergeConfig'], $configs);
+        $this->writeFile($file, $data);
     }
 
     /**
@@ -272,13 +285,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * Get output dir.
+     * @return string
+     */
+    public function getOutputDir()
+    {
+        return $this->getVendorDir() . DIRECTORY_SEPARATOR . static::OUTPUT_PATH;
+    }
+
+    /**
      * Build full path to write file for a given filename.
      * @param string $filename
      * @return string
      */
     public function buildOutputPath($filename)
     {
-        return $this->getVendorDir() . DIRECTORY_SEPARATOR . static::OUTPUT_PATH . DIRECTORY_SEPARATOR . $filename . '.php';
+        return $this->getOutputDir() . DIRECTORY_SEPARATOR . $filename . '.php';
     }
 
     /**
