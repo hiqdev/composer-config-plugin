@@ -315,7 +315,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             mkdir(dirname($path), 0777, true);
         }
         $array = str_replace("'" . self::BASE_DIR_SAMPLE, '$baseDir . \'', Helper::exportVar($data));
-        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(__DIR__));\n\nreturn $array;\n");
+        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $array;\n");
     }
 
     /**
