@@ -29,8 +29,8 @@ use Composer\Util\Filesystem;
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
     const PACKAGE_TYPE          = 'yii2-extension';
-    const EXTRA_OPTION_NAME     = 'extension-plugin';
-    const OUTPUT_PATH           = 'hiqdev';
+    const EXTRA_OPTION_NAME     = 'config-plugin';
+    const OUTPUT_PATH           = 'hiqdev/config';
     const BASE_DIR_SAMPLE       = '<base-dir>';
     const VENDOR_DIR_SAMPLE     = '<base-dir>/vendor';
 
@@ -61,6 +61,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         'aliases'    => [],
         'extensions' => [],
     ];
+
+    /**
+     * @var array collected packages
+     */
+    protected $packages = [];
 
     /**
      * @var Composer instance
@@ -97,12 +102,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Simply rewrites extensions file from scratch.
+     * This is the main function.
      * @param Event $event
      */
     public function onPostAutoloadDump(Event $event)
     {
-        $this->io->writeError('<info>Generating extensions files</info>');
+        $this->io->writeError('<info>Assembling config files</info>');
+
+        /// scan packages
         foreach ($this->getPackages() as $package) {
             if ($package instanceof \Composer\Package\CompletePackageInterface) {
                 $this->processPackage($package);
@@ -110,29 +117,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         $this->processPackage($this->composer->getPackage());
 
+        $this->writeFile('params', $this->params);
+
+        /// collect configs
+        die('collect configs');
+
+        /// write configs
         foreach ($this->data as $name => $data) {
-            $this->saveFile($this->buildOutputPath($name), $data);
+            $this->writeFile($name, $data);
         }
-    }
-
-    public function buildOutputPath($name)
-    {
-        return static::OUTPUT_PATH . DIRECTORY_SEPARATOR . $name . '.php';
-    }
-
-    /**
-     * Writes file.
-     * @param string $file
-     * @param array $data
-     */
-    protected function saveFile($file, array $data)
-    {
-        $path = $this->getVendorDir() . '/' . $file;
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
-        }
-        $array = str_replace("'" . self::BASE_DIR_SAMPLE, '$baseDir . \'', Helper::exportVar($data));
-        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(__DIR__));\n\nreturn $array;\n");
     }
 
     /**
@@ -165,7 +158,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
         $this->data['aliases'] = array_merge($this->data['aliases'], $aliases);
         foreach ((array) $files as $name => $path) {
-            $config = $this->readExtensionConfig($package, $path);
+            $config = $this->readConfigFile($package, $path);
             $config['aliases'] = array_merge(
                 $aliases,
                 isset($config['aliases']) ? (array) $config['aliases'] : []
@@ -180,7 +173,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param string $file
      * @return array
      */
-    protected function readExtensionConfig(PackageInterface $package, $file)
+    protected function readConfigFile(PackageInterface $package, $file)
     {
         $path = $this->preparePath($package, $file);
         if (!file_exists($path)) {
@@ -243,6 +236,31 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         return $this->getFilesystem()->normalizePath($path);
+    }
+
+    /**
+     * Build full path to write file for a given filename.
+     * @param string $filename
+     * @return string
+     */
+    public function buildOutputPath($filename)
+    {
+        return $this->getVendorDir() . DIRECTORY_SEPARATOR . static::OUTPUT_PATH . DIRECTORY_SEPARATOR . $filename . '.php';
+    }
+
+    /**
+     * Writes file.
+     * @param string $filename
+     * @param array $data
+     */
+    protected function writeFile($filename, array $data)
+    {
+        $path = $this->buildOutputPath($filename);
+        if (!file_exists(dirname($path))) {
+            mkdir(dirname($path), 0777, true);
+        }
+        $array = str_replace("'" . self::BASE_DIR_SAMPLE, '$baseDir . \'', Helper::exportVar($data));
+        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(__DIR__));\n\nreturn $array;\n");
     }
 
     /**
