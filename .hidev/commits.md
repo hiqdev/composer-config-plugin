@@ -1,9 +1,11 @@
 hiqdev/composer-config-plugin commits history
 ---------------------------------------------
 
-## Under development
+## 0.0.1 2016-05-18
 
 - Added basics
+    - 15e92b4 2016-05-18 fixed getting baseDir (sol@hiqdev.com)
+    - ec3bda1 2016-05-18 rehideved (sol@hiqdev.com)
     - 470dc87 2016-05-18 looks working (sol@hiqdev.com)
     - 65d1a3e 2016-05-18 redoing (sol@hiqdev.com)
     - 927a73f 2016-05-18 + replace composer-extension-plugin (sol@hiqdev.com)
