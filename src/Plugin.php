@@ -55,7 +55,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $filesystem;
 
     /**
-     * @var array whole data
+     * @var array assembled config data
      */
     protected $data = [
         'aliases'    => [],
@@ -63,9 +63,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     ];
 
     /**
-     * @var array collected packages
+     * @var array raw collected data
      */
-    protected $packages = [];
+    protected $raw = [];
+
+    /**
+     * @var array array of not yet merged params
+     */
+    protected $rawParams = [];
 
     /**
      * @var Composer instance
@@ -117,15 +122,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         $this->processPackage($this->composer->getPackage());
 
-        $this->writeFile('params', $this->params);
+        $this->assembleParams();
 
-        /// collect configs
-        die('collect configs');
-
-        /// write configs
-        foreach ($this->data as $name => $data) {
-            $this->writeFile($name, $data);
-        }
+        $this->assembleConfigs();
     }
 
     /**
@@ -150,21 +149,55 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 $extension['reference'] = $reference;
             }
         }
-        $this->data['extensions'][$package->getName()] = $extension;
 
         $aliases = array_merge(
             $this->prepareAliases($package, 'psr-0'),
             $this->prepareAliases($package, 'psr-4')
         );
-        $this->data['aliases'] = array_merge($this->data['aliases'], $aliases);
-        foreach ((array) $files as $name => $path) {
-            $config = $this->readConfigFile($package, $path);
-            $config['aliases'] = array_merge(
-                $aliases,
-                isset($config['aliases']) ? (array) $config['aliases'] : []
-            );
-            $this->data['aliases'] = array_merge($this->data['aliases'], $config['aliases']);
-            $this->data[$name] = isset($this->data[$name]) ? Helper::mergeConfig($this->data[$name], $config) : $config;
+
+        if (isset($files['params'])) {
+            $this->rawParams[] = $this->readConfigFile($package, $files['params']);
+            unset($files['params']);
+        }
+
+        $this->raw[$package->getName()] = [
+            'package'   => $package,
+            'extension' => $extensin,
+            'aliases'   => $aliases,
+            'files'     => (array)$files,
+        ];
+    }
+
+    public function assembleParams()
+    {
+        var_dump($this->rawParams);
+        die();
+        $params = call_user_func_array(Helper::mergeConfig, $this->rawParams);
+
+        $this->writeFile('params', $params);
+    }
+
+    public function assembleConfigs()
+    {
+        foreach ($this->raw as $name => $info) {
+            $this->data['extensions'][$name] = $info['extension'];
+
+            $aliases = $info['aliases'];
+            $this->data['aliases'] = array_merge($this->data['aliases'], $aliases);
+
+            foreach ($info['files'] as $name => $path) {
+                $config = $this->readConfigFile($package, $path);
+                $config['aliases'] = array_merge(
+                    $aliases,
+                    isset($config['aliases']) ? (array) $config['aliases'] : []
+                );
+                $this->data['aliases'] = array_merge($this->data['aliases'], $config['aliases']);
+                $this->data[$name] = isset($this->data[$name]) ? Helper::mergeConfig($this->data[$name], $config) : $config;
+            }
+        }
+
+        foreach ($this->data as $name => $data) {
+            $this->writeFile($name, $data);
         }
     }
 
