@@ -1,6 +1,9 @@
 hiqdev/composer-config-plugin changelog
 ---------------------------------------
 
+## Under development
+
+
 ## 0.0.2 2016-05-19
 
 - Removed replace composer-extension-plugin
