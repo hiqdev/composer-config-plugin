@@ -38,17 +38,24 @@ to the require section of your composer.json.
 
 ## Idea
 
+Not yet completely implemented.
+
+Collects config files in configured order.
+
 ```json
 "extra": {
-    "defines": "src/config/defines.php",
-    "params":  "src/config/params.php",
-    "hisite": {
-        "params": "params",
-        "aliases": "aliases",
-        "": "src/config/hisiste.php"
-    },
-    "hisite-dev": "hisite",
-    "hisite-prod": "hisite"
+    "config-plugin": {
+        "defines": "src/config/defines.php",
+        "params":  "src/config/params.php",
+        "common": {
+            "params": "params",
+            "aliases": "aliases"
+        },
+        "hisite": "common",
+        "hidev": "common",
+        "hisite-dev": "hisite",
+        "hisite-prod": "hisite"
+    }
 }
 ```
 
