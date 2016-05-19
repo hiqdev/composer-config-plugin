@@ -36,6 +36,22 @@ or add
 
 to the require section of your composer.json.
 
+## Idea
+
+```json
+"extra": {
+    "defines": "src/config/defines.php",
+    "params":  "src/config/params.php",
+    "hisite": {
+        "params": "params",
+        "aliases": "aliases",
+        "": "src/config/hisiste.php"
+    },
+    "hisite-dev": "hisite",
+    "hisite-prod": "hisite"
+}
+```
+
 ## License
 
 This project is released under the terms of the BSD-3-Clause [license](LICENSE).
