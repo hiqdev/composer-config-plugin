@@ -1,6 +1,11 @@
 hiqdev/composer-config-plugin commits history
 ---------------------------------------------
 
+## 0.0.2 2016-05-19
+
+- Removed replace composer-extension-plugin
+    - 0a3d1a6 2016-05-19 removed replace composer-extension-plugin (sol@hiqdev.com)
+
 ## 0.0.1 2016-05-18
 
 - Added basics
