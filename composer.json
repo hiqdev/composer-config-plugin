@@ -54,9 +54,6 @@
             "hiqdev\\ComposerConfigPlugin\\": "src"
         }
     },
-    "replace": {
-        "hiqdev/composer-extension-plugin": "*"
-    },
     "extra": {
         "class": "hiqdev\\ComposerConfigPlugin\\Plugin"
     }
