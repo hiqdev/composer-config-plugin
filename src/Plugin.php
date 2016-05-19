@@ -182,36 +182,39 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $allAliases = [];
         $extensions = [];
-        $rawConfigs = [];
+        $rawConfigs = [
+            'aliases'    => [],
+            'extensions' => [],
+        ];
+
         foreach ($this->raw as $name => $info) {
-            $extensions[$name] = $info['extension'];
+            $rawConfigs['extensions'][] = [
+                $name => $info['extension']
+            ];
 
             $aliases = $info['aliases'];
-            $allAliases = array_merge($allAliases, $aliases);
+            $rawConfigs['aliases'][] = $aliases;
 
-            foreach ($info['files'] as $file => $path) {
-                $config = $this->readConfigFile($info['package'], $path);
-                $config['aliases'] = array_merge(
-                    $aliases,
-                    isset($config['aliases']) ? (array) $config['aliases'] : []
-                );
-                $allAliases = array_merge($allAliases, $config['aliases']);
-                $rawConfigs[$file][] = $config;
+            foreach ($info['files'] as $name => $path) {
+                $rawConfigs[$name][] = $this->readConfigFile($info['package'], $path);
             }
         }
 
-        $this->writeFile('aliases',    $allAliases);
-        $this->writeFile('extensions', $extensions);
-
-        foreach ($rawConfigs as $file => $configs) {
-            $this->assembleFile($file, $configs);
+        foreach ($rawConfigs as $name => $configs) {
+            if (!in_array($name, ['params', 'aliases', 'extensions'], true)) {
+                $configs[] = [
+                    'params'  => $this->data['params'],
+                    'aliases' => $this->data['aliases'],
+                ];
+            }
+            $this->assembleFile($name, $configs);
         }
     }
 
-    protected function assembleFile($file, $configs)
+    protected function assembleFile($name, $configs)
     {
-        $data = call_user_func_array([Helper::class, 'mergeConfig'], $configs);
-        $this->writeFile($file, $data);
+        $this->data[$name] = call_user_func_array([Helper::class, 'mergeConfig'], $configs);
+        $this->writeFile($name, $this->data[$name]);
     }
 
     /**
@@ -221,12 +224,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function readConfigFile(PackageInterface $package, $file)
     {
-        $path = $this->preparePath($package, $file);
-        if (!file_exists($path)) {
+        $__path = $this->preparePath($package, $file);
+        if (!file_exists($__path)) {
             $this->io->writeError('<error>Non existent extension config file</error> ' . $file . ' in ' . $package->getName());
             exit(1);
         }
-        return require $path;
+        extract($this->data);
+        return require $__path;
     }
 
     /**
