@@ -1,8 +1,9 @@
 hiqdev/composer-config-plugin changelog
 ---------------------------------------
 
-## Under development
+## 0.0.3 2016-05-20
 
+- Changed aliases assembling
 
 ## 0.0.2 2016-05-19
 

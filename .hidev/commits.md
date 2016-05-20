@@ -1,8 +1,11 @@
 hiqdev/composer-config-plugin commits history
 ---------------------------------------------
 
-## Under development
+## 0.0.3 2016-05-20
 
+- Changed aliases assembling
+    - 1076668 2016-05-20 csfixed (sol@hiqdev.com)
+    - 174c848 2016-05-19 simplified aliases assembling (sol@hiqdev.com)
     - 5f232e4 2016-05-19 improved Idea (sol@hiqdev.com)
     - a976f3e 2016-05-19 added Idea readme section (sol@hiqdev.com)
 
