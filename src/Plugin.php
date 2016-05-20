@@ -189,7 +189,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         foreach ($this->raw as $name => $info) {
             $rawConfigs['extensions'][] = [
-                $name => $info['extension']
+                $name => $info['extension'],
             ];
 
             $aliases = $info['aliases'];

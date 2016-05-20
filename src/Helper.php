@@ -24,11 +24,9 @@ class Helper
     /**
      * Merges two or more arrays into one recursively.
      * Based on Yii2 yii\helpers\BaseArrayHelper::merge.
-     * @param array $a array to be merged to
-     * @param array $b array to be merged from
      * @return array the merged array
      */
-    public static function mergeConfig($a, $b)
+    public static function mergeConfig()
     {
         $args = func_get_args();
         $res = array_shift($args);
@@ -57,13 +55,13 @@ class Helper
     /**
      * Dumps closure object to string.
      * Based on http://www.metashock.de/2013/05/dump-source-code-of-closure-in-php/.
-     * @param Closure $c 
+     * @param Closure $closure
      * @return string
      */
-    public static function dumpClosure(Closure $c)
+    public static function dumpClosure(Closure $closure)
     {
         $res = 'function (';
-        $fun = new ReflectionFunction($c);
+        $fun = new ReflectionFunction($closure);
         $args = [];
         foreach ($fun->getParameters() as $arg) {
             $str = '';
