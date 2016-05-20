@@ -161,7 +161,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         if (isset($files['params'])) {
-            $this->rawParams[] = $this->readConfigFile($package, $files['params']);
+            foreach ((array)$files['params'] as $file) {
+                $this->rawParams[] = $this->readConfigFile($package, $file);
+            }
             unset($files['params']);
         }
 
@@ -195,8 +197,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $aliases = $info['aliases'];
             $rawConfigs['aliases'][] = $aliases;
 
-            foreach ($info['files'] as $name => $path) {
-                $rawConfigs[$name][] = $this->readConfigFile($info['package'], $path);
+            foreach ($info['files'] as $name => $pathes) {
+                foreach ((array)$pathes as $path) {
+                    $rawConfigs[$name][] = $this->readConfigFile($info['package'], $path);
+                }
             }
         }
 
@@ -224,13 +228,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function readConfigFile(PackageInterface $package, $file)
     {
+        $skippable = false;
+        if (strncmp($file, '?', 1) === 0) {
+            $skippable = true;
+            $file = substr($file, 1);
+        }
         $__path = $this->preparePath($package, $file);
         if (!file_exists($__path)) {
-            $this->io->writeError('<error>Non existent extension config file</error> ' . $file . ' in ' . $package->getName());
-            exit(1);
+            if ($skippable) {
+                return [];
+            } else {
+                $this->io->writeError('<error>Non existent extension config file</error> ' . $file . ' in ' . $package->getName());
+                exit(1);
+            }
         }
         extract($this->data);
-        return require $__path;
+        return (array)require $__path;
     }
 
     /**
