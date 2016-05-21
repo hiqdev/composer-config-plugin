@@ -215,10 +215,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function assembleFile($name, $configs)
+    protected function assembleFile($name, array $configs)
     {
         $this->data[$name] = call_user_func_array([Helper::class, 'mergeConfig'], $configs);
-        $this->writeFile($name, $this->data[$name]);
+        $this->writeFile($name, (array) $this->data[$name]);
     }
 
     /**
