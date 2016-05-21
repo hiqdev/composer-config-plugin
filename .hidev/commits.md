@@ -1,6 +1,12 @@
 hiqdev/composer-config-plugin commits history
 ---------------------------------------------
 
+## 0.0.4 2016-05-21
+
+- Added multiple configs and params
+    - e9c4899 2016-05-21 forced arrays (sol@hiqdev.com)
+    - d1fdc77 2016-05-20 + added multiple configs and params (sol@hiqdev.com)
+
 ## 0.0.3 2016-05-20
 
 - Changed aliases assembling
