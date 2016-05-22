@@ -161,7 +161,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         if (isset($files['params'])) {
-            foreach ((array)$files['params'] as $file) {
+            foreach ((array) $files['params'] as $file) {
                 $this->rawParams[] = $this->readConfigFile($package, $file);
             }
             unset($files['params']);
@@ -198,7 +198,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $rawConfigs['aliases'][] = $aliases;
 
             foreach ($info['files'] as $name => $pathes) {
-                foreach ((array)$pathes as $path) {
+                foreach ((array) $pathes as $path) {
                     $rawConfigs[$name][] = $this->readConfigFile($info['package'], $path);
                 }
             }
@@ -243,7 +243,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
         }
         extract($this->data);
-        return (array)require $__path;
+        return (array) require $__path;
     }
 
     /**
