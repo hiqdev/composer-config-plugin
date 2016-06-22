@@ -1,6 +1,10 @@
 hiqdev/composer-config-plugin changelog
 ---------------------------------------
 
+## 0.0.5 2016-06-22
+
+- Added multiple defines
+
 ## 0.0.4 2016-05-21
 
 - Added multiple configs and params

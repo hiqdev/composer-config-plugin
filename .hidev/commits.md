@@ -1,6 +1,13 @@
 hiqdev/composer-config-plugin commits history
 ---------------------------------------------
 
+## 0.0.5 2016-06-22
+
+- Added multiple defines
+    - e58cc7a 2016-06-22 allowed travis build failure for PHP 5.5 (sol@hiqdev.com)
+    - 5b84dc8 2016-06-22 added ability to have multiple defines (sol@hiqdev.com)
+    - 827d606 2016-05-22 csfixed (sol@hiqdev.com)
+
 ## 0.0.4 2016-05-21
 
 - Added multiple configs and params
