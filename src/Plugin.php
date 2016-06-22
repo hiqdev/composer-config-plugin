@@ -156,7 +156,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
 
         if (isset($files['defines'])) {
-            $this->readConfigFile($package, $files['defines']);
+            foreach ((array) $files['defines'] as $file) {
+                $this->readConfigFile($package, $file);
+            }
             unset($files['defines']);
         }
 
