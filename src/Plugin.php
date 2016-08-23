@@ -323,7 +323,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Writes file.
+     * Writes config file.
      * @param string $filename
      * @param array $data
      */
@@ -353,10 +353,67 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function getPackages()
     {
         if ($this->packages === null) {
-            $this->packages = $this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
+            $this->packages = $this->findPackages();
         }
 
         return $this->packages;
+    }
+
+    protected $plainList = [];
+    protected $orderedList = [];
+
+    /**
+     * Returns ordered list of packages:
+     * - listed earlier in the composer.json will get earlier in the list
+     * - childs before parents
+     * @return \Composer\Package\PackageInterface[]
+     */
+    public function findPackages()
+    {
+        $root = $this->composer->getPackage();
+        $this->plainList[$root->getName()] = $root;
+        foreach ($this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages() as $package) {
+            $this->plainList[$package->getName()] = $package;
+        }
+        $this->orderedList = [];
+        $this->iteratePackage($root, true);
+        $res = [];
+        foreach ($this->orderedList as $name) {
+            $res[] = $this->plainList[$name];
+        }
+
+        return $res;
+    }
+
+    /**
+     * Iterates through package dependencies.
+     * @param PackageInterface $package to iterate
+     * @param bool $includingDev process development dependencies, defaults to not process
+     */
+    public function iteratePackage(PackageInterface $package, $includingDev = false)
+    {
+        $this->iterateLinks($package->getRequires());
+        if ($includingDev) {
+            $this->iterateLinks($package->getDevRequires());
+        }
+        $name = $package->getName();
+        if (!isset($this->orderedList[$name])) {
+            $this->orderedList[$name] = $name;
+        }
+    }
+
+    /**
+     * Iterates given list of dependencies.
+     * @param array $links
+     */
+    public function iterateLinks(array $links)
+    {
+        foreach ($links as $link) {
+            $target = $link->getTarget();
+            if (isset($this->plainList[$target]) && !isset($this->orderedList[$target])) {
+                $this->iteratePackage($this->plainList[$target]);
+            }
+        }
     }
 
     /**
