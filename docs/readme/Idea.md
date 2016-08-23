@@ -1,6 +1,7 @@
 Not yet completely implemented.
 
-1. Collect config files in configured order.
+- accept config files in different formats: PHP, JSON, YML
+- collect config files in configured order and structures
 
 ```json
 "extra": {
@@ -18,6 +19,4 @@ Not yet completely implemented.
     }
 }
 ```
-
-2. Process config files in different formats: PHP, JSON, YML.
 
