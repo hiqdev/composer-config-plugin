@@ -1,8 +1,14 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
-## [Under development]
+## [0.0.6] - 2016-08-23
 
+- Fixed packages processing order
+    - [c4bf7f9] 2016-08-23 more ideas [sol@hiqdev.com]
+    - [8340080] 2016-08-23 + require-dev phpunit 5.5 [sol@hiqdev.com]
+    - [e08e6c7] 2016-08-23 fixed tests for composer 5.5 [sol@hiqdev.com]
+    - [94284df] 2016-08-23 csfixed [sol@hiqdev.com]
+    - [2faafaa] 2016-08-23 redone to chkipper for bumping [sol@hiqdev.com]
     - [0e4f55b] 2016-08-23 added fixed packages processing order [sol@hiqdev.com]
 
 ## [0.0.5] - 2016-06-22
@@ -62,3 +68,8 @@ hiqdev/composer-config-plugin
 [6270475]: https://github.com/hiqdev/composer-config-plugin/commit/6270475
 [79b5c49]: https://github.com/hiqdev/composer-config-plugin/commit/79b5c49
 [0e4f55b]: https://github.com/hiqdev/composer-config-plugin/commit/0e4f55b
+[c4bf7f9]: https://github.com/hiqdev/composer-config-plugin/commit/c4bf7f9
+[8340080]: https://github.com/hiqdev/composer-config-plugin/commit/8340080
+[e08e6c7]: https://github.com/hiqdev/composer-config-plugin/commit/e08e6c7
+[94284df]: https://github.com/hiqdev/composer-config-plugin/commit/94284df
+[2faafaa]: https://github.com/hiqdev/composer-config-plugin/commit/2faafaa

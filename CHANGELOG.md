@@ -1,7 +1,9 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
-## [Under development]
+## [0.0.6] - 2016-08-23
+
+- Fixed packages processing order
 
 ## [0.0.5] - 2016-06-22
 
