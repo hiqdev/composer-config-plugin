@@ -16,4 +16,4 @@ package:
 
 plugins:
     hiqdev/hidev-php:       "*"
-    hiqdev/hidev-vendor:    "*"
+    hiqdev/hidev-hiqdev:    "*"
