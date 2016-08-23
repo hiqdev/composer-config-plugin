@@ -28,11 +28,11 @@ use Composer\Util\Filesystem;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const PACKAGE_TYPE          = 'yii2-extension';
-    const EXTRA_OPTION_NAME     = 'config-plugin';
-    const OUTPUT_PATH           = 'hiqdev/config';
-    const BASE_DIR_SAMPLE       = '<base-dir>';
-    const VENDOR_DIR_SAMPLE     = '<base-dir>/vendor';
+    const PACKAGE_TYPE = 'yii2-extension';
+    const EXTRA_OPTION_NAME = 'config-plugin';
+    const OUTPUT_PATH = 'hiqdev/config';
+    const BASE_DIR_SAMPLE = '<base-dir>';
+    const VENDOR_DIR_SAMPLE = '<base-dir>/vendor';
 
     /**
      * @var PackageInterface[] the array of active composer packages
@@ -40,12 +40,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $packages;
 
     /**
-     * @var string absolute path to the package base directory.
+     * @var string absolute path to the package base directory
      */
     protected $baseDir;
 
     /**
-     * @var string absolute path to vendor directory.
+     * @var string absolute path to vendor directory
      */
     protected $vendorDir;
 
@@ -58,7 +58,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @var array assembled config data
      */
     protected $data = [
-        'aliases'    => [],
+        'aliases' => [],
         'extensions' => [],
     ];
 
@@ -140,7 +140,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         $extension = [
-            'name'    => $package->getName(),
+            'name' => $package->getName(),
             'version' => $package->getVersion(),
         ];
         if ($package->getVersion() === '9999999-dev') {
@@ -170,10 +170,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         $this->raw[$package->getName()] = [
-            'package'   => $package,
+            'package' => $package,
             'extension' => $extension,
-            'aliases'   => $aliases,
-            'files'     => (array) $files,
+            'aliases' => $aliases,
+            'files' => (array) $files,
         ];
     }
 
@@ -187,7 +187,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $allAliases = [];
         $extensions = [];
         $rawConfigs = [
-            'aliases'    => [],
+            'aliases' => [],
             'extensions' => [],
         ];
 
@@ -209,7 +209,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         foreach ($rawConfigs as $name => $configs) {
             if (!in_array($name, ['params', 'aliases', 'extensions'], true)) {
                 $configs[] = [
-                    'params'  => $this->data['params'],
+                    'params' => $this->data['params'],
                     'aliases' => $this->data['aliases'],
                 ];
             }
@@ -245,6 +245,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
         }
         extract($this->data);
+
         return (array) require $__path;
     }
 
@@ -365,7 +366,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * Returns ordered list of packages:
      * - listed earlier in the composer.json will get earlier in the list
-     * - childs before parents
+     * - childs before parents.
      * @return \Composer\Package\PackageInterface[]
      */
     public function findPackages()
