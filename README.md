@@ -40,7 +40,7 @@ to the require section of your composer.json.
 
 Not yet completely implemented.
 
-Collects config files in configured order.
+1. Collect config files in configured order.
 
 ```json
 "extra": {
@@ -58,6 +58,8 @@ Collects config files in configured order.
     }
 }
 ```
+
+2. Process config files in different formats: PHP, JSON, YML.
 
 ## License
 
