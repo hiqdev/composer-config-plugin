@@ -140,7 +140,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         $extension = [
-            'name' => $package->getName(),
+            'name' => $package->getPrettyName(),
             'version' => $package->getVersion(),
         ];
         if ($package->getVersion() === '9999999-dev') {
@@ -169,7 +169,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             unset($files['params']);
         }
 
-        $this->raw[$package->getName()] = [
+        $this->raw[$package->getPrettyName()] = [
             'package' => $package,
             'extension' => $extension,
             'aliases' => $aliases,
@@ -240,7 +240,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             if ($skippable) {
                 return [];
             } else {
-                $this->io->writeError('<error>Non existent extension config file</error> ' . $file . ' in ' . $package->getName());
+                $this->io->writeError('<error>Non existent extension config file</error> ' . $file . ' in ' . $package->getPrettyName());
                 exit(1);
             }
         }
@@ -294,6 +294,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
     }
 
+    /**
+     * Builds path inside of a package.
+     * @param PackageInterface $package
+     * @param mixed $path can be absolute or relative
+     * @return string absolute pathes will stay untouched
+     */
     public function preparePath(PackageInterface $package, $path)
     {
         if (!$this->getFilesystem()->isAbsolutePath($path)) {
@@ -372,12 +378,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function findPackages()
     {
         $root = $this->composer->getPackage();
-        $this->plainList[$root->getName()] = $root;
+        $this->plainList[$root->getPrettyName()] = $root;
         foreach ($this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages() as $package) {
-            $this->plainList[$package->getName()] = $package;
+            $this->plainList[$package->getPrettyName()] = $package;
         }
         $this->orderedList = [];
         $this->iteratePackage($root, true);
+        #var_dump(implode("\n", $this->orderedList)); die();
         $res = [];
         foreach ($this->orderedList as $name) {
             $res[] = $this->plainList[$name];
@@ -393,24 +400,32 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function iteratePackage(PackageInterface $package, $includingDev = false)
     {
-        $this->iterateLinks($package->getRequires());
+        $this->iterateDependencies($package);
         if ($includingDev) {
-            $this->iterateLinks($package->getDevRequires());
+            $this->iterateDependencies($package, true);
         }
-        $name = $package->getName();
+        $name = $package->getPrettyName();
         if (!isset($this->orderedList[$name])) {
             $this->orderedList[$name] = $name;
         }
     }
 
     /**
-     * Iterates given list of dependencies.
-     * @param array $links
+     * Iterates dependencies of the given package.
+     * @param PackageInterface $package
+     * @param bool $dev which dependencies to iterate: true - dev, default - general
      */
-    public function iterateLinks(array $links)
+    public function iterateDependencies(PackageInterface $package, $dev = false)
     {
-        foreach ($links as $link) {
-            $target = $link->getTarget();
+        $path = $this->preparePath($package, 'composer.json');
+        if (file_exists($path)) {
+            $conf = json_decode(file_get_contents($path), true);
+            $what = $dev ? 'require-dev' : 'require';
+            $deps = isset($conf[$what]) ? $conf[$what] : [];
+        } else {
+            $deps = $dev ? $package->getDevRequires() : $package->getRequires();
+        }
+        foreach (array_keys($deps) as $target) {
             if (isset($this->plainList[$target]) && !isset($this->orderedList[$target])) {
                 $this->iteratePackage($this->plainList[$target]);
             }
