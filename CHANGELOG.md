@@ -1,6 +1,10 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.0.7] - 2016-08-25
+
+- Fixed packages processing order again, used original `composer.json`
+
 ## [0.0.6] - 2016-08-23
 
 - Fixed packages processing order

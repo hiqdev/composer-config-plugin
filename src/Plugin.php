@@ -123,7 +123,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->processPackage($this->composer->getPackage());
 
         $this->assembleParams();
-        define('COMPOSER_CONFIG_PLUGIN_DIR', $this->getOutputDir());
         $this->assembleConfigs();
     }
 
@@ -184,8 +183,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function assembleConfigs()
     {
-        $allAliases = [];
-        $extensions = [];
         $rawConfigs = [
             'aliases' => [],
             'extensions' => [],
@@ -228,20 +225,19 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param string $file
      * @return array
      */
-    protected function readConfigFile(PackageInterface $package, $file)
+    protected function readConfigFile(PackageInterface $__package, $__file)
     {
-        $skippable = false;
-        if (strncmp($file, '?', 1) === 0) {
-            $skippable = true;
-            $file = substr($file, 1);
+        $__skippable = false;
+        if (strncmp($__file, '?', 1) === 0) {
+            $__skippable = true;
+            $__file = substr($__file, 1);
         }
-        $__path = $this->preparePath($package, $file);
+        $__path = $this->preparePath($__package, $__file);
         if (!file_exists($__path)) {
-            if ($skippable) {
+            if ($__skippable) {
                 return [];
             } else {
-                $this->io->writeError('<error>Non existent extension config file</error> ' . $file . ' in ' . $package->getPrettyName());
-                exit(1);
+                $this->io->writeError('<error>Non existent extension config file</error> ' . $__file . ' in ' . $__package->getPrettyName());
             }
         }
         extract($this->data);
@@ -384,7 +380,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         $this->orderedList = [];
         $this->iteratePackage($root, true);
-        #var_dump(implode("\n", $this->orderedList)); die();
+        //var_dump(implode("\n", $this->orderedList)); die();
         $res = [];
         foreach ($this->orderedList as $name) {
             $res[] = $this->plainList[$name];

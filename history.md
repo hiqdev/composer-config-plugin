@@ -1,6 +1,11 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.0.7] - 2016-08-25
+
+- Fixed packages processing order again, used original `composer.json`
+    - [cc15516] 2016-08-25 redone iterateDependencies and used getPrettyName() instead of getName() [sol@hiqdev.com]
+
 ## [0.0.6] - 2016-08-23
 
 - Fixed packages processing order
@@ -73,3 +78,4 @@ hiqdev/composer-config-plugin
 [e08e6c7]: https://github.com/hiqdev/composer-config-plugin/commit/e08e6c7
 [94284df]: https://github.com/hiqdev/composer-config-plugin/commit/94284df
 [2faafaa]: https://github.com/hiqdev/composer-config-plugin/commit/2faafaa
+[cc15516]: https://github.com/hiqdev/composer-config-plugin/commit/cc15516
