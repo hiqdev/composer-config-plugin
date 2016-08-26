@@ -4,6 +4,7 @@ hiqdev/composer-config-plugin
 ## [0.0.7] - 2016-08-25
 
 - Fixed packages processing order again, used original `composer.json`
+    - [a9c0ba1] 2016-08-26 fixed scrutinizer issues [sol@hiqdev.com]
     - [cc15516] 2016-08-25 redone iterateDependencies and used getPrettyName() instead of getName() [sol@hiqdev.com]
 
 ## [0.0.6] - 2016-08-23
@@ -79,3 +80,4 @@ hiqdev/composer-config-plugin
 [94284df]: https://github.com/hiqdev/composer-config-plugin/commit/94284df
 [2faafaa]: https://github.com/hiqdev/composer-config-plugin/commit/2faafaa
 [cc15516]: https://github.com/hiqdev/composer-config-plugin/commit/cc15516
+[a9c0ba1]: https://github.com/hiqdev/composer-config-plugin/commit/a9c0ba1
