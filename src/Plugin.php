@@ -221,8 +221,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Read extra config.
-     * @param string $file
+     * Reads extra config.
+     * @param PackageInterface $__package
+     * @param string $__file
      * @return array
      */
     protected function readConfigFile(PackageInterface $__package, $__file)
@@ -237,7 +238,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             if ($__skippable) {
                 return [];
             } else {
-                $this->io->writeError('<error>Non existent extension config file</error> ' . $__file . ' in ' . $__package->getPrettyName());
+                $this->io->writeError('<error>Non existent config file</error> ' . $__file . ' in ' . $__package->getPrettyName());
             }
         }
         extract($this->data);
@@ -380,7 +381,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         $this->orderedList = [];
         $this->iteratePackage($root, true);
-        //var_dump(implode("\n", $this->orderedList)); die();
+
+        if ($this->io->isVerbose())  {
+            $packages = implode("\n", $this->orderedList);
+            $this->io->writeError($packages);
+        }
         $res = [];
         foreach ($this->orderedList as $name) {
             $res[] = $this->plainList[$name];
