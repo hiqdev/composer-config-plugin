@@ -1,7 +1,11 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
-## [0.0.7] - 2016-08-25
+## [0.0.8] - 2016-08-27
+
+- Added showing ordered list of packages when verbose option
+
+## [0.0.7] - 2016-08-26
 
 - Fixed packages processing order again, used original `composer.json`
 
