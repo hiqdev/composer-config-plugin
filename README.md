@@ -20,45 +20,48 @@ and thus providing extendable plugin system.
 
 ## Installation
 
-The preferred way to install this composer-plugin is through [composer](http://getcomposer.org/download/).
-
-Either run
-
-```sh
-php composer.phar require "hiqdev/composer-config-plugin"
-```
-
-or add
+Add to require section of your `composer.json`:
 
 ```json
-"hiqdev/composer-config-plugin": "*"
+    "hiqdev/composer-config-plugin": "*"
 ```
 
-to the require section of your composer.json.
+## Usage
 
-## Idea
+Define your config files in `composer.json` like this:
+
+```json
+    "extra": {
+        "config-plugin": {
+            "defines": [
+                "?src/config/defines-local.php",
+                "src/config/defines.php"
+            ],
+            "params": [
+                "src/config/params.php",
+                "?src/config/params-local.php"
+            ],
+            "hisite": "src/config/hisite.php"
+        }
+    },
+```
+
+Run `composer dump-autoload` to reassemble configs.
+
+Use assembled configs like this:
+
+```php
+
+$config = VENDOR_DIR . '/hiqdev/config/hisite.php';
+
+```
+
+## Ideas to be implemented later
 
 Not yet completely implemented.
 
 - accept config files in different formats: PHP, JSON, YML
-- collect config files in configured order and structures
-
-```json
-"extra": {
-    "config-plugin": {
-        "defines": "src/config/defines.php",
-        "params":  "src/config/params.php",
-        "common": {
-            "params": "params",
-            "aliases": "aliases"
-        },
-        "hisite": "common",
-        "hidev": "common",
-        "hisite-dev": "hisite",
-        "hisite-prod": "hisite"
-    }
-}
-```
+- define order and structure of assembled config files
 
 ## License
 
