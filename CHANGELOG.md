@@ -1,6 +1,10 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.0.9] - 2016-09-22
+
+- Fixed infinite loop in case of circular dependencies in composer
+
 ## [0.0.8] - 2016-08-27
 
 - Added showing ordered list of packages when verbose option
