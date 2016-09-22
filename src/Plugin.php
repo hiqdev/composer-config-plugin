@@ -363,7 +363,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return $this->packages;
     }
 
+    /**
+     * Plain list of all project dependencies (including nested) as provided by composer.
+     * The list is unordered (chaotic, can be different after every update).
+     */
     protected $plainList = [];
+
+    /**
+     * Ordered list of package. Order @see findPackages
+     */
     protected $orderedList = [];
 
     /**
@@ -401,11 +409,20 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function iteratePackage(PackageInterface $package, $includingDev = false)
     {
+        $name = $package->getPrettyName();
+
+        /// prevent infinite loop in case of circular dependencies
+        static $processed = [];
+        if (isset($processed[$name])) {
+            return;
+        } else {
+            $processed[$name] = 1;
+        }
+
         $this->iterateDependencies($package);
         if ($includingDev) {
             $this->iterateDependencies($package, true);
         }
-        $name = $package->getPrettyName();
         if (!isset($this->orderedList[$name])) {
             $this->orderedList[$name] = $name;
         }
