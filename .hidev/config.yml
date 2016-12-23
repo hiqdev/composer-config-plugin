@@ -6,13 +6,19 @@ package:
     keywords:       composer, config, assembling, plugin
     namespace:      hiqdev\ComposerConfigPlugin
     description:    |
-        This [Composer](https://getcomposer.org/) plugin that provides assembling of configs
-        and thus providing extendable plugin system.
+        This [Composer](https://getcomposer.org/) plugin provides assembling
+        of configurations distributed with composer packages.
+        This allows to put configuration needed to use package right into
+        the package thus implementing plugin system: package becomes a plugin
+        holding both code and configuration.
 
-        - scans installed packages for extra `config-plugin` option in their `composer.json`
-        - requires all defines files
-        - collects and writes params file
-        - collects and writes config files
+        How it works?
+
+        - scans installed packages for `config-plugin` extra option in their `composer.json`
+        - requires all `defines` files to set constants
+        - collects and writes `params` file (constants can be used in params)
+        - collects and writes config files (constants and params can be used in configs)
+        - then you load assembled configurations with `require`
 
 plugins:
     hiqdev/hidev-php:       "*"

@@ -1,19 +1,20 @@
-Define your config files in `composer.json` like this:
+List your config files in `composer.json` like this:
 
 ```json
-    "extra": {
-        "config-plugin": {
-            "defines": [
-                "?src/config/defines-local.php",
-                "src/config/defines.php"
-            ],
-            "params": [
-                "src/config/params.php",
-                "?src/config/params-local.php"
-            ],
-            "hisite": "src/config/hisite.php"
-        }
-    },
+"extra": {
+    "config-plugin": {
+        "defines": [
+            "?src/config/defines-local.php",
+            "src/config/defines.php"
+        ],
+        "params": [
+            "src/config/params.php",
+            "?src/config/params-local.php"
+        ],
+        "hisite": "src/config/hisite.php",
+        "other": "src/config/other.php"
+    }
+},
 ```
 
 Run `composer dump-autoload` to reassemble configs.
@@ -21,15 +22,18 @@ Run `composer dump-autoload` to reassemble configs.
 Use assembled configs like this:
 
 ```php
+use hiqdev\composer\config\Plugin;
 
-$config = VENDOR_DIR . '/hiqdev/config/hisite.php';
+if (ENVIRONMENT == 'dev') {
+    Plugin::rebuild();
+}
 
+$config = require(Plugin::path('hisite'));
 ```
 
-## Ideas to be implemented later
+## TODO
 
-Not yet completely implemented.
-
-- accept config files in different formats: PHP, JSON, YML
-- define order and structure of assembled config files
+- change namespace to `hiqdev\composer\config`
+- split out Builder class
+- accept config files in different formats: PHP, JSON, YML, XML
 

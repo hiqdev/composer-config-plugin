@@ -10,13 +10,19 @@ Composer Config Plugin
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hiqdev/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/hiqdev/composer-config-plugin/)
 [![Dependency Status](https://www.versioneye.com/php/hiqdev:composer-config-plugin/dev-master/badge.svg)](https://www.versioneye.com/php/hiqdev:composer-config-plugin/dev-master)
 
-This [Composer](https://getcomposer.org/) plugin that provides assembling of configs
-and thus providing extendable plugin system.
+This [Composer](https://getcomposer.org/) plugin provides assembling
+of configurations distributed with composer packages.
+This allows to put configuration needed to use package right into
+the package thus implementing plugin system: package becomes a plugin
+holding both code and configuration.
 
-- scans installed packages for extra `config-plugin` option in their `composer.json`
-- requires all defines files
-- collects and writes params file
-- collects and writes config files
+How it works?
+
+- scans installed packages for `config-plugin` extra option in their `composer.json`
+- requires all `defines` files to set constants
+- collects and writes `params` file (constants can be used in params)
+- collects and writes config files (constants and params can be used in configs)
+- then you load assembled configurations with `require`
 
 ## Installation
 
@@ -28,22 +34,23 @@ Add to require section of your `composer.json`:
 
 ## Usage
 
-Define your config files in `composer.json` like this:
+List your config files in `composer.json` like this:
 
 ```json
-    "extra": {
-        "config-plugin": {
-            "defines": [
-                "?src/config/defines-local.php",
-                "src/config/defines.php"
-            ],
-            "params": [
-                "src/config/params.php",
-                "?src/config/params-local.php"
-            ],
-            "hisite": "src/config/hisite.php"
-        }
-    },
+"extra": {
+    "config-plugin": {
+        "defines": [
+            "?src/config/defines-local.php",
+            "src/config/defines.php"
+        ],
+        "params": [
+            "src/config/params.php",
+            "?src/config/params-local.php"
+        ],
+        "hisite": "src/config/hisite.php",
+        "other": "src/config/other.php"
+    }
+},
 ```
 
 Run `composer dump-autoload` to reassemble configs.
@@ -51,17 +58,20 @@ Run `composer dump-autoload` to reassemble configs.
 Use assembled configs like this:
 
 ```php
+use hiqdev\composer\config\Plugin;
 
-$config = VENDOR_DIR . '/hiqdev/config/hisite.php';
+if (ENVIRONMENT == 'dev') {
+    Plugin::rebuild();
+}
 
+$config = require(Plugin::path('hisite'));
 ```
 
-## Ideas to be implemented later
+## TODO
 
-Not yet completely implemented.
-
-- accept config files in different formats: PHP, JSON, YML
-- define order and structure of assembled config files
+- change namespace to `hiqdev\composer\config`
+- split out Builder class
+- accept config files in different formats: PHP, JSON, YML, XML
 
 ## License
 
