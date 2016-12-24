@@ -21,6 +21,11 @@ use ReflectionFunction;
  */
 class Helper
 {
+    public static function className()
+    {
+        return get_called_class();
+    }
+
     /**
      * Merges two or more arrays into one recursively.
      * Based on Yii2 yii\helpers\BaseArrayHelper::merge.
