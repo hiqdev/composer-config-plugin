@@ -52,10 +52,10 @@
     },
     "autoload": {
         "psr-4": {
-            "hiqdev\\ComposerConfigPlugin\\": "src"
+            "hiqdev\\composer\\config\\": "src"
         }
     },
     "extra": {
-        "class": "hiqdev\\ComposerConfigPlugin\\Plugin"
+        "class": "hiqdev\\composer\\config\\Plugin"
     }
 }

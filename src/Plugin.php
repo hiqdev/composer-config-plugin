@@ -9,12 +9,13 @@
  * @copyright Copyright (c) 2016, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\ComposerConfigPlugin;
+namespace hiqdev\composer\config;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Package\CompletePackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
@@ -28,10 +29,10 @@ use Composer\Util\Filesystem;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
+    const OUTPUT_DIR = 'output';
+
     const PACKAGE_TYPE = 'yii2-extension';
     const EXTRA_OPTION_NAME = 'config-plugin';
-    const OUTPUT_PATH = 'hiqdev/config';
-    const BASE_DIR_SAMPLE = '<base-dir>';
     const VENDOR_DIR_SAMPLE = '<base-dir>/vendor';
 
     /**
@@ -113,14 +114,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPostAutoloadDump(Event $event)
     {
         $this->io->writeError('<info>Assembling config files</info>');
+        $this->io->writeError('<info>Assembling config files</info>');
 
         /// scan packages
         foreach ($this->getPackages() as $package) {
-            if ($package instanceof \Composer\Package\CompletePackageInterface) {
+            if ($package instanceof CompletePackageInterface) {
                 $this->processPackage($package);
             }
         }
         $this->processPackage($this->composer->getPackage());
+
+        var_dump($this->raw);die('sfdasfsa');
 
         $this->assembleParams();
         $this->assembleConfigs();
@@ -214,12 +218,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function assembleFile($name, array $configs)
-    {
-        $this->data[$name] = call_user_func_array(['\\hiqdev\\ComposerConfigPlugin\\Helper', 'mergeConfig'], $configs);
-        $this->writeFile($name, (array) $this->data[$name]);
-    }
-
     /**
      * Reads extra config.
      * @param PackageInterface $__package
@@ -300,7 +298,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function preparePath(PackageInterface $package, $path)
     {
         if (!$this->getFilesystem()->isAbsolutePath($path)) {
-            $prefix = $package instanceof RootPackageInterface ? $this->getBaseDir() : $this->getVendorDir() . '/' . $package->getPrettyName();
+            $prefix = $package instanceof RootPackageInterface
+                ? $this->getBaseDir()
+                : $this->getVendorDir() . '/' . $package->getPrettyName()
+            ;
             $path = $prefix . '/' . $path;
         }
 
@@ -313,32 +314,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function getOutputDir()
     {
-        return $this->getVendorDir() . DIRECTORY_SEPARATOR . static::OUTPUT_PATH;
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . static::OUTPUT_DIR;
     }
 
     /**
-     * Build full path to write file for a given filename.
-     * @param string $filename
-     * @return string
+     * Returns full path to assembled config file.
+     * @param string $filename name of config
+     * @return string absolute path
      */
-    public function buildOutputPath($filename)
+    public static function path($filename)
     {
-        return $this->getOutputDir() . DIRECTORY_SEPARATOR . $filename . '.php';
-    }
-
-    /**
-     * Writes config file.
-     * @param string $filename
-     * @param array $data
-     */
-    protected function writeFile($filename, array $data)
-    {
-        $path = $this->buildOutputPath($filename);
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
-        }
-        $array = str_replace("'" . self::BASE_DIR_SAMPLE, '$baseDir . \'', Helper::exportVar($data));
-        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $array;\n");
+        return static::getOutputDir() . DIRECTORY_SEPARATOR . $filename . '.php';
     }
 
     /**

@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2016, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\ComposerConfigPlugin;
+namespace hiqdev\composer\config;
 
 use Closure;
 use ReflectionFunction;
