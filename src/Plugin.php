@@ -29,11 +29,9 @@ use Composer\Util\Filesystem;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const OUTPUT_DIR = 'output';
-
-    const PACKAGE_TYPE = 'yii2-extension';
+    const OUTPUT_DIR = 'config';
+    const YII2_PACKAGE_TYPE = 'yii2-extension';
     const EXTRA_OPTION_NAME = 'config-plugin';
-    const VENDOR_DIR_SAMPLE = '<base-dir>/vendor';
 
     /**
      * @var PackageInterface[] the array of active composer packages
@@ -56,17 +54,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $filesystem;
 
     /**
-     * @var array assembled config data
+     * @var array config name => list of files
      */
-    protected $data = [
-        'aliases' => [],
-        'extensions' => [],
+    protected $files = [
+        'defines' => [],
+        'params'  => [],
     ];
 
-    /**
-     * @var array raw collected data
-     */
-    protected $raw = [];
+    protected $aliases = [];
+
+    protected $extensions = [];
 
     /**
      * @var array array of not yet merged params
@@ -114,139 +111,69 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPostAutoloadDump(Event $event)
     {
         $this->io->writeError('<info>Assembling config files</info>');
-        $this->io->writeError('<info>Assembling config files</info>');
+        $this->scanPackages();
 
-        /// scan packages
+        $builder = new Builder(static::getOutputDir(), $this->files);
+        $builder->setIo($this->io);
+        $builder->saveFiles();
+        $builder->writeConfig('aliases', $this->aliases);
+        $builder->writeConfig('extensions', $this->extensions);
+        $builder->buildConfigs();
+    }
+
+    public static function rebuild()
+    {
+        $builder = new Builder(static::getOutputDir());
+        $builder->loadFiles();
+        $builder->buildConfigs();
+    }
+
+    protected function scanPackages()
+    {
         foreach ($this->getPackages() as $package) {
             if ($package instanceof CompletePackageInterface) {
                 $this->processPackage($package);
             }
         }
-        $this->processPackage($this->composer->getPackage());
-
-        var_dump($this->raw);die('sfdasfsa');
-
-        $this->assembleParams();
-        $this->assembleConfigs();
     }
 
     /**
      * Scans the given package and collects extensions data.
      * @param PackageInterface $package
      */
-    public function processPackage(PackageInterface $package)
+    protected function processPackage(PackageInterface $package)
     {
         $extra = $package->getExtra();
         $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
-        if ($package->getType() !== self::PACKAGE_TYPE && is_null($files)) {
+
+        if ($package->getType() !== self::YII2_PACKAGE_TYPE && is_null($files)) {
             return;
         }
 
-        $extension = [
-            'name' => $package->getPrettyName(),
-            'version' => $package->getVersion(),
-        ];
-        if ($package->getVersion() === '9999999-dev') {
-            $reference = $package->getSourceReference() ?: $package->getDistReference();
-            if ($reference) {
-                $extension['reference'] = $reference;
+        foreach ($files as $name => $pathes) {
+            foreach ((array) $pathes as $path) {
+                if (!isset($this->files[$name])) {
+                    $this->files[$name] = [];
+                }
+                array_push($this->files[$name], $this->preparePath($package, $path));
             }
         }
 
-        $aliases = array_merge(
+        $this->aliases = array_merge(
+            $this->aliases,
             $this->prepareAliases($package, 'psr-0'),
             $this->prepareAliases($package, 'psr-4')
         );
 
-        if (isset($files['defines'])) {
-            foreach ((array) $files['defines'] as $file) {
-                $this->readConfigFile($package, $file);
-            }
-            unset($files['defines']);
-        }
-
-        if (isset($files['params'])) {
-            foreach ((array) $files['params'] as $file) {
-                $this->rawParams[] = $this->readConfigFile($package, $file);
-            }
-            unset($files['params']);
-        }
-
-        $this->raw[$package->getPrettyName()] = [
-            'package' => $package,
-            'extension' => $extension,
-            'aliases' => $aliases,
-            'files' => (array) $files,
-        ];
-    }
-
-    public function assembleParams()
-    {
-        $this->assembleFile('params', $this->rawParams);
-    }
-
-    public function assembleConfigs()
-    {
-        $rawConfigs = [
-            'aliases' => [],
-            'extensions' => [],
-        ];
-
-        foreach ($this->raw as $name => $info) {
-            $rawConfigs['extensions'][] = [
-                $name => $info['extension'],
-            ];
-
-            $aliases = $info['aliases'];
-            $rawConfigs['aliases'][] = $aliases;
-
-            foreach ($info['files'] as $name => $pathes) {
-                foreach ((array) $pathes as $path) {
-                    $rawConfigs[$name][] = $this->readConfigFile($info['package'], $path);
-                }
-            }
-        }
-
-        foreach ($rawConfigs as $name => $configs) {
-            if (!in_array($name, ['params', 'aliases', 'extensions'], true)) {
-                $configs[] = [
-                    'params' => $this->data['params'],
-                    'aliases' => $this->data['aliases'],
-                ];
-            }
-            $this->assembleFile($name, $configs);
-        }
-    }
-
-    /**
-     * Reads extra config.
-     * @param PackageInterface $__package
-     * @param string $__file
-     * @return array
-     */
-    protected function readConfigFile(PackageInterface $__package, $__file)
-    {
-        $__skippable = false;
-        if (strncmp($__file, '?', 1) === 0) {
-            $__skippable = true;
-            $__file = substr($__file, 1);
-        }
-        $__path = $this->preparePath($__package, $__file);
-        if (!file_exists($__path)) {
-            if ($__skippable) {
-                return [];
-            } else {
-                $this->io->writeError('<error>Non existent config file</error> ' . $__file . ' in ' . $__package->getPrettyName());
-            }
-        }
-        extract($this->data);
-
-        return (array) require $__path;
+        $this->extensions[$package->getPrettyName()] = array_filter([
+            'name' => $package->getPrettyName(),
+            'version' => $package->getVersion(),
+            'reference' => $package->getSourceReference() ?: $package->getDistReference(),
+        ]);
     }
 
     /**
      * Prepare aliases.
-     *
      * @param PackageInterface $package
      * @param string 'psr-0' or 'psr-4'
      * @return array
@@ -267,7 +194,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
             $name = str_replace('\\', '/', trim($name, '\\'));
             $path = $this->preparePath($package, $path);
-            $path = $this->substitutePath($path, $this->getBaseDir(), self::BASE_DIR_SAMPLE);
+            $path = $this->substitutePath($path, $this->getBaseDir(), Builder::BASE_DIR_SAMPLE);
             if ('psr-0' === $psr) {
                 $path .= '/' . $name;
             }
@@ -284,7 +211,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param string $alias
      * @return string
      */
-    public function substitutePath($path, $dir, $alias)
+    protected function substitutePath($path, $dir, $alias)
     {
         return (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
     }
@@ -297,6 +224,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function preparePath(PackageInterface $package, $path)
     {
+        $skippable = false;
+        if (strncmp($path, '?', 1) === 0) {
+            $skippable = true;
+            $path = substr($path, 1);
+        }
         if (!$this->getFilesystem()->isAbsolutePath($path)) {
             $prefix = $package instanceof RootPackageInterface
                 ? $this->getBaseDir()
@@ -305,16 +237,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $path = $prefix . '/' . $path;
         }
 
-        return $this->getFilesystem()->normalizePath($path);
+        return ($skippable ? '?' : '') . $this->getFilesystem()->normalizePath($path);
     }
 
     /**
      * Get output dir.
      * @return string
      */
-    public function getOutputDir()
+    public static function getOutputDir()
     {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . static::OUTPUT_DIR;
+        return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . static::OUTPUT_DIR;
     }
 
     /**
@@ -377,7 +309,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->iteratePackage($root, true);
 
         if ($this->io->isVerbose())  {
-            $packages = implode("\n", $this->orderedList);
+            $indent = ' - ';
+            $packages = $indent . implode("\n$indent", $this->orderedList);
             $this->io->writeError($packages);
         }
         $res = [];
