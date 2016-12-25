@@ -26,17 +26,27 @@ class Builder
     protected $outputDir;
 
     /**
-     * @var array files to process: config name => list of files
+     * @var array files to build configs
+     * @see buildConfigs()
      */
     protected $files = [];
+
+    /**
+     * @var array additional data to be merged into every config (e.g. aliases)
+     */
+    protected $addition = [];
+
+    /**
+     * @var IOInterface
+     */
+    protected $io;
 
     /**
      * @var array collected variables
      */
     protected $vars = [];
 
-    const BASE_DIR_SAMPLE = '<base-dir>';
-    const FILES_FILENAME  = '__files';
+    const BASE_DIR_TAG = '<base-dir>';
 
     public function __construct($outputDir, array $files = [])
     {
@@ -44,16 +54,27 @@ class Builder
         $this->outputDir = $outputDir;
     }
 
+    public function setAddition(array $addition)
+    {
+        $this->addition = $addition;
+    }
+
     public function loadFiles()
     {
-        $this->files = $this->readConfig(static::FILES_FILENAME);
+        $this->files    = $this->readConfig('__files');
+        $this->addition = $this->readConfig('__addition');
     }
 
     public function saveFiles()
     {
-        $this->writeConfig(static::FILES_FILENAME, $this->files);
+        $this->writeConfig('__files',    $this->files);
+        $this->writeConfig('__addition', $this->addition);
     }
 
+    /**
+     * Builds configs by given files list
+     * @param null|array $files files to process: config name => list of files
+     */
     public function buildConfigs($files = null)
     {
         if (is_null($files)) {
@@ -76,7 +97,7 @@ class Builder
     public function buildConfig($name, array $configs)
     {
         if (!$this->isSpecialConfig($name)) {
-            array_push($configs, [
+            array_push($configs, $this->addition, [
                 'params' => $this->vars['params'],
             ]);
         }
@@ -114,7 +135,7 @@ class Builder
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
-        $array = str_replace("'" . self::BASE_DIR_SAMPLE, '$baseDir . \'', Helper::exportVar($data));
+        $array = str_replace("'" . self::BASE_DIR_TAG, '$baseDir . \'', Helper::exportVar($data));
         file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $array;\n");
     }
 
@@ -143,11 +164,6 @@ class Builder
 
         return [];
     }
-
-    /**
-     * @var IOInterface
-     */
-    protected $io;
 
     public function setIo(IOInterface $io)
     {

@@ -114,6 +114,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->scanPackages();
 
         $builder = new Builder(static::getOutputDir(), $this->files);
+        $builder->setAddition(['aliases' => $this->aliases]);
         $builder->setIo($this->io);
         $builder->saveFiles();
         $builder->writeConfig('aliases', $this->aliases);
@@ -141,7 +142,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Scans the given package and collects extensions data.
      * @param PackageInterface $package
      */
-    protected function processPackage(PackageInterface $package)
+    protected function processPackage(CompletePackageInterface $package)
     {
         $extra = $package->getExtra();
         $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
@@ -150,6 +151,26 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
+        if (is_array($files)) {
+            $this->processFiles($package, $files);
+        }
+
+        $aliases = array_merge(
+            $this->prepareAliases($package, 'psr-0'),
+            $this->prepareAliases($package, 'psr-4')
+        );
+        $this->aliases = array_merge($this->aliases, $aliases);
+
+        $this->extensions[$package->getPrettyName()] = array_filter([
+            'name' => $package->getPrettyName(),
+            'version' => $package->getVersion(),
+            'reference' => $package->getSourceReference() ?: $package->getDistReference(),
+            'aliases' => $aliases,
+        ]);
+    }
+
+    protected function processFiles(CompletePackageInterface $package, array $files)
+    {
         foreach ($files as $name => $pathes) {
             foreach ((array) $pathes as $path) {
                 if (!isset($this->files[$name])) {
@@ -158,18 +179,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 array_push($this->files[$name], $this->preparePath($package, $path));
             }
         }
-
-        $this->aliases = array_merge(
-            $this->aliases,
-            $this->prepareAliases($package, 'psr-0'),
-            $this->prepareAliases($package, 'psr-4')
-        );
-
-        $this->extensions[$package->getPrettyName()] = array_filter([
-            'name' => $package->getPrettyName(),
-            'version' => $package->getVersion(),
-            'reference' => $package->getSourceReference() ?: $package->getDistReference(),
-        ]);
     }
 
     /**
@@ -194,7 +203,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
             $name = str_replace('\\', '/', trim($name, '\\'));
             $path = $this->preparePath($package, $path);
-            $path = $this->substitutePath($path, $this->getBaseDir(), Builder::BASE_DIR_SAMPLE);
+            $path = $this->substitutePath($path, $this->getBaseDir(), Builder::BASE_DIR_TAG);
             if ('psr-0' === $psr) {
                 $path .= '/' . $name;
             }
