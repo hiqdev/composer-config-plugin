@@ -8,11 +8,11 @@
  * @copyright Copyright (c) 2016, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\ComposerConfigPlugin\tests\unit;
+namespace hiqdev\composer\config\tests\unit;
 
 use Composer\Composer;
 use Composer\Config;
-use hiqdev\ComposerConfigPlugin\Plugin;
+use hiqdev\composer\config\Plugin;
 
 /**
  * Class PluginTest.
