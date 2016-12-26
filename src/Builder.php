@@ -46,8 +46,8 @@ class Builder
      */
     protected $vars = [];
 
-    const OUTPUT_DIR   = 'config';
-    const BASE_DIR_TAG = '<base-dir>';
+    const OUTPUT_DIR_SUFFIX = '-output';
+    const BASE_DIR_MARKER = '<<<base-dir>>>';
 
     public function __construct(array $files = [], $outputDir = null)
     {
@@ -95,7 +95,7 @@ class Builder
      */
     public static function defaultOutputDir()
     {
-        return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . static::OUTPUT_DIR;
+        return dirname(__DIR__) . static::OUTPUT_DIR_SUFFIX;
     }
 
     /**
@@ -154,7 +154,7 @@ class Builder
      */
     public function writeConfig($name, array $data)
     {
-        $data = $this->substitutePathes($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_TAG);
+        $data = $this->substitutePathes($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_MARKER);
         static::writeFile($this->getOutputPath($name), $data);
     }
 
@@ -173,8 +173,8 @@ class Builder
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
-        $array = str_replace("'" . static::BASE_DIR_TAG, '$baseDir . \'', Helper::exportVar($data));
-        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $array;\n");
+        $content = str_replace("'" . static::BASE_DIR_MARKER, '$baseDir . \'', Helper::exportVar($data));
+        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $content;\n");
     }
 
     /**
