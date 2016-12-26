@@ -211,11 +211,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function preparePath(PackageInterface $package, $path)
     {
-        $skippable = false;
-        if (strncmp($path, '?', 1) === 0) {
-            $skippable = true;
+        $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
+        if ($skippable) {
             $path = substr($path, 1);
         }
+
         if (!$this->getFilesystem()->isAbsolutePath($path)) {
             $prefix = $package instanceof RootPackageInterface
                 ? $this->getBaseDir()
@@ -223,7 +223,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $path = $prefix . '/' . $path;
         }
 
-        return ($skippable ? '?' : '') . $this->getFilesystem()->normalizePath($path);
+        return $skippable . $this->getFilesystem()->normalizePath($path);
     }
 
     /**

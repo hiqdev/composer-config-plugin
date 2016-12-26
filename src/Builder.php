@@ -241,8 +241,8 @@ class Builder
      */
     public function readFile($__path)
     {
-        if (strncmp($__path, '?', 1) === 0) {
-            $__skippable = true;
+        $__skippable = strncmp($__path, '?', 1) === 0 ? '?' : '';
+        if ($__skippable) {
             $__path = substr($__path, 1);
         }
 
