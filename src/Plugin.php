@@ -146,10 +146,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->processFiles($package, $files);
         }
 
-        $aliases = array_merge(
-            $this->prepareAliases($package, 'psr-0'),
-            $this->prepareAliases($package, 'psr-4')
-        );
+        $aliases = $this->collectAliases($package);
         $this->aliases = array_merge($this->aliases, $aliases);
 
         $this->extensions[$package->getPrettyName()] = array_filter([
@@ -173,14 +170,35 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * Collects package aliases.
+     * @param CompletePackageInterface $package
+     * @return array collected aliases
+     */
+    protected function collectAliases(CompletePackageInterface $package)
+    {
+        $aliases = array_merge(
+            $this->prepareAliases($package, 'psr-0'),
+            $this->prepareAliases($package, 'psr-4')
+        );
+        if ($package instanceof RootPackageInterface) {
+            $aliases = array_merge($aliases,
+                $this->prepareAliases($package, 'psr-0', true),
+                $this->prepareAliases($package, 'psr-4', true)
+            );
+        }
+
+        return $aliases;
+    }
+
+    /**
      * Prepare aliases.
      * @param PackageInterface $package
      * @param string 'psr-0' or 'psr-4'
      * @return array
      */
-    protected function prepareAliases(PackageInterface $package, $psr)
+    protected function prepareAliases(PackageInterface $package, $psr, $dev = false)
     {
-        $autoload = $package->getAutoload();
+        $autoload = $dev ? $package->getDevAutoload() : $package->getAutoload();
         if (empty($autoload[$psr])) {
             return [];
         }
