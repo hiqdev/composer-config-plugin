@@ -81,7 +81,7 @@ class Builder
         $this->writeConfig('__addition', $this->addition);
     }
 
-    public static function rebuild($outputDir)
+    public static function rebuild($outputDir = null)
     {
         $builder = new self([], $outputDir);
         $builder->loadFiles();
@@ -123,7 +123,7 @@ class Builder
             }
             $this->buildConfig($name, $configs);
         }
-        file_put_contents($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
+        static::putFile($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
     }
 
     /**
@@ -186,10 +186,12 @@ class Builder
      */
     protected static function putFile($path, $content)
     {
-        if (file_exists($path) && $content = file_get_contents($path)) {
+        if (file_exists($path) && $content === file_get_contents($path)) {
             return;
         }
-        file_put_contents($path, $content);
+        if (file_put_contents($path, $content) === FALSE) {
+            throw new FailedWriteException("Failed write file $path");
+        }
     }
 
     /**
