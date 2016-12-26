@@ -174,7 +174,19 @@ class Builder
             mkdir(dirname($path), 0777, true);
         }
         $content = str_replace("'" . static::BASE_DIR_MARKER, '$baseDir . \'', Helper::exportVar($data));
-        file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $content;\n");
+        static::putFile($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $content;\n");
+    }
+
+    /**
+     * Writes file if content changed.
+     * @param string $path 
+     * @param string $content 
+     */
+    public static function putFile($path, $content)
+    {
+        if ($content !== file_get_contents($path)) {
+            file_put_contents($path, $content);
+        }
     }
 
     /**
