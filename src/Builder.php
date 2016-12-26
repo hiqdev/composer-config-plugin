@@ -234,7 +234,7 @@ class Builder
         }
 
         if (empty($__skippable)) {
-            $this->writeError('<error>Non existent config file</error> ' . $__path);
+            $this->writeError("Failed read file $__path");
         }
 
         return [];
@@ -248,7 +248,7 @@ class Builder
     protected function writeError($text)
     {
         if (isset($this->io)) {
-            $this->io->writeError($text);
+            $this->io->writeError("<error>$text</error>");
         } else {
             echo $text . "\n";
         }
