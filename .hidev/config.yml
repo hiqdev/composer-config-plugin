@@ -4,7 +4,6 @@ package:
     title:          Composer plugin for config assembling
     headline:       Composer Config Plugin
     keywords:       composer, config, assembling, plugin
-    namespace:      hiqdev\ComposerConfigPlugin
     description:    |
         This [Composer](https://getcomposer.org/) plugin provides assembling
         of configurations distributed with composer packages.
@@ -21,5 +20,6 @@ package:
         - then you load assembled configurations with `require`
 
 plugins:
-    hiqdev/hidev-php:       "*"
-    hiqdev/hidev-hiqdev:    "*"
+    hiqdev/composer-config-plugin:  "dev-master"
+    hiqdev/hidev-php:               "*"
+    hiqdev/hidev-hiqdev:            "*"
