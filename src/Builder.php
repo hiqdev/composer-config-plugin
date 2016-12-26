@@ -181,14 +181,15 @@ class Builder
 
     /**
      * Writes file if content changed.
-     * @param string $path 
-     * @param string $content 
+     * @param string $path
+     * @param string $content
      */
-    public static function putFile($path, $content)
+    protected static function putFile($path, $content)
     {
-        if ($content !== file_get_contents($path)) {
-            file_put_contents($path, $content);
+        if (file_exists($path) && $content = file_get_contents($path)) {
+            return;
         }
+        file_put_contents($path, $content);
     }
 
     /**
