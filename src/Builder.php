@@ -124,6 +124,7 @@ class Builder
             }
             $this->buildConfig($name, $configs);
         }
+        file_put_contents($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
     }
 
     /**
@@ -206,7 +207,7 @@ class Builder
      */
     protected static function substitutePath($path, $dir, $alias)
     {
-        return (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
+        return (substr($path, 0, strlen($dir) + 1) === $dir . DIRECTORY_SEPARATOR) ? $alias . substr($path, strlen($dir)) : $path;
     }
 
     public function readConfig($name)
