@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
@@ -14,8 +13,8 @@ namespace hiqdev\composer\config;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
 use Composer\Package\CompletePackageInterface;
+use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
@@ -220,8 +219,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (!$this->getFilesystem()->isAbsolutePath($path)) {
             $prefix = $package instanceof RootPackageInterface
                 ? $this->getBaseDir()
-                : $this->getVendorDir() . '/' . $package->getPrettyName()
-            ;
+                : $this->getVendorDir() . '/' . $package->getPrettyName();
             $path = $prefix . '/' . $path;
         }
 
@@ -257,7 +255,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $plainList = [];
 
     /**
-     * Ordered list of package. Order @see findPackages
+     * Ordered list of package. Order @see findPackages.
      */
     protected $orderedList = [];
 
@@ -277,7 +275,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->orderedList = [];
         $this->iteratePackage($root, true);
 
-        if ($this->io->isVerbose())  {
+        if ($this->io->isVerbose()) {
             $indent = ' - ';
             $packages = $indent . implode("\n$indent", $this->orderedList);
             $this->io->writeError($packages);

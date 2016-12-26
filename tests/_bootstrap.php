@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin

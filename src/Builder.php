@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
@@ -84,7 +83,7 @@ class Builder
 
     public static function rebuild($outputDir)
     {
-        $builder = new Builder([], $outputDir);
+        $builder = new self([], $outputDir);
         $builder->loadFiles();
         $builder->buildConfigs();
     }
@@ -109,7 +108,7 @@ class Builder
     }
 
     /**
-     * Builds configs by given files list
+     * Builds configs by given files list.
      * @param null|array $files files to process: config name => list of files
      */
     public function buildConfigs($files = null)
