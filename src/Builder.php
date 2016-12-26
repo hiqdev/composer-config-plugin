@@ -46,12 +46,23 @@ class Builder
      */
     protected $vars = [];
 
+    const OUTPUT_DIR   = 'config';
     const BASE_DIR_TAG = '<base-dir>';
 
-    public function __construct($outputDir, array $files = [])
+    public function __construct(array $files = [], $outputDir = null)
+    {
+        $this->setFiles($files);
+        $this->setOutputDir($outputDir);
+    }
+
+    public function setFiles(array $files)
     {
         $this->files = $files;
-        $this->outputDir = $outputDir;
+    }
+
+    public function setOutputDir($outputDir)
+    {
+        $this->outputDir = isset($outputDir) ? $outputDir : static::defaultOutputDir();
     }
 
     public function setAddition(array $addition)
@@ -69,6 +80,32 @@ class Builder
     {
         $this->writeConfig('__files',    $this->files);
         $this->writeConfig('__addition', $this->addition);
+    }
+
+    public static function rebuild($outputDir)
+    {
+        $builder = new Builder([], $outputDir);
+        $builder->loadFiles();
+        $builder->buildConfigs();
+    }
+
+    /**
+     * Returns default output dir.
+     * @return string
+     */
+    public static function defaultOutputDir()
+    {
+        return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . static::OUTPUT_DIR;
+    }
+
+    /**
+     * Returns full path to assembled config file.
+     * @param string $filename name of config
+     * @return string absolute path
+     */
+    public static function path($filename)
+    {
+        return static::defaultOutputDir() . DIRECTORY_SEPARATOR . $filename . '.php';
     }
 
     /**
@@ -117,6 +154,7 @@ class Builder
      */
     public function writeConfig($name, array $data)
     {
+        $data = $this->substitutePathes($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_TAG);
         static::writeFile($this->getOutputPath($name), $data);
     }
 
@@ -135,8 +173,45 @@ class Builder
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
-        $array = str_replace("'" . self::BASE_DIR_TAG, '$baseDir . \'', Helper::exportVar($data));
+        $array = str_replace("'" . static::BASE_DIR_TAG, '$baseDir . \'', Helper::exportVar($data));
         file_put_contents($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $array;\n");
+    }
+
+    /**
+     * Substitute all pathes in given array recursively with alias if applicable.
+     * @param array $data
+     * @param string $dir
+     * @param string $alias
+     * @return string
+     */
+    public static function substitutePathes($data, $dir, $alias)
+    {
+        foreach ($data as &$value) {
+            if (is_string($value)) {
+                $value = static::substitutePath($value, $dir, $alias);
+            } elseif (is_array($value)) {
+                $value = static::substitutePathes($value, $dir, $alias);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Substitute path with alias if applicable.
+     * @param string $path
+     * @param string $dir
+     * @param string $alias
+     * @return string
+     */
+    protected static function substitutePath($path, $dir, $alias)
+    {
+        return (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
+    }
+
+    public function readConfig($name)
+    {
+        return $this->readFile($this->getOutputPath($name));
     }
 
     /**
@@ -178,5 +253,4 @@ class Builder
             echo $text . "\n";
         }
     }
-
 }

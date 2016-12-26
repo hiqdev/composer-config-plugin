@@ -29,7 +29,6 @@ use Composer\Util\Filesystem;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const OUTPUT_DIR = 'config';
     const YII2_PACKAGE_TYPE = 'yii2-extension';
     const EXTRA_OPTION_NAME = 'config-plugin';
 
@@ -113,19 +112,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io->writeError('<info>Assembling config files</info>');
         $this->scanPackages();
 
-        $builder = new Builder(static::getOutputDir(), $this->files);
+        $builder = new Builder($this->files);
         $builder->setAddition(['aliases' => $this->aliases]);
         $builder->setIo($this->io);
         $builder->saveFiles();
         $builder->writeConfig('aliases', $this->aliases);
         $builder->writeConfig('extensions', $this->extensions);
-        $builder->buildConfigs();
-    }
-
-    public static function rebuild()
-    {
-        $builder = new Builder(static::getOutputDir());
-        $builder->loadFiles();
         $builder->buildConfigs();
     }
 
@@ -203,7 +195,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
             $name = str_replace('\\', '/', trim($name, '\\'));
             $path = $this->preparePath($package, $path);
-            $path = $this->substitutePath($path, $this->getBaseDir(), Builder::BASE_DIR_TAG);
             if ('psr-0' === $psr) {
                 $path .= '/' . $name;
             }
@@ -211,18 +202,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         return $aliases;
-    }
-
-    /**
-     * Substitute path with alias if applicable.
-     * @param string $path
-     * @param string $dir
-     * @param string $alias
-     * @return string
-     */
-    protected function substitutePath($path, $dir, $alias)
-    {
-        return (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
     }
 
     /**
@@ -247,25 +226,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         return ($skippable ? '?' : '') . $this->getFilesystem()->normalizePath($path);
-    }
-
-    /**
-     * Get output dir.
-     * @return string
-     */
-    public static function getOutputDir()
-    {
-        return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . static::OUTPUT_DIR;
-    }
-
-    /**
-     * Returns full path to assembled config file.
-     * @param string $filename name of config
-     * @return string absolute path
-     */
-    public static function path($filename)
-    {
-        return static::getOutputDir() . DIRECTORY_SEPARATOR . $filename . '.php';
     }
 
     /**
