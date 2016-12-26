@@ -173,7 +173,9 @@ class Builder
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
-        $content = str_replace("'" . static::BASE_DIR_MARKER, '$baseDir . \'', Helper::exportVar($data));
+        $content = Helper::exportVar($data);
+        $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
+        $content = str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
         static::putFile($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $content;\n");
     }
 
@@ -218,7 +220,13 @@ class Builder
      */
     protected static function substitutePath($path, $dir, $alias)
     {
-        return (substr($path, 0, strlen($dir) + 1) === $dir . DIRECTORY_SEPARATOR) ? $alias . substr($path, strlen($dir)) : $path;
+        $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
+        if ($skippable) {
+            $path = substr($path, 1);
+        }
+        $result = (substr($path, 0, strlen($dir) + 1) === $dir . DIRECTORY_SEPARATOR) ? $alias . substr($path, strlen($dir)) : $path;
+
+        return $skippable . $result;
     }
 
     public function readConfig($name)
