@@ -58,20 +58,18 @@ Run `composer dump-autoload` to reassemble configs.
 Use assembled configs like this:
 
 ```php
-use hiqdev\composer\config\Plugin;
+use hiqdev\composer\config\Builder;
 
 if (ENVIRONMENT == 'dev') {
-    Plugin::rebuild();
+    Builder::rebuild();
 }
 
-$config = require(Plugin::path('hisite'));
+$config = require(Builder::path('hisite'));
 ```
 
 ## TODO
 
-- change namespace to `hiqdev\composer\config`
-- split out Builder class
-- accept config files in different formats: PHP, JSON, YML, XML
+- accept config files in different formats: JSON, YML, XML
 
 ## License
 
