@@ -154,7 +154,7 @@ class Builder
      */
     public function writeConfig($name, array $data)
     {
-        $data = $this->substitutePathes($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_MARKER);
+        $data = $this->substitutePaths($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_MARKER);
         static::writeFile($this->getOutputPath($name), $data);
     }
 
@@ -201,13 +201,13 @@ class Builder
      * @param string $alias
      * @return string
      */
-    public static function substitutePathes($data, $dir, $alias)
+    public static function substitutePaths($data, $dir, $alias)
     {
         foreach ($data as &$value) {
             if (is_string($value)) {
                 $value = static::substitutePath($value, $dir, $alias);
             } elseif (is_array($value)) {
-                $value = static::substitutePathes($value, $dir, $alias);
+                $value = static::substitutePaths($value, $dir, $alias);
             }
         }
 
