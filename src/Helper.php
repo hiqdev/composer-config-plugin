@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2016-2017, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\composer\config;
@@ -117,8 +117,7 @@ class Helper
     public static function exportDefines(array $defines)
     {
         $res = '';
-        foreach ($defines as $key => $value)
-        {
+        foreach ($defines as $key => $value) {
             $var = static::exportVar($value);
             $res .= "defined('$key') or define('$key', $var);\n";
         }

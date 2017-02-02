@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2016-2017, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\composer\config;
@@ -203,7 +203,7 @@ class Builder
         if (file_exists($path) && $content === file_get_contents($path)) {
             return;
         }
-        if (file_put_contents($path, $content) === FALSE) {
+        if (file_put_contents($path, $content) === false) {
             throw new FailedWriteException("Failed write file $path");
         }
     }
