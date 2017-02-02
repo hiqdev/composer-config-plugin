@@ -116,9 +116,9 @@ class Builder
         if (is_null($files)) {
             $files = $this->files;
         }
-        foreach ($files as $name => $pathes) {
+        foreach ($files as $name => $paths) {
             $olddefs = get_defined_constants();
-            $configs = $this->readConfigs($pathes);
+            $configs = $this->readConfigs($paths);
             $newdefs = get_defined_constants();
             $defines = array_diff_assoc($newdefs, $olddefs);
             $this->buildConfig($name, $configs, $defines);
@@ -126,10 +126,10 @@ class Builder
         static::putFile($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
     }
 
-    protected function readConfigs(array $pathes)
+    protected function readConfigs(array $paths)
     {
         $configs = [];
-        foreach ($pathes as $path) {
+        foreach ($paths as $path) {
             $config = $this->readFile($path);
             if (!empty($config)) {
                 $configs[] = $config;
@@ -209,7 +209,7 @@ class Builder
     }
 
     /**
-     * Substitute output pathes in given data array recursively with marker.
+     * Substitute output paths in given data array recursively with marker.
      * @param array $data
      * @return array
      */
@@ -219,7 +219,7 @@ class Builder
     }
 
     /**
-     * Substitute all pathes in given array recursively with alias if applicable.
+     * Substitute all paths in given array recursively with alias if applicable.
      * @param array $data
      * @param string $dir
      * @param string $alias
