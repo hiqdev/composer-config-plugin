@@ -117,13 +117,26 @@ class Builder
             $files = $this->files;
         }
         foreach ($files as $name => $pathes) {
-            $configs = [];
-            foreach ($pathes as $path) {
-                $configs[] = $this->readFile($path);
-            }
-            $this->buildConfig($name, $configs);
+            $olddefs = get_defined_constants();
+            $configs = $this->readConfigs($pathes);
+            $newdefs = get_defined_constants();
+            $defines = array_diff_assoc($newdefs, $olddefs);
+            $this->buildConfig($name, $configs, $defines);
         }
         static::putFile($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
+    }
+
+    protected function readConfigs(array $pathes)
+    {
+        $configs = [];
+        foreach ($pathes as $path) {
+            $config = $this->readFile($path);
+            if (!empty($config)) {
+                $configs[] = $config;
+            }
+        }
+
+        return $configs;
     }
 
     /**
@@ -131,7 +144,7 @@ class Builder
      * @param mixed $name
      * @param array $configs
      */
-    public function buildConfig($name, array $configs)
+    public function buildConfig($name, array $configs, $defines = [])
     {
         if (!$this->isSpecialConfig($name)) {
             array_push($configs, $this->addition, [
@@ -139,7 +152,7 @@ class Builder
             ]);
         }
         $this->vars[$name] = call_user_func_array([Helper::className(), 'mergeConfig'], $configs);
-        $this->writeConfig($name, (array) $this->vars[$name]);
+        $this->writeConfig($name, (array) $this->vars[$name], $defines);
     }
 
     protected function isSpecialConfig($name)
@@ -152,10 +165,11 @@ class Builder
      * @param string $name
      * @param array $data
      */
-    public function writeConfig($name, array $data)
+    public function writeConfig($name, array $data, array $defines = [])
     {
-        $data = $this->substitutePaths($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_MARKER);
-        static::writeFile($this->getOutputPath($name), $data);
+        $data = $this->substituteOutputDirs($data);
+        $defines = $this->substituteOutputDirs($defines);
+        static::writeFile($this->getOutputPath($name), $data, $defines);
     }
 
     public function getOutputPath($name)
@@ -168,15 +182,15 @@ class Builder
      * @param string $path
      * @param array $data
      */
-    public static function writeFile($path, array $data)
+    public static function writeFile($path, array $data, array $defines = [])
     {
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
-        $content = Helper::exportVar($data);
+        $content = Helper::exportDefines($defines) . "\nreturn " . Helper::exportVar($data);
         $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
         $content = str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
-        static::putFile($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\nreturn $content;\n");
+        static::putFile($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\n$content;\n");
     }
 
     /**
@@ -195,11 +209,21 @@ class Builder
     }
 
     /**
+     * Substitute output pathes in given data array recursively with marker.
+     * @param array $data
+     * @return array
+     */
+    public function substituteOutputDirs($data)
+    {
+        return static::substitutePaths($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_MARKER);
+    }
+
+    /**
      * Substitute all pathes in given array recursively with alias if applicable.
      * @param array $data
      * @param string $dir
      * @param string $alias
-     * @return string
+     * @return array
      */
     public static function substitutePaths($data, $dir, $alias)
     {
@@ -252,8 +276,9 @@ class Builder
         if (file_exists($__path)) {
             /// Expose variables to be used in configs
             extract($this->vars);
+            $__res = require $__path;
 
-            return (array) require $__path;
+            return is_array($__res) ? $__res : [];
         }
 
         if (empty($__skippable)) {

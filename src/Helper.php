@@ -114,6 +114,18 @@ class Helper
         return $res;
     }
 
+    public static function exportDefines(array $defines)
+    {
+        $res = '';
+        foreach ($defines as $key => $value)
+        {
+            $var = static::exportVar($value);
+            $res .= "defined('$key') or define('$key', $var);\n";
+        }
+
+        return $res;
+    }
+
     /**
      * Collects closures from given input.
      * Substitutes closures with a tag.
