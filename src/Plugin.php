@@ -55,6 +55,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @var array config name => list of files
      */
     protected $files = [
+        'defines' => [],
         'params'  => [],
     ];
 
