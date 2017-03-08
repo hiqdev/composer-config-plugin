@@ -159,8 +159,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     protected function processFiles(CompletePackageInterface $package, array $files)
     {
-        foreach ($files as $name => $pathes) {
-            foreach ((array) $pathes as $path) {
+        foreach ($files as $name => $paths) {
+            foreach ((array) $paths as $path) {
                 if (!isset($this->files[$name])) {
                     $this->files[$name] = [];
                 }
@@ -225,7 +225,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Builds path inside of a package.
      * @param PackageInterface $package
      * @param mixed $path can be absolute or relative
-     * @return string absolute pathes will stay untouched
+     * @return string absolute paths will stay untouched
      */
     public function preparePath(PackageInterface $package, $path)
     {
