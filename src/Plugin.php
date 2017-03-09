@@ -234,6 +234,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $path = substr($path, 1);
         }
 
+        if (strncmp($path, '$', 1) === 0) {
+            $path = Builder::path(substr($path, 1));
+        }
+
         if (!$this->getFilesystem()->isAbsolutePath($path)) {
             $prefix = $package instanceof RootPackageInterface
                 ? $this->getBaseDir()
