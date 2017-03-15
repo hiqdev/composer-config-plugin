@@ -1,5 +1,4 @@
-Composer Config Plugin
-======================
+# Composer Config Plugin
 
 **Composer plugin for config assembling**
 

@@ -1,6 +1,13 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.2.0] - 2017-03-15
+
+- Added initializaion of composer autoloading for project classes become usable in configs ([@hiqsol])
+- Added work with `$config_name` paths for use of already built config ([@hiqsol])
+- Renamed pathes -> path everywhere ([@hiqsol])
+- Added collecting dev aliases for root package ([@hiqsol])
+
 ## [0.1.0] - 2016-12-26
 
 - Added proper rebuild ([@hiqsol])
@@ -46,9 +53,15 @@ hiqdev/composer-config-plugin
 
 ## [Development started] - 2016-05-18
 
+[@SilverFire]: https://github.com/SilverFire
+[d.naumenko.a@gmail.com]: https://github.com/SilverFire
+[@tafid]: https://github.com/tafid
+[andreyklochok@gmail.com]: https://github.com/tafid
+[@BladeRoot]: https://github.com/BladeRoot
+[bladeroot@gmail.com]: https://github.com/BladeRoot
 [@hiqsol]: https://github.com/hiqsol
 [sol@hiqdev.com]: https://github.com/hiqsol
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.9...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -59,3 +72,4 @@ hiqdev/composer-config-plugin
 [0.0.2]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.1...0.0.2
 [0.0.1]: https://github.com/hiqdev/composer-config-plugin/releases/tag/0.0.1
 [0.1.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.9...0.1.0
+[0.2.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...0.2.0

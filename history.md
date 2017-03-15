@@ -1,6 +1,24 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.2.0] - 2017-03-15
+
+- Added initializaion of composer autoloading for project classes become usable in configs
+    - [e1d9513] 2017-03-15 added initAutoload [@hiqsol]
+- Added work with `$config_name` paths for use of already built config
+    - [4555b54] 2017-03-09 csfixed [@hiqsol]
+    - [9bba22d] 2017-03-09 added `$config` paths to include built configs [@hiqsol]
+    - [5f3d05c] 2017-03-08 minor: grammarnazi pathes -> paths [@hiqsol]
+    - [6d3fb2b] 2017-02-02 csfixed [@hiqsol]
+    - [a8f42dd] 2017-02-02 return defines back to default list of files [@hiqsol]
+- Renamed pathes -> path everywhere
+    - [82a0652] 2017-02-02 renamed paths <- pathes [@hiqsol]
+    - [c13991e] 2017-02-02 added exporting defines [@hiqsol]
+    - [864f8b1] 2017-01-12 renamed `Builder::substitutePaths` <- substitutePathes [@hiqsol]
+    - [2d68985] 2016-12-31 doc [@hiqsol]
+- Added collecting dev aliases for root package
+    - [49f229b] 2016-12-26 + collect dev aliases for root package [@hiqsol]
+
 ## [0.1.0] - 2016-12-26
 
 - Added proper rebuild
@@ -91,6 +109,12 @@ hiqdev/composer-config-plugin
 
 ## [Development started] - 2016-05-18
 
+[@SilverFire]: https://github.com/SilverFire
+[d.naumenko.a@gmail.com]: https://github.com/SilverFire
+[@tafid]: https://github.com/tafid
+[andreyklochok@gmail.com]: https://github.com/tafid
+[@BladeRoot]: https://github.com/BladeRoot
+[bladeroot@gmail.com]: https://github.com/BladeRoot
 [@hiqsol]: https://github.com/hiqsol
 [sol@hiqdev.com]: https://github.com/hiqsol
 [e58cc7a]: https://github.com/hiqdev/composer-config-plugin/commit/e58cc7a
@@ -137,7 +161,7 @@ hiqdev/composer-config-plugin
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.9...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -149,3 +173,15 @@ hiqdev/composer-config-plugin
 [0.0.1]: https://github.com/hiqdev/composer-config-plugin/releases/tag/0.0.1
 [623d741]: https://github.com/hiqdev/composer-config-plugin/commit/623d741
 [0.1.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.9...0.1.0
+[e1d9513]: https://github.com/hiqdev/composer-config-plugin/commit/e1d9513
+[4555b54]: https://github.com/hiqdev/composer-config-plugin/commit/4555b54
+[9bba22d]: https://github.com/hiqdev/composer-config-plugin/commit/9bba22d
+[5f3d05c]: https://github.com/hiqdev/composer-config-plugin/commit/5f3d05c
+[6d3fb2b]: https://github.com/hiqdev/composer-config-plugin/commit/6d3fb2b
+[a8f42dd]: https://github.com/hiqdev/composer-config-plugin/commit/a8f42dd
+[82a0652]: https://github.com/hiqdev/composer-config-plugin/commit/82a0652
+[c13991e]: https://github.com/hiqdev/composer-config-plugin/commit/c13991e
+[864f8b1]: https://github.com/hiqdev/composer-config-plugin/commit/864f8b1
+[2d68985]: https://github.com/hiqdev/composer-config-plugin/commit/2d68985
+[49f229b]: https://github.com/hiqdev/composer-config-plugin/commit/49f229b
+[0.2.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...0.2.0
