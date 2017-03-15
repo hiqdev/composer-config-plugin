@@ -109,6 +109,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPostAutoloadDump(Event $event)
     {
         $this->io->writeError('<info>Assembling config files</info>');
+        $this->initAutoload();
         $this->scanPackages();
 
         $builder = new Builder($this->files);
@@ -118,6 +119,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $builder->writeConfig('aliases', $this->aliases);
         $builder->writeConfig('extensions', $this->extensions);
         $builder->buildConfigs();
+    }
+
+    protected function initAutoload()
+    {
+        require_once dirname(dirname(dirname(__DIR__))) . '/autoload.php';
     }
 
     protected function scanPackages()
