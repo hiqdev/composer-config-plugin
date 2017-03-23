@@ -1,6 +1,10 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.2.1] - 2017-03-23
+
+- Fixed wrong call of `Composer\Config::get()` ([@SilverFire])
+
 ## [0.2.0] - 2017-03-15
 
 - Added initializaion of composer autoloading for project classes become usable in configs ([@hiqsol])
@@ -61,7 +65,7 @@ hiqdev/composer-config-plugin
 [bladeroot@gmail.com]: https://github.com/BladeRoot
 [@hiqsol]: https://github.com/hiqsol
 [sol@hiqdev.com]: https://github.com/hiqsol
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -73,3 +77,4 @@ hiqdev/composer-config-plugin
 [0.0.1]: https://github.com/hiqdev/composer-config-plugin/releases/tag/0.0.1
 [0.1.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.9...0.1.0
 [0.2.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...0.2.0
+[0.2.1]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.0...0.2.1

@@ -1,6 +1,14 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.2.1] - 2017-03-23
+
+- Fixed wrong call of `Composer\Config::get()`
+    - [57e403a] 2017-03-23 csfixed [@SilverFire]
+    - [33192bb] 2017-03-23 Added PHPUnit 6 compatibility [@SilverFire]
+    - [d32060d] 2017-03-23 Updated travis config [@SilverFire]
+    - [e1bea13] 2017-03-23 Fixed wrong call of composer\config::get() [@SilverFire]
+
 ## [0.2.0] - 2017-03-15
 
 - Added initializaion of composer autoloading for project classes become usable in configs
@@ -161,7 +169,7 @@ hiqdev/composer-config-plugin
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -185,3 +193,8 @@ hiqdev/composer-config-plugin
 [2d68985]: https://github.com/hiqdev/composer-config-plugin/commit/2d68985
 [49f229b]: https://github.com/hiqdev/composer-config-plugin/commit/49f229b
 [0.2.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...0.2.0
+[e1bea13]: https://github.com/hiqdev/composer-config-plugin/commit/e1bea13
+[0.2.1]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.0...0.2.1
+[57e403a]: https://github.com/hiqdev/composer-config-plugin/commit/57e403a
+[33192bb]: https://github.com/hiqdev/composer-config-plugin/commit/33192bb
+[d32060d]: https://github.com/hiqdev/composer-config-plugin/commit/d32060d
