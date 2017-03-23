@@ -384,7 +384,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function getVendorDir()
     {
         if ($this->vendorDir === null) {
-            $dir = $this->composer->getConfig()->get('vendor-dir', '/');
+            $dir = $this->composer->getConfig()->get('vendor-dir');
             $this->vendorDir = $this->getFilesystem()->normalizePath($dir);
         }
 
