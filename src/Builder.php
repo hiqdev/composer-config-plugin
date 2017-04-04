@@ -280,7 +280,7 @@ class Builder
         }
 
         if (empty($skippable)) {
-            $this->writeError("Failed read file $path");
+            throw new FailedReadException("failed read file: $path");
         }
 
         return [];
@@ -293,6 +293,10 @@ class Builder
             return $this->readEnvFile($path);
         } elseif ($ext === 'php') {
             return $this->readPhpFile($path);
+        } elseif ($ext === 'json') {
+            return $this->readJsonFile($path);
+        } elseif ($ext === 'yml' || $ext === 'yaml') {
+            return $this->readYamlFile($path);
         }
 
         throw new UnsupportedFileTypeException("unsupported extension: $ext");
@@ -310,9 +314,37 @@ class Builder
 
     public function readPhpFile($__path)
     {
+        if (!is_readable($__path)) {
+            throw new FailedReadException("failed read file: $__path");
+        }
         /// Expose variables to be used in configs
         extract($this->vars);
+
         return require $__path;
+    }
+
+    public function readJsonFile($path)
+    {
+        return json_decode($this->getFileContents($path), true);
+    }
+
+    public function readYamlFile($path)
+    {
+        if (!class_exists('Symfony\Component\Yaml\Yaml')) {
+            throw new UnsupportedFileTypeException("for YAML support require `symfony/yaml` in your composer.json");
+        }
+
+        return \Symfony\Component\Yaml\Yaml::parse($this->getFileContents($path));
+    }
+
+    public function getFileContents($path)
+    {
+        $res = file_get_contents($path);
+        if ($res === FALSE) {
+            throw new FailedReadException("failed read file: $path");
+        }
+
+        return $res;
     }
 
     public function setIo(IOInterface $io)
