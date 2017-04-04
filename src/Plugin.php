@@ -55,6 +55,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @var array config name => list of files
      */
     protected $files = [
+        'dotenv'  => [],
         'defines' => [],
         'params'  => [],
     ];
@@ -151,6 +152,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (is_array($files)) {
             $this->processFiles($package, $files);
         }
+        if ($package instanceof RootPackageInterface) {
+            $this->loadDotEnv($package);
+        }
 
         $aliases = $this->collectAliases($package);
         $this->aliases = array_merge($this->aliases, $aliases);
@@ -161,6 +165,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             'reference' => $package->getSourceReference() ?: $package->getDistReference(),
             'aliases' => $aliases,
         ]);
+    }
+
+    protected function loadDotEnv(RootPackageInterface $package)
+    {
+        $path = $this->preparePath($package, '.env');
+        if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
+            array_push($this->files['dotenv'], $path);
+        }
     }
 
     protected function processFiles(CompletePackageInterface $package, array $files)

@@ -71,8 +71,8 @@ class Builder
 
     public function loadFiles()
     {
-        $this->files    = $this->readConfig('__files');
-        $this->addition = $this->readConfig('__addition');
+        $this->files    = $this->loadConfig('__files');
+        $this->addition = $this->loadConfig('__addition');
     }
 
     public function saveFiles()
@@ -118,7 +118,7 @@ class Builder
         }
         foreach ($files as $name => $paths) {
             $olddefs = get_defined_constants();
-            $configs = $this->readConfigs($paths);
+            $configs = $this->loadConfigs($paths);
             $newdefs = get_defined_constants();
             $defines = array_diff_assoc($newdefs, $olddefs);
             $this->buildConfig($name, $configs, $defines);
@@ -126,11 +126,11 @@ class Builder
         static::putFile($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
     }
 
-    protected function readConfigs(array $paths)
+    protected function loadConfigs(array $paths)
     {
         $configs = [];
         foreach ($paths as $path) {
-            $config = $this->readFile($path);
+            $config = $this->loadFile($path);
             if (!empty($config)) {
                 $configs[] = $config;
             }
@@ -157,7 +157,7 @@ class Builder
 
     protected function isSpecialConfig($name)
     {
-        return in_array($name, ['defines', 'params'], true);
+        return in_array($name, ['dotenv', 'defines', 'params'], true);
     }
 
     /**
@@ -256,36 +256,63 @@ class Builder
         return $skippable . $result;
     }
 
-    public function readConfig($name)
+    public function loadConfig($name)
     {
-        return $this->readFile($this->getOutputPath($name));
+        return $this->loadFile($this->getOutputPath($name));
     }
 
     /**
      * Reads config file.
-     * @param string $__path
+     * @param string $path
      * @return array configuration read from file
      */
-    public function readFile($__path)
+    public function loadFile($path)
     {
-        $__skippable = strncmp($__path, '?', 1) === 0 ? '?' : '';
-        if ($__skippable) {
-            $__path = substr($__path, 1);
+        $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
+        if ($skippable) {
+            $path = substr($path, 1);
         }
 
-        if (file_exists($__path)) {
-            /// Expose variables to be used in configs
-            extract($this->vars);
-            $__res = require $__path;
+        if (file_exists($path)) {
+            $res = $this->readFile($path);
 
-            return is_array($__res) ? $__res : [];
+            return is_array($res) ? $res : [];
         }
 
-        if (empty($__skippable)) {
-            $this->writeError("Failed read file $__path");
+        if (empty($skippable)) {
+            $this->writeError("Failed read file $path");
         }
 
         return [];
+    }
+
+    public function readFile($path)
+    {
+        $ext = pathinfo($path)['extension'];
+        if ($ext === 'env') {
+            return $this->readEnvFile($path);
+        } elseif ($ext === 'php') {
+            return $this->readPhpFile($path);
+        }
+
+        throw new UnsupportedFileTypeException("unsupported extension: $ext");
+    }
+
+    public function readEnvFile($path)
+    {
+        if (!class_exists('Dotenv\Dotenv')) {
+            throw new UnsupportedFileTypeException("for .env support require `vlucas/phpdotenv` in your composer.json");
+        }
+        $info = pathinfo($path);
+        $dotenv = new \Dotenv\Dotenv($info['dirname'], $info['basename']);
+        $dotenv->overload();
+    }
+
+    public function readPhpFile($__path)
+    {
+        /// Expose variables to be used in configs
+        extract($this->vars);
+        return require $__path;
     }
 
     public function setIo(IOInterface $io)
