@@ -309,7 +309,7 @@ class Builder
         }
         $info = pathinfo($path);
         $dotenv = new \Dotenv\Dotenv($info['dirname'], $info['basename']);
-        $dotenv->overload();
+        $dotenv->load();
     }
 
     public function readPhpFile($__path)
