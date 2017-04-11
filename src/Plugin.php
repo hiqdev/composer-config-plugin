@@ -150,7 +150,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         if (is_array($files)) {
-            $this->processFiles($package, $files);
+            $this->addFiles($package, $files);
         }
         if ($package instanceof RootPackageInterface) {
             $this->loadDotEnv($package);
@@ -175,14 +175,30 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function processFiles(CompletePackageInterface $package, array $files)
+    /**
+     * Adds given files to the list of files to be processed.
+     * Prepares `defines` in reversed order (outer package first) because
+     * constants cannot be redefined.
+     * @param CompletePackageInterface $package
+     * @param array $files
+     */
+    protected function addFiles(CompletePackageInterface $package, array $files)
     {
         foreach ($files as $name => $paths) {
-            foreach ((array) $paths as $path) {
+            $paths = (array) $paths;
+            if ($name === 'defines') {
+                $paths = array_reverse($paths);
+            }
+            foreach ($paths as $path) {
                 if (!isset($this->files[$name])) {
                     $this->files[$name] = [];
                 }
-                array_push($this->files[$name], $this->preparePath($package, $path));
+                $path = $this->preparePath($package, $path);
+                if ($name === 'defines') {
+                    array_unshift($this->files[$name], $path);
+                } else {
+                    array_push($this->files[$name], $path);
+                }
             }
         }
     }
