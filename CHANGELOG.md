@@ -1,6 +1,11 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.2.2] - 2017-04-12
+
+- Improved README ([@hiqsol])
+- Added support for `.env`, JSON and YAML ([@hiqsol])
+
 ## [0.2.1] - 2017-03-23
 
 - Fixed wrong call of `Composer\Config::get()` ([@SilverFire])
@@ -9,7 +14,7 @@ hiqdev/composer-config-plugin
 
 - Added initializaion of composer autoloading for project classes become usable in configs ([@hiqsol])
 - Added work with `$config_name` paths for use of already built config ([@hiqsol])
-- Renamed pathes -> path everywhere ([@hiqsol])
+- Renamed pathes -> paths everywhere ([@hiqsol])
 - Added collecting dev aliases for root package ([@hiqsol])
 
 ## [0.1.0] - 2016-12-26
@@ -78,3 +83,4 @@ hiqdev/composer-config-plugin
 [0.1.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.9...0.1.0
 [0.2.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.1.0...0.2.0
 [0.2.1]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.0...0.2.1
+[0.2.2]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...0.2.2

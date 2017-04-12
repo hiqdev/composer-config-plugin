@@ -1,6 +1,22 @@
 hiqdev/composer-config-plugin
 -----------------------------
 
+## [0.2.2] - 2017-04-12
+
+- Improved README
+    - [2920c4e] 2017-04-12 added Known issues to readme [@hiqsol]
+    - [4a317e4] 2017-04-12 greatly improved docs [@hiqsol]
+- Added support for `.env`, JSON and YAML
+    - [43c0d3c] 2017-04-12 refactored out readers and ReaderFactory [@hiqsol]
+    - [8ec1461] 2017-04-12 refactored exceptions [@hiqsol]
+    - [e89b1ab] 2017-04-12 added saving loaded constants to `defines` [@hiqsol]
+    - [94d957b] 2017-04-12 added saving loaded env vars [@hiqsol]
+    - [a379609] 2017-04-12 added Collection stub [@hiqsol]
+    - [dc0397a] 2017-04-11 changed `Plugin::addFiles`: renamed from processFiles and reversed order of `defines` [@hiqsol]
+    - [66521da] 2017-04-05 changed dotenv loading to common used behavior: shell environment will override those set in the `.env` [@hiqsol]
+    - [a490575] 2017-04-04 added support for JSON and YAML [@hiqsol]
+    - [d11c2bb] 2017-04-04 added support for `.env` [@hiqsol]
+
 ## [0.2.1] - 2017-03-23
 
 - Fixed wrong call of `Composer\Config::get()`
@@ -19,7 +35,7 @@ hiqdev/composer-config-plugin
     - [5f3d05c] 2017-03-08 minor: grammarnazi pathes -> paths [@hiqsol]
     - [6d3fb2b] 2017-02-02 csfixed [@hiqsol]
     - [a8f42dd] 2017-02-02 return defines back to default list of files [@hiqsol]
-- Renamed pathes -> path everywhere
+- Renamed pathes -> paths everywhere
     - [82a0652] 2017-02-02 renamed paths <- pathes [@hiqsol]
     - [c13991e] 2017-02-02 added exporting defines [@hiqsol]
     - [864f8b1] 2017-01-12 renamed `Builder::substitutePaths` <- substitutePathes [@hiqsol]
@@ -198,3 +214,15 @@ hiqdev/composer-config-plugin
 [57e403a]: https://github.com/hiqdev/composer-config-plugin/commit/57e403a
 [33192bb]: https://github.com/hiqdev/composer-config-plugin/commit/33192bb
 [d32060d]: https://github.com/hiqdev/composer-config-plugin/commit/d32060d
+[2920c4e]: https://github.com/hiqdev/composer-config-plugin/commit/2920c4e
+[43c0d3c]: https://github.com/hiqdev/composer-config-plugin/commit/43c0d3c
+[8ec1461]: https://github.com/hiqdev/composer-config-plugin/commit/8ec1461
+[e89b1ab]: https://github.com/hiqdev/composer-config-plugin/commit/e89b1ab
+[94d957b]: https://github.com/hiqdev/composer-config-plugin/commit/94d957b
+[a379609]: https://github.com/hiqdev/composer-config-plugin/commit/a379609
+[4a317e4]: https://github.com/hiqdev/composer-config-plugin/commit/4a317e4
+[dc0397a]: https://github.com/hiqdev/composer-config-plugin/commit/dc0397a
+[66521da]: https://github.com/hiqdev/composer-config-plugin/commit/66521da
+[a490575]: https://github.com/hiqdev/composer-config-plugin/commit/a490575
+[d11c2bb]: https://github.com/hiqdev/composer-config-plugin/commit/d11c2bb
+[0.2.2]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...0.2.2
