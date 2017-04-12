@@ -11,25 +11,46 @@
 
 This [Composer](https://getcomposer.org/) plugin provides assembling
 of configurations distributed with composer packages.
-This allows to put configuration needed to use package right into
+This allows to put configuration needed to use package right inside of
 the package thus implementing plugin system: package becomes a plugin
-holding both code and configuration.
+holding both the code and it's configuration.
 
 How it works?
 
-- scans installed packages for `config-plugin` extra option in their `composer.json`
-- requires all `defines` files to set constants
-- collects and writes `params` file (constants can be used in params)
-- collects and writes config files (constants and params can be used in configs)
-- then you load assembled configurations with `require`
+- scans installed packages for `config-plugin` extra option in their
+  `composer.json`
+- loads `dotenv` files to set `$_ENV` variables
+- requires `defines` files to set constants
+- requires `params` files
+- requires config files
+- options collected on earlier steps could and should be used in later
+  steps, e.g. `$_ENV` should be used for constants and parameters, which
+  in turn should be used for configs
+- files processing order is crucial to achieve expected behavior: options
+  in root package have priority over options from included packages, more
+  about it later in **Files processing order** section
+- collected configs are written as PHP files in
+  `vendor/hiqdev/composer-config-plugin-output`
+  directory together with information needed to rebuild configs on demand
+- then assembled configs can be loaded into application with `require`
 
 ## Installation
 
-Add to require section of your `composer.json`:
+Add to required section of your `composer.json`:
 
 ```json
-    "hiqdev/composer-config-plugin": "*"
+"hiqdev/composer-config-plugin": "*"
 ```
+
+Out of the box this plugin supports configs in PHP and JSON formats.
+
+To enable additional formats require:
+
+- [vlucas/phpdotenv] - for `.env` files
+- [symfony/yaml] - for YAML files, `.yml` and `.yaml`
+
+[vlucas/phpdotenv]: https://github.com/vlucas/phpdotenv
+[symfony/yaml]: https://github.com/symfony/yaml
 
 ## Usage
 
@@ -52,23 +73,44 @@ List your config files in `composer.json` like this:
 },
 ```
 
-Run `composer dump-autoload` to reassemble configs.
-
 Use assembled configs like this:
 
 ```php
-use hiqdev\composer\config\Builder;
-
-if (ENVIRONMENT == 'dev') {
-    Builder::rebuild();
-}
-
-$config = require(Builder::path('hisite'));
+$config = require hiqdev\composer\config\Builder::path('hisite');
 ```
 
-## TODO
+### Refreshing config
 
-- accept config files in different formats: JSON, YML, XML
+Plugin hangs on composer `POST_AUTOLOAD_DUMP` event.
+I.e. on `install`, `update` and `dump-autoload` commands.
+
+So configs are just ready to use after packages installation
+or updating. And to reassemble configs manually run:
+```sh
+composer dump-autoload
+```
+
+Also, you can force config rebuild from your application like this:
+
+```php
+// Don't do it in production, assembling takes it's time
+if (ENVIRONMENT === 'dev') {
+    hiqdev\composer\config\Builder::rebuild();
+}
+```
+
+### Files processing order
+
+Config files are processed in proper order to achieve naturally expected
+behavior:
+
+- options in outer packages override options from inner packages
+- plugin respects order your configs are listed in `composer.json`
+- different types of options are processed in this order:
+    - environment variables from `dotenv`
+    - constants from `defines`
+    - parameters from `params`
+    - configs are processed last of all
 
 ## License
 

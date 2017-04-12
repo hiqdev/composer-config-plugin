@@ -7,17 +7,28 @@ package:
     description:    |
         This [Composer](https://getcomposer.org/) plugin provides assembling
         of configurations distributed with composer packages.
-        This allows to put configuration needed to use package right into
+        This allows to put configuration needed to use package right inside of
         the package thus implementing plugin system: package becomes a plugin
-        holding both code and configuration.
+        holding both the code and it's configuration.
 
         How it works?
 
-        - scans installed packages for `config-plugin` extra option in their `composer.json`
-        - requires all `defines` files to set constants
-        - collects and writes `params` file (constants can be used in params)
-        - collects and writes config files (constants and params can be used in configs)
-        - then you load assembled configurations with `require`
+        - scans installed packages for `config-plugin` extra option in their
+          `composer.json`
+        - loads `dotenv` files to set `$_ENV` variables
+        - requires `defines` files to set constants
+        - requires `params` files
+        - requires config files
+        - options collected on earlier steps could and should be used in later
+          steps, e.g. `$_ENV` should be used for constants and parameters, which
+          in turn should be used for configs
+        - files processing order is crucial to achieve expected behavior: options
+          in root package have priority over options from included packages, more
+          about it later in **Files processing order** section
+        - collected configs are written as PHP files in
+          `vendor/hiqdev/composer-config-plugin-output`
+          directory together with information needed to rebuild configs on demand
+        - then assembled configs can be loaded into application with `require`
 
 plugins:
     hiqdev/composer-config-plugin:  "dev-master"
