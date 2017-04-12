@@ -8,13 +8,13 @@
  * @copyright Copyright (c) 2016-2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\exceptions;
 
 /**
- * Unsupported file type exception.
+ * Common ancestor for all exception thrown by this library.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class UnsupportedFileTypeException extends \Exception
+class Exception extends \Exception
 {
 }

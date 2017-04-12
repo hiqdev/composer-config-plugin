@@ -8,13 +8,13 @@
  * @copyright Copyright (c) 2016-2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\exceptions;
 
 /**
- * Failed read file exception.
+ * Failed write file exception.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class FailedReadException extends \Exception
+class FailedWriteException extends Exception
 {
 }

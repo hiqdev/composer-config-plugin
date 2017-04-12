@@ -8,13 +8,13 @@
  * @copyright Copyright (c) 2016-2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\exceptions;
 
 /**
- * Failed write file exception.
+ * Unsupported file type exception.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class FailedWriteException extends \Exception
+class UnsupportedFileTypeException extends FailedReadException
 {
 }
