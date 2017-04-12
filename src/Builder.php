@@ -271,87 +271,9 @@ class Builder
      */
     public function loadFile($path)
     {
-        $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
-        if ($skippable) {
-            $path = substr($path, 1);
-        }
+        $reader = ReaderFactory::get($path);
 
-        if (file_exists($path)) {
-            $res = $this->readFile($path);
-
-            return is_array($res) ? $res : [];
-        }
-
-        if (empty($skippable)) {
-            throw new FailedReadException("failed read file: $path");
-        }
-
-        return [];
-    }
-
-    public function readFile($path)
-    {
-        $ext = pathinfo($path)['extension'];
-        if ($ext === 'env') {
-            return $this->readEnvFile($path);
-        } elseif ($ext === 'php') {
-            return $this->readPhpFile($path);
-        } elseif ($ext === 'json') {
-            return $this->readJsonFile($path);
-        } elseif ($ext === 'yml' || $ext === 'yaml') {
-            return $this->readYamlFile($path);
-        }
-
-        throw new UnsupportedFileTypeException("unsupported extension: $ext");
-    }
-
-    public function readEnvFile($path)
-    {
-        if (!class_exists('Dotenv\Dotenv')) {
-            throw new UnsupportedFileTypeException("for .env support require `vlucas/phpdotenv` in your composer.json");
-        }
-        $info = pathinfo($path);
-        $dotenv = new \Dotenv\Dotenv($info['dirname'], $info['basename']);
-        $oldenvs = $_ENV;
-        $dotenv->load();
-        $newenvs = $_ENV;
-
-        return array_diff_assoc($newenvs, $oldenvs);
-    }
-
-    public function readPhpFile($__path)
-    {
-        if (!is_readable($__path)) {
-            throw new FailedReadException("failed read file: $__path");
-        }
-        /// Expose variables to be used in configs
-        extract($this->vars);
-
-        return require $__path;
-    }
-
-    public function readJsonFile($path)
-    {
-        return json_decode($this->getFileContents($path), true);
-    }
-
-    public function readYamlFile($path)
-    {
-        if (!class_exists('Symfony\Component\Yaml\Yaml')) {
-            throw new UnsupportedFileTypeException("for YAML support require `symfony/yaml` in your composer.json");
-        }
-
-        return \Symfony\Component\Yaml\Yaml::parse($this->getFileContents($path));
-    }
-
-    public function getFileContents($path)
-    {
-        $res = file_get_contents($path);
-        if ($res === FALSE) {
-            throw new FailedReadException("failed read file: $path");
-        }
-
-        return $res;
+        return $reader->read($path, $this);
     }
 
     public function setIo(IOInterface $io)
@@ -366,5 +288,10 @@ class Builder
         } else {
             echo $text . "\n";
         }
+    }
+
+    public function getVars()
+    {
+        return $this->vars;
     }
 }
