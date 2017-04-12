@@ -1,12 +1,8 @@
-List your config files in `composer.json` like this:
+List your config files in `composer.json` like the following:
 
 ```json
 "extra": {
     "config-plugin": {
-        "defines": [
-            "?src/config/defines-local.php",
-            "src/config/defines.php"
-        ],
         "params": [
             "src/config/params.php",
             "?src/config/params-local.php"
@@ -17,7 +13,22 @@ List your config files in `composer.json` like this:
 },
 ```
 
-Use assembled configs like this:
+Define your configs like this:
+
+```php
+<?php
+return [
+    'components' => [
+        'db' => [
+            'class' => \my\Db::class,
+            'name' => $params['db.name'],
+            'password' => $params['db.password'],
+        ],
+    ],
+];
+```
+
+To load assembled configs in your application use require:
 
 ```php
 $config = require hiqdev\composer\config\Builder::path('hisite');
@@ -30,9 +41,12 @@ I.e. on `install`, `update` and `dump-autoload` commands.
 
 So configs are just ready to use after packages installation
 or updating. And to reassemble configs manually run:
+
 ```sh
 composer dump-autoload
 ```
+
+Can be shortened to `composer du`.
 
 Also, you can force config rebuild from your application like this:
 
@@ -56,3 +70,21 @@ behavior:
     - parameters from `params`
     - configs are processed last of all
 
+# Known issues
+
+This plugin treats configs as simple PHP arrays, no specific
+structure or semantics are expected and handled.
+It is simple and straightforward, but I'm in doubt...
+
+Anonymous functions must be used in multiline form:
+
+```php
+<?php
+return [
+    'works' => function () {
+        return 'value';
+    },
+    // this will not work
+    'noway' => function () { return 'value'; },
+];
+```
