@@ -70,13 +70,13 @@ behavior:
     - parameters from `params`
     - configs are processed last of all
 
-# Known issues
+## Known issues
 
 This plugin treats configs as simple PHP arrays, no specific
 structure or semantics are expected and handled.
 It is simple and straightforward, but I'm in doubt...
 
-Anonymous functions must be used in multiline form:
+Anonymous functions must be used in multiline form only:
 
 ```php
 <?php
