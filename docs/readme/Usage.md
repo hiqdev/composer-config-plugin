@@ -37,10 +37,10 @@ $config = require hiqdev\composer\config\Builder::path('hisite');
 ### Refreshing config
 
 Plugin hangs on composer `POST_AUTOLOAD_DUMP` event.
-I.e. on `install`, `update` and `dump-autoload` commands.
-
-So configs are just ready to use after packages installation
-or updating. And to reassemble configs manually run:
+I.e. composer runs this plugin on `install`, `update` and `dump-autoload`
+commands.
+As the result configs are just ready to use after packages installation
+or updating. To reassemble configs manually run:
 
 ```sh
 composer dump-autoload
