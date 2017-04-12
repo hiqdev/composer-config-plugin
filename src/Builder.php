@@ -10,6 +10,7 @@
 
 namespace hiqdev\composer\config;
 
+use hiqdev\composer\config\exceptions\FailedWriteException;
 use Composer\IO\IOInterface;
 
 /**
