@@ -169,6 +169,9 @@ class Builder
     {
         $data = $this->substituteOutputDirs($data);
         $defines = $this->substituteOutputDirs($defines);
+        if ($name === 'defines') {
+            $data = $defines;
+        }
         static::writeFile($this->getOutputPath($name), $data, $defines);
     }
 
