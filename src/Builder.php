@@ -309,7 +309,11 @@ class Builder
         }
         $info = pathinfo($path);
         $dotenv = new \Dotenv\Dotenv($info['dirname'], $info['basename']);
+        $oldenvs = $_ENV;
         $dotenv->load();
+        $newenvs = $_ENV;
+
+        return array_diff_assoc($newenvs, $oldenvs);
     }
 
     public function readPhpFile($__path)
