@@ -13,10 +13,11 @@ List your config files in `composer.json` like the following:
 },
 ```
 
+`?` marks optional files, absence of other files will cause exception.
+
 Define your configs like this:
 
 ```php
-<?php
 return [
     'components' => [
         'db' => [
@@ -79,7 +80,6 @@ It is simple and straightforward, but I'm in doubt...
 Anonymous functions must be used in multiline form only:
 
 ```php
-<?php
 return [
     'works' => function () {
         return 'value';
