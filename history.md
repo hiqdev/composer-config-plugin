@@ -1,5 +1,10 @@
-hiqdev/composer-config-plugin
------------------------------
+# hiqdev/composer-config-plugin
+
+## [0.2.3] - 2017-04-18
+
+- Added vendor dir arg to `Builder::path` to get config path at given vendor dir
+    - [ed7f586] 2017-04-18 csfixed [@hiqsol]
+    - [06c9079] 2017-04-18 added vendor dir optional argument to `Builder::path` [@hiqsol]
 
 ## [0.2.2] - 2017-04-12
 
@@ -185,7 +190,7 @@ hiqdev/composer-config-plugin
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -226,3 +231,6 @@ hiqdev/composer-config-plugin
 [a490575]: https://github.com/hiqdev/composer-config-plugin/commit/a490575
 [d11c2bb]: https://github.com/hiqdev/composer-config-plugin/commit/d11c2bb
 [0.2.2]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...0.2.2
+[ed7f586]: https://github.com/hiqdev/composer-config-plugin/commit/ed7f586
+[06c9079]: https://github.com/hiqdev/composer-config-plugin/commit/06c9079
+[0.2.3]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...0.2.3
