@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -22,7 +22,7 @@ class YamlReader extends AbstractReader
     public function readRaw($path, Builder $builder)
     {
         if (!class_exists('Symfony\Component\Yaml\Yaml')) {
-            throw new UnsupportedFileTypeException("for YAML support require `symfony/yaml` in your composer.json");
+            throw new UnsupportedFileTypeException('for YAML support require `symfony/yaml` in your composer.json');
         }
 
         return \Symfony\Component\Yaml\Yaml::parse($this->getFileContents($path));

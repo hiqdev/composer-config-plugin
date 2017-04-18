@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -12,8 +12,8 @@ namespace hiqdev\composer\config;
 
 use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
 use hiqdev\composer\config\readers\EnvReader;
-use hiqdev\composer\config\readers\PhpReader;
 use hiqdev\composer\config\readers\JsonReader;
+use hiqdev\composer\config\readers\PhpReader;
 use hiqdev\composer\config\readers\YamlReader;
 
 /**

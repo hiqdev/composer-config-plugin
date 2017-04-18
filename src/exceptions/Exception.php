@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin

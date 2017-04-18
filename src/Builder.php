@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -10,8 +10,8 @@
 
 namespace hiqdev\composer\config;
 
-use hiqdev\composer\config\exceptions\FailedWriteException;
 use Composer\IO\IOInterface;
+use hiqdev\composer\config\exceptions\FailedWriteException;
 
 /**
  * Builder assembles config files.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -9,9 +9,6 @@
  */
 
 namespace hiqdev\composer\config\readers;
-
-use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\exceptions\FailedReadException;
 
 /**
  * JsonReader - reads PHP files.

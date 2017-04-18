@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -22,7 +22,7 @@ class EnvReader extends AbstractReader
     public function readRaw($path, Builder $builder)
     {
         if (!class_exists('Dotenv\Dotenv')) {
-            throw new UnsupportedFileTypeException("for .env support require `vlucas/phpdotenv` in your composer.json");
+            throw new UnsupportedFileTypeException('for .env support require `vlucas/phpdotenv` in your composer.json');
         }
         $info = pathinfo($path);
         $dotenv = new \Dotenv\Dotenv($info['dirname'], $info['basename']);

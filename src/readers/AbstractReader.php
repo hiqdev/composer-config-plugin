@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -43,7 +43,7 @@ abstract class AbstractReader
     public function getFileContents($path)
     {
         $res = file_get_contents($path);
-        if ($res === FALSE) {
+        if ($res === false) {
             throw new FailedReadException("failed read file: $path");
         }
 
