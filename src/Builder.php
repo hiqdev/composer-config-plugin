@@ -62,7 +62,7 @@ class Builder
 
     public function setOutputDir($outputDir)
     {
-        $this->outputDir = isset($outputDir) ? $outputDir : static::defaultOutputDir();
+        $this->outputDir = isset($outputDir) ? $outputDir : static::findOutputDir();
     }
 
     public function setAddition(array $addition)
@@ -91,21 +91,29 @@ class Builder
 
     /**
      * Returns default output dir.
+     * @param string $vendor path to vendor dir
      * @return string
      */
-    public static function defaultOutputDir()
+    public static function findOutputDir($vendor = null)
     {
-        return dirname(__DIR__) . static::OUTPUT_DIR_SUFFIX;
+        if ($vendor) {
+            $dir = $vendor . '/hiqdev/' . basename(dirname(__DIR__));
+        } else {
+            $dir = dirname(__DIR__);
+        }
+
+        return $dir . static::OUTPUT_DIR_SUFFIX;
     }
 
     /**
      * Returns full path to assembled config file.
      * @param string $filename name of config
+     * @param string $vendor path to vendor dir
      * @return string absolute path
      */
-    public static function path($filename)
+    public static function path($filename, $vendor = null)
     {
-        return static::defaultOutputDir() . DIRECTORY_SEPARATOR . $filename . '.php';
+        return static::findOutputDir($vendor) . DIRECTORY_SEPARATOR . $filename . '.php';
     }
 
     /**
