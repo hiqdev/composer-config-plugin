@@ -76,6 +76,9 @@ behavior:
 This plugin treats configs as simple PHP arrays, no specific
 structure or semantics are expected and handled.
 It is simple and straightforward, but I'm in doubt...
+What about errors and typos?
+I think about adding config validation rules provided together with
+plugins. Will it solve all the problems?
 
 Anonymous functions must be used in multiline form only:
 
