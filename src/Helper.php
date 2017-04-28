@@ -90,7 +90,7 @@ class Helper
             $res .= $lines[$i];
         }
 
-        return rtrim($res, "\n ,");
+        return rtrim($res, "\r\n ,");
     }
 
     /**
