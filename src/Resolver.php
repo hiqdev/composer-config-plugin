@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling
+ * Composer plugin for config assembling.
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -34,7 +34,6 @@ class Resolver
         foreach (array_keys($this->files) as $name) {
             $this->followDeps($name);
         }
-
     }
 
     public function get()
@@ -96,5 +95,4 @@ class Resolver
     {
         return strncmp($path, '$', 1) === 0 ? substr($path, 1) : false;
     }
-
 }

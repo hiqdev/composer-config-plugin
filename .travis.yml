@@ -4,7 +4,6 @@ php:
     - 7
     - 7.1
     - hhvm
-sudo: false
 dist: trusty
 matrix:
     allow_failures:
@@ -18,10 +17,11 @@ before_install:
     - 'composer --version'
     - 'wget http://hiqdev.com/hidev/hidev.phar -O hidev.phar && chmod a+x hidev.phar'
     - './hidev.phar --version'
-    - './hidev.phar travis/before_install'
+    - './hidev.phar travis/before-install'
+sudo: false
 install:
     - './hidev.phar travis/install'
 script:
     - './hidev.phar travis/script'
 after_script:
-    - './hidev.phar travis/after_script'
+    - './hidev.phar travis/after-script'

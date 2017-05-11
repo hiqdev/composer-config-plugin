@@ -9,7 +9,7 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hiqdev/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/hiqdev/composer-config-plugin/)
 [![Dependency Status](https://www.versioneye.com/php/hiqdev:composer-config-plugin/dev-master/badge.svg)](https://www.versioneye.com/php/hiqdev:composer-config-plugin/dev-master)
 
-This [Composer](https://getcomposer.org/) plugin provides assembling
+This [Composer] plugin provides assembling
 of configurations distributed with composer packages.
 This allows to put configuration needed to use package right inside of
 the package thus implementing plugin system: package becomes a plugin
@@ -34,9 +34,11 @@ How it works?
   directory together with information needed to rebuild configs on demand
 - then assembled configs can be loaded into application with `require`
 
+[composer]: https://getcomposer.org/
+
 ## Installation
 
-Add to required section of your `composer.json`:
+Add to require section of your `composer.json`:
 
 ```json
 "hiqdev/composer-config-plugin": "*"
