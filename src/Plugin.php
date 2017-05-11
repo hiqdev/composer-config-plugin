@@ -263,13 +263,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function preparePath(PackageInterface $package, $path)
     {
+        if (strncmp($path, '$', 1) === 0) {
+            return $path;
+        }
+
         $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
         if ($skippable) {
             $path = substr($path, 1);
-        }
-
-        if (strncmp($path, '$', 1) === 0) {
-            $path = Builder::path(substr($path, 1));
         }
 
         if (!$this->getFilesystem()->isAbsolutePath($path)) {

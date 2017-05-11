@@ -125,6 +125,8 @@ class Builder
         if (is_null($files)) {
             $files = $this->files;
         }
+        $resolver = new Resolver($files);
+        $files = $resolver->get();
         foreach ($files as $name => $paths) {
             $olddefs = get_defined_constants();
             $configs = $this->loadConfigs($paths);
