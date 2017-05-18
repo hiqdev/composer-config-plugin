@@ -1,5 +1,10 @@
 # hiqdev/composer-config-plugin
 
+## [0.2.4] - 2017-05-18
+
+- Added proper resolving of config dependencies with `Resolver` class ([@hiqsol])
+- Fixed exportVar closures in Windows ([@SilverFire], [@edgardmessias])
+
 ## [0.2.3] - 2017-04-18
 
 - Added vendor dir arg to `Builder::path` to get config path at given vendor dir ([@hiqsol])
@@ -73,7 +78,9 @@
 [bladeroot@gmail.com]: https://github.com/BladeRoot
 [@hiqsol]: https://github.com/hiqsol
 [sol@hiqdev.com]: https://github.com/hiqsol
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...HEAD
+[@edgardmessias]: https://github.com/edgardmessias
+[edgardmessias@gmail.com]: https://github.com/edgardmessias
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -88,3 +95,4 @@
 [0.2.1]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.0...0.2.1
 [0.2.2]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.1...0.2.2
 [0.2.3]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...0.2.3
+[0.2.4]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...0.2.4

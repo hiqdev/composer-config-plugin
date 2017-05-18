@@ -1,5 +1,16 @@
 # hiqdev/composer-config-plugin
 
+## [0.2.4] - 2017-05-18
+
+- Added proper resolving of config dependencies with `Resolver` class
+    - [4889e11] 2017-05-18 removed phpunit 6 compatibility hack [@hiqsol]
+    - [b38c0f5] 2017-05-11 csfixed [@hiqsol]
+    - [bea8462] 2017-05-11 renamed `hidev.yml` <- .hidev/config.yml [@hiqsol]
+    - [a0f372d] 2017-05-11 added proper resolving of config dependencies with `Resolver` class [@hiqsol]
+- Fixed exportVar closures in Windows
+    - [b411092] 2017-04-28 Merge pull request #1 from edgardmessias/patch-1 [@SilverFire]
+    - [42cf9ad] 2017-04-28 Fixed exportVar closures in Windows Environment [@edgardmessias]
+
 ## [0.2.3] - 2017-04-18
 
 - Added vendor dir arg to `Builder::path` to get config path at given vendor dir
@@ -146,6 +157,8 @@
 [bladeroot@gmail.com]: https://github.com/BladeRoot
 [@hiqsol]: https://github.com/hiqsol
 [sol@hiqdev.com]: https://github.com/hiqsol
+[@edgardmessias]: https://github.com/edgardmessias
+[edgardmessias@gmail.com]: https://github.com/edgardmessias
 [e58cc7a]: https://github.com/hiqdev/composer-config-plugin/commit/e58cc7a
 [5b84dc8]: https://github.com/hiqdev/composer-config-plugin/commit/5b84dc8
 [827d606]: https://github.com/hiqdev/composer-config-plugin/commit/827d606
@@ -190,7 +203,7 @@
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -234,3 +247,10 @@
 [ed7f586]: https://github.com/hiqdev/composer-config-plugin/commit/ed7f586
 [06c9079]: https://github.com/hiqdev/composer-config-plugin/commit/06c9079
 [0.2.3]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...0.2.3
+[4889e11]: https://github.com/hiqdev/composer-config-plugin/commit/4889e11
+[b38c0f5]: https://github.com/hiqdev/composer-config-plugin/commit/b38c0f5
+[bea8462]: https://github.com/hiqdev/composer-config-plugin/commit/bea8462
+[a0f372d]: https://github.com/hiqdev/composer-config-plugin/commit/a0f372d
+[b411092]: https://github.com/hiqdev/composer-config-plugin/commit/b411092
+[42cf9ad]: https://github.com/hiqdev/composer-config-plugin/commit/42cf9ad
+[0.2.4]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...0.2.4
