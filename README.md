@@ -138,7 +138,23 @@ behavior:
     - parameters from `params`
     - configs are processed last of all
 
+### Debugging
 
+There are several ways to debug config building internals.
+
+- plugin can show detected package dependencies hierarchy - run:
+
+```sh
+composer dump-autoload --verbose
+```
+
+Can be shortened to `composer du -v`.
+
+- see the list of configs and files that plugin has detected and uses
+to build configs: `vendor/hiqdev/composer-config-plugin/output/__files.php`.
+
+- see the assembled configs in
+`vendor/hiqdev/composer-config-plugin-output` directory.
 
 ## Known issues
 
