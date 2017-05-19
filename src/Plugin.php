@@ -408,30 +408,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
-        $this->initStyles();
         foreach (array_reverse($this->orderedList) as $name => $depth) {
             $deps = $this->originalFiles[$name];
-            $color = $this->colors[$depth];
+            $color = $this->colors[$depth % count($this->colors)];
             $indent = str_repeat('   ', $depth - 1);
             $package = $this->plainList[$name];
-            $showdeps = $deps ? '[' . implode(',', array_keys($deps)) . ']' : '';
-            $this->io->write(sprintf('%s - <%s>%s</%s> %s %s', $indent, $color, $name, $color, $package->getFullPrettyVersion(), $showdeps));
+            $showdeps = $deps ? '<comment>[' . implode(',', array_keys($deps)) . ']</>' : '';
+            $this->io->write(sprintf('%s - <fg=%s;options=bold>%s</> %s %s', $indent, $color, $name, $package->getFullPrettyVersion(), $showdeps));
         }
     }
 
     protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
-
-    protected function initStyles()
-    {
-        $ref = new \ReflectionProperty(get_class($this->io), 'output');
-        $ref->setAccessible(true);
-        $output = $ref->getValue($this->io);
-
-        foreach ($this->colors as $color) {
-            $style = new OutputFormatterStyle($color);
-            $output->getFormatter()->setStyle($color, $style);
-        }
-    }
 
     /**
      * Get absolute path to package base dir.
