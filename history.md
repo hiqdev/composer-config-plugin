@@ -1,5 +1,14 @@
 # hiqdev/composer-config-plugin
 
+## [0.2.5] - 2017-05-19
+
+- Added showing package dependencies hierarchy tree with `composer du -v`
+    - [a08ff85] 2017-05-19 csfixed [@hiqsol]
+    - [f6b00f4] 2017-05-19 docs [@hiqsol]
+    - [37dcf77] 2017-05-19 improved tree colors [@hiqsol]
+    - [3ddd313] 2017-05-19 added showing packages hierarchy tree with `showDepsTree()` [@hiqsol]
+    - [aaa59c6] 2017-05-19 docs [@hiqsol]
+
 ## [0.2.4] - 2017-05-18
 
 - Added proper resolving of config dependencies with `Resolver` class
@@ -203,7 +212,7 @@
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -254,3 +263,9 @@
 [b411092]: https://github.com/hiqdev/composer-config-plugin/commit/b411092
 [42cf9ad]: https://github.com/hiqdev/composer-config-plugin/commit/42cf9ad
 [0.2.4]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...0.2.4
+[a08ff85]: https://github.com/hiqdev/composer-config-plugin/commit/a08ff85
+[f6b00f4]: https://github.com/hiqdev/composer-config-plugin/commit/f6b00f4
+[37dcf77]: https://github.com/hiqdev/composer-config-plugin/commit/37dcf77
+[3ddd313]: https://github.com/hiqdev/composer-config-plugin/commit/3ddd313
+[aaa59c6]: https://github.com/hiqdev/composer-config-plugin/commit/aaa59c6
+[0.2.5]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...0.2.5
