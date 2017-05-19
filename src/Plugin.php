@@ -20,7 +20,6 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Plugin class.
@@ -367,7 +366,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         /// package depth in dependency hierarchy
         static $depth = 0;
-        $depth++;
+        ++$depth;
 
         $this->iterateDependencies($package);
         if ($includingDev) {
@@ -377,7 +376,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->orderedList[$name] = $depth;
         }
 
-        $depth--;
+        --$depth;
     }
 
     /**
