@@ -28,10 +28,10 @@ How it works?
   in turn should be used for configs
 - files processing order is crucial to achieve expected behavior: options
   in root package have priority over options from included packages, more
-  about it later in **Files processing order** section
+  about it see below in **Files processing order** section
 - collected configs are written as PHP files in
   `vendor/hiqdev/composer-config-plugin-output`
-  directory together with information needed to rebuild configs on demand
+  directory along with information needed to rebuild configs on demand
 - then assembled configs can be loaded into application with `require`
 
 [composer]: https://getcomposer.org/
@@ -65,13 +65,19 @@ List your config files in `composer.json` like the following:
             "src/config/params.php",
             "?src/config/params-local.php"
         ],
-        "hisite": "src/config/hisite.php",
+        "common": "src/config/common.php",
+        "web": [
+            "$common",
+            "src/config/web.php"
+        ],
         "other": "src/config/other.php"
     }
 },
 ```
 
 `?` marks optional files, absence of other files will cause exception.
+
+`$common` is inclusion - `common` config will be merged into `web`.
 
 Define your configs like this:
 
@@ -90,7 +96,7 @@ return [
 To load assembled configs in your application use require:
 
 ```php
-$config = require hiqdev\composer\config\Builder::path('hisite');
+$config = require hiqdev\composer\config\Builder::path('web');
 ```
 
 ### Refreshing config
@@ -98,8 +104,11 @@ $config = require hiqdev\composer\config\Builder::path('hisite');
 Plugin hangs on composer `POST_AUTOLOAD_DUMP` event.
 I.e. composer runs this plugin on `install`, `update` and `dump-autoload`
 commands.
-As the result configs are just ready to use after packages installation
-or updating. To reassemble configs manually run:
+As the result configs are just ready to be used after packages installation
+or updating.
+
+After you make changes to any of configs you may want to reassemble configs
+manually - run:
 
 ```sh
 composer dump-autoload
@@ -128,6 +137,8 @@ behavior:
     - constants from `defines`
     - parameters from `params`
     - configs are processed last of all
+
+
 
 ## Known issues
 

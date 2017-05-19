@@ -7,13 +7,19 @@ List your config files in `composer.json` like the following:
             "src/config/params.php",
             "?src/config/params-local.php"
         ],
-        "hisite": "src/config/hisite.php",
+        "common": "src/config/common.php",
+        "web": [
+            "$common",
+            "src/config/web.php"
+        ],
         "other": "src/config/other.php"
     }
 },
 ```
 
 `?` marks optional files, absence of other files will cause exception.
+
+`$common` is inclusion - `common` config will be merged into `web`.
 
 Define your configs like this:
 
@@ -32,7 +38,7 @@ return [
 To load assembled configs in your application use require:
 
 ```php
-$config = require hiqdev\composer\config\Builder::path('hisite');
+$config = require hiqdev\composer\config\Builder::path('web');
 ```
 
 ### Refreshing config
@@ -40,8 +46,11 @@ $config = require hiqdev\composer\config\Builder::path('hisite');
 Plugin hangs on composer `POST_AUTOLOAD_DUMP` event.
 I.e. composer runs this plugin on `install`, `update` and `dump-autoload`
 commands.
-As the result configs are just ready to use after packages installation
-or updating. To reassemble configs manually run:
+As the result configs are just ready to be used after packages installation
+or updating.
+
+After you make changes to any of configs you may want to reassemble configs
+manually - run:
 
 ```sh
 composer dump-autoload
@@ -70,6 +79,8 @@ behavior:
     - constants from `defines`
     - parameters from `params`
     - configs are processed last of all
+
+
 
 ## Known issues
 

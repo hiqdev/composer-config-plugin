@@ -24,10 +24,10 @@ package:
           in turn should be used for configs
         - files processing order is crucial to achieve expected behavior: options
           in root package have priority over options from included packages, more
-          about it later in **Files processing order** section
+          about it see below in **Files processing order** section
         - collected configs are written as PHP files in
           `vendor/hiqdev/composer-config-plugin-output`
-          directory together with information needed to rebuild configs on demand
+          directory along with information needed to rebuild configs on demand
         - then assembled configs can be loaded into application with `require`
 
         [composer]: https://getcomposer.org/
