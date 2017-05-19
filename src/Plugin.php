@@ -20,6 +20,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Plugin class.
@@ -59,6 +60,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         'defines' => [],
         'params'  => [],
     ];
+
+    /**
+     * @var array package name => configs as listed in `composer.json`
+     */
+    protected $originalFiles = [];
 
     protected $aliases = [];
 
@@ -112,6 +118,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io->writeError('<info>Assembling config files</info>');
         $this->initAutoload();
         $this->scanPackages();
+        $this->showDepsTree();
 
         $builder = new Builder($this->files);
         $builder->setAddition(['aliases' => $this->aliases]);
@@ -144,6 +151,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $extra = $package->getExtra();
         $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
+        $this->originalFiles[$package->getPrettyName()] = $files;
 
         if ($package->getType() !== self::YII2_PACKAGE_TYPE && is_null($files)) {
             return;
@@ -311,7 +319,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $plainList = [];
 
     /**
-     * Ordered list of package. Order @see findPackages.
+     * Ordered list of package in form: package => depth
+     * For order description @see findPackages.
      */
     protected $orderedList = [];
 
@@ -331,13 +340,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->orderedList = [];
         $this->iteratePackage($root, true);
 
-        if ($this->io->isVerbose()) {
-            $indent = ' - ';
-            $packages = $indent . implode("\n$indent", $this->orderedList);
-            $this->io->writeError($packages);
-        }
         $res = [];
-        foreach ($this->orderedList as $name) {
+        foreach (array_keys($this->orderedList) as $name) {
             $res[] = $this->plainList[$name];
         }
 
@@ -349,7 +353,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param PackageInterface $package to iterate
      * @param bool $includingDev process development dependencies, defaults to not process
      */
-    public function iteratePackage(PackageInterface $package, $includingDev = false)
+    protected function iteratePackage(PackageInterface $package, $includingDev = false)
     {
         $name = $package->getPrettyName();
 
@@ -361,13 +365,19 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $processed[$name] = 1;
         }
 
+        /// package depth in dependency hierarchy
+        static $depth = 0;
+        $depth++;
+
         $this->iterateDependencies($package);
         if ($includingDev) {
             $this->iterateDependencies($package, true);
         }
         if (!isset($this->orderedList[$name])) {
-            $this->orderedList[$name] = $name;
+            $this->orderedList[$name] = $depth;
         }
+
+        $depth--;
     }
 
     /**
@@ -375,7 +385,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param PackageInterface $package
      * @param bool $dev which dependencies to iterate: true - dev, default - general
      */
-    public function iterateDependencies(PackageInterface $package, $dev = false)
+    protected function iterateDependencies(PackageInterface $package, $dev = false)
     {
         $path = $this->preparePath($package, 'composer.json');
         if (file_exists($path)) {
@@ -386,9 +396,40 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $deps = $dev ? $package->getDevRequires() : $package->getRequires();
         }
         foreach (array_keys($deps) as $target) {
-            if (isset($this->plainList[$target]) && !isset($this->orderedList[$target])) {
+            if (isset($this->plainList[$target]) && empty($this->orderedList[$target])) {
                 $this->iteratePackage($this->plainList[$target]);
             }
+        }
+    }
+
+    protected function showDepsTree()
+    {
+        if (!$this->io->isVerbose()) {
+            return;
+        }
+
+        $this->initStyles();
+        foreach (array_reverse($this->orderedList) as $name => $depth) {
+            $deps = $this->originalFiles[$name];
+            $color = $this->colors[$depth];
+            $indent = str_repeat('   ', $depth - 1);
+            $package = $this->plainList[$name];
+            $showdeps = $deps ? '[' . implode(',', array_keys($deps)) . ']' : '';
+            $this->io->write(sprintf('%s - <%s>%s</%s> %s %s', $indent, $color, $name, $color, $package->getFullPrettyVersion(), $showdeps));
+        }
+    }
+
+    protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
+
+    protected function initStyles()
+    {
+        $ref = new \ReflectionProperty(get_class($this->io), 'output');
+        $ref->setAccessible(true);
+        $output = $ref->getValue($this->io);
+
+        foreach ($this->colors as $color) {
+            $style = new OutputFormatterStyle($color);
+            $output->getFormatter()->setStyle($color, $style);
         }
     }
 
