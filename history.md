@@ -1,5 +1,11 @@
 # hiqdev/composer-config-plugin
 
+## [Under development]
+
+    - [67bf230] 2017-09-27 csfixed [@hiqsol]
+    - [bea1b98] 2017-09-27 switched to phpunit 6 [@hiqsol]
+    - [078c488] 2017-09-27 added links to app-organization article [@hiqsol]
+
 ## [0.2.5] - 2017-05-19
 
 - Added showing package dependencies hierarchy tree with `composer du -v`
@@ -212,7 +218,7 @@
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -269,3 +275,6 @@
 [3ddd313]: https://github.com/hiqdev/composer-config-plugin/commit/3ddd313
 [aaa59c6]: https://github.com/hiqdev/composer-config-plugin/commit/aaa59c6
 [0.2.5]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...0.2.5
+[67bf230]: https://github.com/hiqdev/composer-config-plugin/commit/67bf230
+[bea1b98]: https://github.com/hiqdev/composer-config-plugin/commit/bea1b98
+[078c488]: https://github.com/hiqdev/composer-config-plugin/commit/078c488

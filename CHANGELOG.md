@@ -1,5 +1,7 @@
 # hiqdev/composer-config-plugin
 
+## [Under development]
+
 ## [0.2.5] - 2017-05-19
 
 - Added showing package dependencies hierarchy tree with `composer du -v` ([@hiqsol])
@@ -84,7 +86,7 @@
 [sol@hiqdev.com]: https://github.com/hiqsol
 [@edgardmessias]: https://github.com/edgardmessias
 [edgardmessias@gmail.com]: https://github.com/edgardmessias
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
