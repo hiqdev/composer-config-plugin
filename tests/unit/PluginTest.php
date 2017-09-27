@@ -17,7 +17,7 @@ use hiqdev\composer\config\Plugin;
 /**
  * Class PluginTest.
  */
-class PluginTest extends \PHPUnit_Framework_TestCase
+class PluginTest extends \PHPUnit\Framework\TestCase
 {
     private $object;
     private $io;
