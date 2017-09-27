@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -93,6 +93,6 @@ class Resolver
 
     protected function isDep($path)
     {
-        return strncmp($path, '$', 1) === 0 ? substr($path, 1) : false;
+        return 0 === strncmp($path, '$', 1) ? substr($path, 1) : false;
     }
 }

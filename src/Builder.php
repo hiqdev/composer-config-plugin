@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -180,7 +180,7 @@ class Builder
     {
         $data = $this->substituteOutputDirs($data);
         $defines = $this->substituteOutputDirs($defines);
-        if ($name === 'defines') {
+        if ('defines' === $name) {
             $data = $defines;
         }
         static::writeFile($this->getOutputPath($name), $data, $defines);
@@ -217,7 +217,7 @@ class Builder
         if (file_exists($path) && $content === file_get_contents($path)) {
             return;
         }
-        if (file_put_contents($path, $content) === false) {
+        if (false === file_put_contents($path, $content)) {
             throw new FailedWriteException("Failed write file $path");
         }
     }
@@ -261,7 +261,7 @@ class Builder
      */
     protected static function substitutePath($path, $dir, $alias)
     {
-        $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
+        $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
         if ($skippable) {
             $path = substr($path, 1);
         }

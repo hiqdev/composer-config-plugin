@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer plugin for config assembling.
+ * Composer plugin for config assembling
  *
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
@@ -152,7 +152,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
         $this->originalFiles[$package->getPrettyName()] = $files;
 
-        if ($package->getType() !== self::YII2_PACKAGE_TYPE && is_null($files)) {
+        if (self::YII2_PACKAGE_TYPE !== $package->getType() && is_null($files)) {
             return;
         }
 
@@ -193,7 +193,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         foreach ($files as $name => $paths) {
             $paths = (array) $paths;
-            if ($name === 'defines') {
+            if ('defines' === $name) {
                 $paths = array_reverse($paths);
             }
             foreach ($paths as $path) {
@@ -201,7 +201,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                     $this->files[$name] = [];
                 }
                 $path = $this->preparePath($package, $path);
-                if ($name === 'defines') {
+                if ('defines' === $name) {
                     array_unshift($this->files[$name], $path);
                 } else {
                     array_push($this->files[$name], $path);
@@ -270,11 +270,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function preparePath(PackageInterface $package, $path)
     {
-        if (strncmp($path, '$', 1) === 0) {
+        if (0 === strncmp($path, '$', 1)) {
             return $path;
         }
 
-        $skippable = strncmp($path, '?', 1) === 0 ? '?' : '';
+        $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
         if ($skippable) {
             $path = substr($path, 1);
         }
@@ -304,7 +304,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function getPackages()
     {
-        if ($this->packages === null) {
+        if (null === $this->packages) {
             $this->packages = $this->findPackages();
         }
 
@@ -425,7 +425,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function getBaseDir()
     {
-        if ($this->baseDir === null) {
+        if (null === $this->baseDir) {
             $this->baseDir = dirname($this->getVendorDir());
         }
 
@@ -438,7 +438,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function getVendorDir()
     {
-        if ($this->vendorDir === null) {
+        if (null === $this->vendorDir) {
             $dir = $this->composer->getConfig()->get('vendor-dir');
             $this->vendorDir = $this->getFilesystem()->normalizePath($dir);
         }
@@ -452,7 +452,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function getFilesystem()
     {
-        if ($this->filesystem === null) {
+        if (null === $this->filesystem) {
             $this->filesystem = new Filesystem();
         }
 
