@@ -130,7 +130,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     protected function initAutoload()
     {
-        require_once dirname(dirname(dirname(__DIR__))) . '/autoload.php';
+        $dir = dirname(dirname(dirname(__DIR__)));
+        $yii = "$dir/yiisoft/yii2/Yii.php";
+        require_once "$dir/autoload.php";
+        if (file_exists($yii)) {
+            require_once $yii;
+        }
     }
 
     protected function scanPackages()
