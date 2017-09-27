@@ -34,7 +34,12 @@ How it works?
   directory along with information needed to rebuild configs on demand
 - then assembled configs can be loaded into application with `require`
 
+Read more about the general idea behind this plugin in [english] or
+[russian].
+
 [composer]: https://getcomposer.org/
+[english]:  https://hiqdev.com/pages/articles/app-organization
+[russian]:  https://habrahabr.ru/post/329286/
 
 ## Installation
 
