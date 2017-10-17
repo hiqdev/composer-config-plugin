@@ -163,7 +163,23 @@ class Builder
             ]);
         }
         $this->vars[$name] = call_user_func_array([Helper::className(), 'mergeConfig'], $configs);
+        if ($name === 'params') {
+            $this->vars[$name] = $this->pushEnvVars($this->vars[$name]);
+        }
         $this->writeConfig($name, (array) $this->vars[$name], $defines);
+    }
+
+    protected function pushEnvVars($vars)
+    {
+        $env = $this->vars['dotenv'];
+        foreach (array_keys($vars) as $key) {
+            $envKey = strtoupper(strtr($key, '.', '_'));
+            if (isset($env[$envKey])) {
+                $vars[$key] = $env[$envKey];
+            }
+        }
+
+        return $vars;
     }
 
     protected function isSpecialConfig($name)
