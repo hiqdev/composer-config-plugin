@@ -172,10 +172,12 @@ class Builder
     protected function pushEnvVars($vars)
     {
         $env = $this->vars['dotenv'];
-        foreach (array_keys($vars) as $key) {
-            $envKey = strtoupper(strtr($key, '.', '_'));
-            if (isset($env[$envKey])) {
-                $vars[$key] = $env[$envKey];
+        if (!empty($vars)) {
+            foreach (array_keys($vars) as $key) {
+                $envKey = strtoupper(strtr($key, '.', '_'));
+                if (isset($env[$envKey])) {
+                    $vars[$key] = $env[$envKey];
+                }
             }
         }
 
