@@ -247,7 +247,14 @@ class Builder
      */
     public function substituteOutputDirs($data)
     {
-        return static::substitutePaths($data, dirname(dirname(dirname($this->outputDir))), static::BASE_DIR_MARKER);
+        $dir = static::normalizePath(dirname(dirname(dirname($this->outputDir))));
+
+        return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
+    }
+
+    public static function normalizePath($path, $ds = DIRECTORY_SEPARATOR)
+    {
+        return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
     }
 
     /**
