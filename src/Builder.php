@@ -46,6 +46,7 @@ class Builder
      */
     protected $vars = [];
 
+    const UNIX_DS = '/';
     const OUTPUT_DIR_SUFFIX = '-output';
     const BASE_DIR_MARKER = '<<<base-dir>>>';
 
@@ -247,14 +248,21 @@ class Builder
      */
     public function substituteOutputDirs($data)
     {
-        $dir = static::normalizeDir(dirname(dirname(dirname($this->outputDir))));
+        $dir = static::normalizePath(dirname(dirname(dirname($this->outputDir))));
 
         return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
     }
 
-    public static function normalizeDir($path, $ds = '/')
+    /**
+     * Normalizes given path with given directory separator.
+     * Default forced to Unix directory separator for substitutePaths to work properly in Windows.
+     * @param string $path path to be normalized
+     * @param string $ds directory separator.
+     * @return string
+     */
+    public static function normalizePath($path, $ds = self::UNIX_DS)
     {
-        return rtrim(strtr($path, '\/', $ds), $ds);
+        return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
     }
 
     /**
@@ -286,11 +294,12 @@ class Builder
      */
     protected static function substitutePath($path, $dir, $alias)
     {
+        $dir .= self::UNIX_DS;
         $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
         if ($skippable) {
             $path = substr($path, 1);
         }
-        $result = (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
+        $result = (substr($path, 0, strlen($dir)) === $dir) ? $alias . substr($path, strlen($dir) - 1) : $path;
 
         return $skippable . $result;
     }
