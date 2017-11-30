@@ -254,7 +254,7 @@ class Builder
 
     public static function normalizePath($path, $ds = DIRECTORY_SEPARATOR)
     {
-        return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
+        return rtrim(strtr($path, '\/', '/'), $ds);
     }
 
     /**
@@ -290,7 +290,8 @@ class Builder
         if ($skippable) {
             $path = substr($path, 1);
         }
-        $result = (substr($path, 0, strlen($dir) + 1) === $dir . DIRECTORY_SEPARATOR) ? $alias . substr($path, strlen($dir)) : $path;
+        $path = self::normalizePath($path);
+        $result = (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
 
         return $skippable . $result;
     }
