@@ -247,14 +247,14 @@ class Builder
      */
     public function substituteOutputDirs($data)
     {
-        $dir = static::normalizePath(dirname(dirname(dirname($this->outputDir))));
+        $dir = static::normalizeDir(dirname(dirname(dirname($this->outputDir))));
 
         return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
     }
 
-    public static function normalizePath($path, $ds = '/')
+    public static function normalizeDir($path, $ds = '/')
     {
-        return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
+        return rtrim(strtr($path, '\/', $ds), $ds);
     }
 
     /**
@@ -290,7 +290,7 @@ class Builder
         if ($skippable) {
             $path = substr($path, 1);
         }
-        $result = (substr($path, 0, strlen($dir) + 1) === $dir . DIRECTORY_SEPARATOR) ? $alias . substr($path, strlen($dir)) : $path;
+        $result = (substr($path, 0, strlen($dir) + 1) === $dir . '/') ? $alias . substr($path, strlen($dir)) : $path;
 
         return $skippable . $result;
     }
