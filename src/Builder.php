@@ -252,7 +252,7 @@ class Builder
         return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
     }
 
-    public static function normalizePath($path, $ds = DIRECTORY_SEPARATOR)
+    public static function normalizePath($path, $ds = '/')
     {
         return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
     }
