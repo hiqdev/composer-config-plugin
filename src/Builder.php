@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/composer-config-plugin
  * @package   composer-config-plugin
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\composer\config;
@@ -257,7 +257,7 @@ class Builder
      * Normalizes given path with given directory separator.
      * Default forced to Unix directory separator for substitutePaths to work properly in Windows.
      * @param string $path path to be normalized
-     * @param string $ds directory separator.
+     * @param string $ds directory separator
      * @return string
      */
     public static function normalizePath($path, $ds = self::UNIX_DS)
