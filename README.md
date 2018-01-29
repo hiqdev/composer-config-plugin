@@ -13,7 +13,7 @@ This [Composer] plugin provides assembling
 of configurations distributed with composer packages.
 This allows to put configuration needed to use package right inside of
 the package thus implementing plugin system: package becomes a plugin
-holding both the code and it's configuration.
+holding both the code and its configuration.
 
 How it works?
 
