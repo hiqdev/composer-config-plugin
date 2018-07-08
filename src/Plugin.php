@@ -70,11 +70,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $extensions = [];
 
     /**
-     * @var array array of not yet merged params
-     */
-    protected $rawParams = [];
-
-    /**
      * @var Composer instance
      */
     protected $composer;
