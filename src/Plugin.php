@@ -115,7 +115,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->showDepsTree();
 
         $builder = new Builder($this->files);
-        $builder->setAddition(['aliases' => $this->aliases]);
+        $builder->setAddition([
+            'application' => [
+                'aliases' => $this->aliases,
+            ],
+        ]);
         $builder->setIo($this->io);
         $builder->saveFiles();
         $builder->writeConfig('aliases', $this->aliases);

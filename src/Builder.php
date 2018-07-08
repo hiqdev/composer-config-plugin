@@ -159,9 +159,10 @@ class Builder
     public function buildConfig($name, array $configs, $defines = [])
     {
         if (!$this->isSpecialConfig($name)) {
-            array_push($configs, $this->addition, [
+            array_push($configs, $this->addition);
+            /*array_push($configs, $this->addition, [
                 'params' => $this->vars['params'],
-            ]);
+            ]);*/
         }
         $this->vars[$name] = call_user_func_array([Helper::className(), 'mergeConfig'], $configs);
         if ($name === 'params') {
