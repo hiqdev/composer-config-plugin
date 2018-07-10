@@ -207,6 +207,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                     $this->files[$name] = [];
                 }
                 $path = $this->preparePath($package, $path);
+                if (in_array($path, $this->files[$name], true)) {
+                    continue;
+                }
                 if ('defines' === $name) {
                     array_unshift($this->files[$name], $path);
                 } else {
