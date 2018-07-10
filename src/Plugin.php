@@ -116,7 +116,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $builder = new Builder($this->files);
         $builder->setAddition([
-            'application' => [
+            'app' => [
                 'aliases' => $this->aliases,
             ],
         ]);
