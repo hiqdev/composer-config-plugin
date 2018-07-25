@@ -19,10 +19,10 @@ use hiqdev\composer\config\Builder;
  */
 class PhpReader extends AbstractReader
 {
-    public function readRaw($__path, Builder $builder)
+    public function readRaw($__path)
     {
         /// Expose variables to be used in configs
-        extract($builder->getVars());
+        extract($this->builder->getVars());
 
         return require $__path;
     }

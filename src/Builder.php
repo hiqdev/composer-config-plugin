@@ -11,7 +11,7 @@
 namespace hiqdev\composer\config;
 
 use Composer\IO\IOInterface;
-use hiqdev\composer\config\exceptions\FailedWriteException;
+use hiqdev\composer\config\configs\ConfigFactory;
 
 /**
  * Builder assembles config files.
@@ -46,9 +46,12 @@ class Builder
      */
     protected $vars = [];
 
-    const UNIX_DS = '/';
+    /**
+     * @var array configurations
+     */
+    protected $configs = [];
+
     const OUTPUT_DIR_SUFFIX = '-output';
-    const BASE_DIR_MARKER = '<<<base-dir>>>';
 
     public function __construct(array $files = [], $outputDir = null)
     {
@@ -64,6 +67,11 @@ class Builder
     public function setOutputDir($outputDir)
     {
         $this->outputDir = isset($outputDir) ? $outputDir : static::findOutputDir();
+    }
+
+    public function getOutputDir(): string
+    {
+        return $this->outputDir;
     }
 
     public function setAddition(array $addition)
@@ -129,81 +137,9 @@ class Builder
         $resolver = new Resolver($files);
         $files = $resolver->get();
         foreach ($files as $name => $paths) {
-            $olddefs = get_defined_constants();
-            $configs = $this->loadConfigs($paths);
-            $newdefs = get_defined_constants();
-            $defines = array_diff_assoc($newdefs, $olddefs);
-            $this->buildConfig($name, $configs, $defines);
+            $this->createConfig($name)->load($paths)->build()->write();
         }
-        static::putFile($this->getOutputPath('__rebuild'), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
-    }
-
-    protected function loadConfigs(array $paths)
-    {
-        $configs = [];
-        foreach ($paths as $path) {
-            $config = $this->loadFile($path);
-            if (!empty($config)) {
-                $configs[] = $config;
-            }
-        }
-
-        return $configs;
-    }
-
-    /**
-     * Merges given configs and writes at given name.
-     * @param mixed $name
-     * @param array $configs
-     */
-    public function buildConfig($name, array $configs, $defines = [])
-    {
-        if (!$this->isSpecialConfig($name)) {
-            array_push($configs, $this->addition);
-            /*array_push($configs, $this->addition, [
-                'params' => $this->vars['params'],
-            ]);*/
-        }
-        $this->vars[$name] = call_user_func_array([Helper::className(), 'mergeConfig'], $configs);
-        if ($name === 'params') {
-            $this->vars[$name] = $this->pushEnvVars($this->vars[$name]);
-        }
-        $this->writeConfig($name, (array) $this->vars[$name], $defines);
-    }
-
-    protected function pushEnvVars($vars)
-    {
-        $env = $this->vars['dotenv'];
-        if (!empty($vars)) {
-            foreach (array_keys($vars) as $key) {
-                $envKey = strtoupper(strtr($key, '.', '_'));
-                if (isset($env[$envKey])) {
-                    $vars[$key] = $env[$envKey];
-                }
-            }
-        }
-
-        return $vars;
-    }
-
-    protected function isSpecialConfig($name)
-    {
-        return in_array($name, ['dotenv', 'defines', 'params'], true);
-    }
-
-    /**
-     * Writes config file by name.
-     * @param string $name
-     * @param array $data
-     */
-    public function writeConfig($name, array $data, array $defines = [])
-    {
-        $data = $this->substituteOutputDirs($data);
-        $defines = $this->substituteOutputDirs($defines);
-        if ('defines' === $name) {
-            $data = $defines;
-        }
-        static::writeFile($this->getOutputPath($name), $data, $defines);
+        $this->writeConfig('__rebuild');
     }
 
     public function getOutputPath($name)
@@ -211,122 +147,33 @@ class Builder
         return $this->outputDir . DIRECTORY_SEPARATOR . $name . '.php';
     }
 
-    /**
-     * Writes config file by full path.
-     * @param string $path
-     * @param array $data
-     */
-    public static function writeFile($path, array $data, array $defines = [])
+    public function writeConfig(string $name, array $values = null)
     {
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
-        }
-        $content = Helper::exportDefines($defines) . "\nreturn " . Helper::exportVar($data);
-        $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
-        $content = str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
-        static::putFile($path, "<?php\n\n\$baseDir = dirname(dirname(dirname(__DIR__)));\n\n$content;\n");
+        $this->createConfig($name, $values)->write();
     }
 
-    /**
-     * Writes file if content changed.
-     * @param string $path
-     * @param string $content
-     */
-    protected static function putFile($path, $content)
-    {
-        if (file_exists($path) && $content === file_get_contents($path)) {
-            return;
+    protected function createConfig($name, array $values = null) {
+        $config = ConfigFactory::create($this, $name);
+        $this->configs[$name] = $config;
+        if ($values !== null) {
+            $config->setValues($values);
         }
-        if (false === file_put_contents($path, $content)) {
-            throw new FailedWriteException("Failed write file $path");
-        }
+
+        return $config;
     }
 
-    /**
-     * Substitute output paths in given data array recursively with marker.
-     * @param array $data
-     * @return array
-     */
-    public function substituteOutputDirs($data)
+    public function getConfig(string $name)
     {
-        $dir = static::normalizePath(dirname(dirname(dirname($this->outputDir))));
-
-        return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
-    }
-
-    /**
-     * Normalizes given path with given directory separator.
-     * Default forced to Unix directory separator for substitutePaths to work properly in Windows.
-     * @param string $path path to be normalized
-     * @param string $ds directory separator
-     * @return string
-     */
-    public static function normalizePath($path, $ds = self::UNIX_DS)
-    {
-        return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
-    }
-
-    /**
-     * Substitute all paths in given array recursively with alias if applicable.
-     * @param array $data
-     * @param string $dir
-     * @param string $alias
-     * @return array
-     */
-    public static function substitutePaths($data, $dir, $alias)
-    {
-        foreach ($data as &$value) {
-            if (is_string($value)) {
-                $value = static::substitutePath($value, $dir, $alias);
-            } elseif (is_array($value)) {
-                $value = static::substitutePaths($value, $dir, $alias);
-            }
+        if (!isset($this->configs[$name])) {
+            throw new \Exception('INTERNAL get wrong config');
         }
 
-        return $data;
-    }
-
-    /**
-     * Substitute path with alias if applicable.
-     * @param string $path
-     * @param string $dir
-     * @param string $alias
-     * @return string
-     */
-    protected static function substitutePath($path, $dir, $alias)
-    {
-        $end = $dir . self::UNIX_DS;
-        $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
-        if ($skippable) {
-            $path = substr($path, 1);
-        }
-
-        if ($path === $dir) {
-            $result = $alias;
-        } elseif (substr($path, 0, strlen($end)) === $end) {
-            $result = $alias . substr($path, strlen($end) - 1);
-        } else {
-            $result = $path;
-        }
-
-        return $skippable . $result;
+        return $this->configs[$name];
     }
 
     public function loadConfig($name)
     {
         return $this->loadFile($this->getOutputPath($name));
-    }
-
-    /**
-     * Reads config file.
-     * @param string $path
-     * @return array configuration read from file
-     */
-    public function loadFile($path)
-    {
-        $reader = ReaderFactory::get($path);
-
-        return $reader->read($path, $this);
     }
 
     public function setIo(IOInterface $io)
@@ -345,6 +192,11 @@ class Builder
 
     public function getVars()
     {
-        return $this->vars;
+        $vars = [];
+        foreach ($this->configs as $name => $config) {
+            $vars[$name] = $config->getValues();
+        }
+
+        return $vars;
     }
 }

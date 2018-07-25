@@ -8,13 +8,10 @@
  * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\readers;
 
+use hiqdev\composer\config\Builder;
 use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
-use hiqdev\composer\config\readers\EnvReader;
-use hiqdev\composer\config\readers\JsonReader;
-use hiqdev\composer\config\readers\PhpReader;
-use hiqdev\composer\config\readers\YamlReader;
 
 /**
  * Reader - helper to load data from files of different types.
@@ -33,23 +30,30 @@ class ReaderFactory
         'yml'   => YamlReader::class,
     ];
 
-    public static function get($path)
+    public static function get(Builder $builder, $path)
     {
         $ext = pathinfo($path, PATHINFO_EXTENSION);
-        if (empty(static::$loaders[$ext])) {
-            static::$loaders[$ext] = static::create($ext);
+        $class = static::findClass($ext);
+        if (empty(static::$loaders[$class])) {
+            static::$loaders[$class] = static::create($builder, $ext);
         }
 
-        return static::$loaders[$ext];
+        return static::$loaders[$class];
     }
 
-    public static function create($ext)
+    public static function findClass($ext)
     {
         if (empty(static::$knownReaders[$ext])) {
             throw new UnsupportedFileTypeException("unsupported extension: $ext");
         }
-        $class = static::$knownReaders[$ext];
 
-        return new $class();
+        return static::$knownReaders[$ext];
+    }
+
+    public static function create(Builder $builder, $ext)
+    {
+        $class = static::findClass($ext);
+
+        return new $class($builder);
     }
 }

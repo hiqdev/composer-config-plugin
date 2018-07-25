@@ -33,7 +33,7 @@ class Helper
     public static function mergeConfig()
     {
         $args = func_get_args();
-        $res = array_shift($args);
+        $res = array_shift($args) ?: [];
         foreach ($args as $items) {
             if (!is_array($items)) {
                 continue;
