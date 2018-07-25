@@ -8,13 +8,9 @@
  * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\readers;
 
 use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
-use hiqdev\composer\config\readers\EnvReader;
-use hiqdev\composer\config\readers\JsonReader;
-use hiqdev\composer\config\readers\PhpReader;
-use hiqdev\composer\config\readers\YamlReader;
 
 /**
  * Reader - helper to load data from files of different types.
