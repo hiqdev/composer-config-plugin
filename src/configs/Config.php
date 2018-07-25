@@ -207,12 +207,19 @@ class Config
      */
     protected static function substitutePath($path, $dir, $alias)
     {
-        $dir .= self::UNIX_DS;
+        $end = $dir . self::UNIX_DS;
         $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
         if ($skippable) {
             $path = substr($path, 1);
         }
         $result = (substr($path, 0, strlen($dir)) === $dir) ? $alias . substr($path, strlen($dir) - 1) : $path;
+        if ($path === $dir) {
+            $result = $alias;
+        } elseif (substr($path, 0, strlen($end)) === $end) {
+            $result = $alias . substr($path, strlen($end) - 1);
+        } else {
+            $result = $path;
+        }
 
         return $skippable . $result;
     }
