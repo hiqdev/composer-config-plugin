@@ -10,6 +10,7 @@
 
 namespace hiqdev\composer\config\readers;
 
+use hiqdev\composer\config\Builder;
 use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
 
 /**
@@ -29,23 +30,30 @@ class ReaderFactory
         'yml'   => YamlReader::class,
     ];
 
-    public static function get($path)
+    public static function get(Builder $builder, $path)
     {
         $ext = pathinfo($path, PATHINFO_EXTENSION);
-        if (empty(static::$loaders[$ext])) {
-            static::$loaders[$ext] = static::create($ext);
+        $class = static::findClass($ext);
+        if (empty(static::$loaders[$class])) {
+            static::$loaders[$class] = static::create($builder, $ext);
         }
 
-        return static::$loaders[$ext];
+        return static::$loaders[$class];
     }
 
-    public static function create($ext)
+    public static function findClass($ext)
     {
         if (empty(static::$knownReaders[$ext])) {
             throw new UnsupportedFileTypeException("unsupported extension: $ext");
         }
-        $class = static::$knownReaders[$ext];
 
-        return new $class();
+        return static::$knownReaders[$ext];
+    }
+
+    public static function create(Builder $builder, $ext)
+    {
+        $class = static::findClass($ext);
+
+        return new $class($builder);
     }
 }

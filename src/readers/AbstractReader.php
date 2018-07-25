@@ -20,7 +20,22 @@ use hiqdev\composer\config\exceptions\FailedReadException;
  */
 abstract class AbstractReader
 {
-    public function read($path, Builder $builder)
+    /**
+     * @var Builder
+     */
+    protected $builder;
+
+    public function __construct(Builder $builder)
+    {
+        $this->builder = $builder;
+    }
+
+    public function getBuilder(): Builder
+    {
+        return $this->builder;
+    }
+
+    public function read($path)
     {
         $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
         if ($skippable) {
@@ -28,7 +43,7 @@ abstract class AbstractReader
         }
 
         if (is_readable($path)) {
-            $res = $this->readRaw($path, $builder);
+            $res = $this->readRaw($path);
 
             return is_array($res) ? $res : [];
         }
@@ -50,5 +65,5 @@ abstract class AbstractReader
         return $res;
     }
 
-    abstract public function readRaw($path, Builder $builder);
+    abstract public function readRaw($path);
 }

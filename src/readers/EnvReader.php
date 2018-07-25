@@ -19,7 +19,7 @@ use hiqdev\composer\config\Builder;
  */
 class EnvReader extends AbstractReader
 {
-    public function readRaw($path, Builder $builder)
+    public function readRaw($path)
     {
         if (!class_exists('Dotenv\Dotenv')) {
             throw new UnsupportedFileTypeException('for .env support require `vlucas/phpdotenv` in your composer.json');

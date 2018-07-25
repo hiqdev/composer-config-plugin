@@ -17,7 +17,7 @@ namespace hiqdev\composer\config\readers;
  */
 class JsonReader extends AbstractReader
 {
-    public function readRaw($path, $builder)
+    public function readRaw($path)
     {
         return json_decode($this->getFileContents($path), true);
     }

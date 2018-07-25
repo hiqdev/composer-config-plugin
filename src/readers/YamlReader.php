@@ -19,7 +19,7 @@ use hiqdev\composer\config\Builder;
  */
 class YamlReader extends AbstractReader
 {
-    public function readRaw($path, Builder $builder)
+    public function readRaw($path)
     {
         if (!class_exists('Symfony\Component\Yaml\Yaml')) {
             throw new UnsupportedFileTypeException('for YAML support require `symfony/yaml` in your composer.json');
