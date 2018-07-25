@@ -8,14 +8,17 @@
  * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\configs;
 
 /**
- * Config collection.
+ * Rebuild class represents __rebuild.php script.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class Collection
+class Rebuild extends Config
 {
-    /// TODO loadConfigs, buildConfig, writeConfig goes here from Builder
+    protected function writeFile(string $path, array $data)
+    {
+        static::putFile($path, file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
+    }
 }
