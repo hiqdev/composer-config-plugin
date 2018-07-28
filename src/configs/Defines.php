@@ -32,6 +32,6 @@ class Defines extends Config
 
     protected function writeFile(string $path, array $data)
     {
-        static::putFile($path, "<?php\n\n" . implode('', $data));
+        static::putFile($path, "<?php\n\n" . trim(implode('', $data)));
     }
 }

@@ -113,9 +113,10 @@ class Config
     }
 
     /**
-     * Writes config file by full path.
+     * Writes complete PHP config file by full path.
      * @param string $path
      * @param array $data
+     * @param bool $requireDefines
      */
     protected function writePhpFile(string $path, array $data, bool $requireDefines)
     {
