@@ -107,11 +107,6 @@ class Config
         return $this->substituteOutputDirs($values);
     }
 
-    protected function isSpecialConfig($name)
-    {
-        return in_array($name, ['dotenv', 'defines', 'params'], true);
-    }
-
     protected function writeFile(string $path, array $data)
     {
         $this->writePhpFile($path, $data, true);

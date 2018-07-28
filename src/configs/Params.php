@@ -17,15 +17,6 @@ namespace hiqdev\composer\config\configs;
  */
 class Params extends Config
 {
-    protected function strangeStuff()
-    {
-        if (!$this->isSpecialConfig($name)) {
-            array_push($configs, $this->addition, [
-                'params' => $this->vars['params'],
-            ]);
-        }
-    }
-
     protected function calcValues(array $sources)
     {
         return $this->pushEnvVars(parent::calcValues($sources));
