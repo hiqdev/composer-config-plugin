@@ -120,16 +120,20 @@ class Config
      */
     protected function writePhpFile(string $path, array $data, bool $requireDefines)
     {
-        $content = 'return ' . Helper::exportVar($data) . ";\n";
-        $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
-        $content = str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
-        $parts = array_filter([
+        static::putFile($path, implode("\n\n", array_filter([
             'header'  => '<?php',
             'defines' => $requireDefines ? "require_once __DIR__ . '/defines.php';" : '',
             'baseDir' => "\$baseDir = dirname(dirname(dirname(__DIR__)));",
-            'content' => $content,
-        ]);
-        static::putFile($path, implode("\n\n", $parts));
+            'content' => $this->renderVars($data),
+        ])));
+    }
+
+    protected function renderVars(array $vars)
+    {
+        $content = 'return ' . Helper::exportVar($vars) . ";\n";
+        $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
+
+        return str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
     }
 
     /**
