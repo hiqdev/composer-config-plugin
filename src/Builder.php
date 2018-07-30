@@ -25,17 +25,6 @@ class Builder
     protected $outputDir;
 
     /**
-     * @var array files to build configs
-     * @see buildConfigs()
-     */
-    protected $files = [];
-
-    /**
-     * @var array additional data to be merged into every config (e.g. aliases)
-     */
-    protected $addition = [];
-
-    /**
      * @var array collected variables
      */
     protected $vars = [];
@@ -47,15 +36,9 @@ class Builder
 
     const OUTPUT_DIR_SUFFIX = '-output';
 
-    public function __construct(array $files = [], $outputDir = null)
+    public function __construct($outputDir = null)
     {
-        $this->setFiles($files);
         $this->setOutputDir($outputDir);
-    }
-
-    public function setFiles(array $files)
-    {
-        $this->files = $files;
     }
 
     public function setOutputDir($outputDir)
@@ -66,23 +49,6 @@ class Builder
     public function getOutputDir(): string
     {
         return $this->outputDir;
-    }
-
-    public function setAddition(array $addition)
-    {
-        $this->addition = $addition;
-    }
-
-    public function loadFiles()
-    {
-        $this->files    = $this->loadConfig('__files');
-        $this->addition = $this->loadConfig('__addition');
-    }
-
-    public function saveFiles()
-    {
-        $this->writeConfig('__files',    $this->files);
-        $this->writeConfig('__addition', $this->addition);
     }
 
     public static function rebuild($outputDir = null)
