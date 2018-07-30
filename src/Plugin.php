@@ -65,9 +65,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected $originalFiles = [];
 
-    protected $aliases = [];
-
-    protected $extensions = [];
+    /**
+     * @var Builder
+     */
+    protected $builder;
 
     /**
      * @var Composer instance
@@ -110,16 +111,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPostAutoloadDump(Event $event)
     {
         $this->io->writeError('<info>Assembling config files</info>');
+
+        $this->builder = new Builder();
+
         $this->initAutoload();
         $this->scanPackages();
         $this->showDepsTree();
 
-        $builder = new Builder($this->files);
-        $builder->setAddition(['aliases' => $this->aliases]);
-        $builder->saveFiles();
-        $builder->writeConfig('aliases', $this->aliases);
-        $builder->writeConfig('extensions', $this->extensions);
-        $builder->buildConfigs();
+        $this->builder->buildAllConfigs($this->files);
     }
 
     protected function initAutoload()
@@ -159,14 +158,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         $aliases = $this->collectAliases($package);
-        $this->aliases = array_merge($this->aliases, $aliases);
 
-        $this->extensions[$package->getPrettyName()] = array_filter([
+        $this->builder->mergeAliases($aliases);
+        $this->builder->setExtension($package->getPrettyName(), array_filter([
             'name' => $package->getPrettyName(),
             'version' => $package->getVersion(),
             'reference' => $package->getSourceReference() ?: $package->getDistReference(),
             'aliases' => $aliases,
-        ]);
+        ]));
     }
 
     protected function loadDotEnv(RootPackageInterface $package)

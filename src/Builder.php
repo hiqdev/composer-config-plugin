@@ -54,8 +54,7 @@ class Builder
     public static function rebuild($outputDir = null)
     {
         $builder = new self([], $outputDir);
-        $builder->loadFiles();
-        $builder->buildConfigs();
+        $builder->buildUserConfigs($builder->loadConfig('__files'));
     }
 
     /**
@@ -86,20 +85,36 @@ class Builder
     }
 
     /**
+     * Builds all (user and system) configs by given files list.
+     * @param null|array $files files to process: config name => list of files
+     */
+    public function buildAllConfigs(array $files)
+    {
+        $this->buildUserConfigs($files);
+        $this->buildSystemConfigs($files);
+    }
+
+    /**
      * Builds configs by given files list.
      * @param null|array $files files to process: config name => list of files
      */
-    public function buildConfigs($files = null)
+    public function buildUserConfigs(array $files): array
     {
-        if (is_null($files)) {
-            $files = $this->files;
-        }
         $resolver = new Resolver($files);
         $files = $resolver->get();
         foreach ($files as $name => $paths) {
-            $this->createConfig($name)->load($paths)->build()->write();
+            $this->getConfig($name)->load($paths)->build()->write();
         }
-        $this->writeConfig('__rebuild');
+
+        return $files;
+    }
+
+    public function buildSystemConfigs(array $files)
+    {
+        $this->getConfig('__files')->setValues($files);
+        foreach (['__rebuild', '__files', 'aliases', 'extensions'] as $name) {
+            $this->getConfig($name)->build()->write();
+        }
     }
 
     public function getOutputPath($name)
@@ -107,17 +122,9 @@ class Builder
         return $this->outputDir . DIRECTORY_SEPARATOR . $name . '.php';
     }
 
-    public function writeConfig(string $name, array $values = null)
-    {
-        $this->createConfig($name, $values)->write();
-    }
-
-    protected function createConfig($name, array $values = null) {
+    protected function createConfig($name) {
         $config = ConfigFactory::create($this, $name);
         $this->configs[$name] = $config;
-        if ($values !== null) {
-            $config->setValues($values);
-        }
 
         return $config;
     }
@@ -125,7 +132,7 @@ class Builder
     public function getConfig(string $name)
     {
         if (!isset($this->configs[$name])) {
-            throw new \Exception('INTERNAL get wrong config');
+            $this->configs[$name] = $this->createConfig($name);
         }
 
         return $this->configs[$name];
@@ -144,5 +151,15 @@ class Builder
         }
 
         return $vars;
+    }
+
+    public function mergeAliases(array $aliases)
+    {
+        $this->getConfig('aliases')->mergeValues($aliases);
+    }
+
+    public function setExtension(string $name, array $data)
+    {
+        $this->getConfig('extensions')->setValue($name, $data);
     }
 }
