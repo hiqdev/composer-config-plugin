@@ -183,9 +183,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     
     protected function getExtra(CompletePackageInterface $package)
     {
-        $composerJonFile = "{$this->vendorDir}/{$package->getName()}/composer.json";
-
-        return (json_decode(@file_get_contents($composerJonFile), true))['extra'] ?? [];
+        $path = $this->preparePath($package,'composer.json');
+        
+        return (json_decode(@file_get_contents($path), true))['extra'] ?? [];
     }
 
     protected function loadDotEnv(RootPackageInterface $package)
