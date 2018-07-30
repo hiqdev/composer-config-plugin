@@ -126,12 +126,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $dir = dirname(dirname(dirname(__DIR__)));
         require_once "$dir/autoload.php";
-        /* XXX disabled because Yii.php sets YII_ constants
-        $yii = "$dir/yiisoft/yii2/Yii.php";
-        if (file_exists($yii)) {
-            require_once $yii;
-        }
-        */
     }
 
     protected function scanPackages()
