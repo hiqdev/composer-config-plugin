@@ -10,7 +10,6 @@
 
 namespace hiqdev\composer\config;
 
-use Composer\IO\IOInterface;
 use hiqdev\composer\config\configs\ConfigFactory;
 
 /**
@@ -35,11 +34,6 @@ class Builder
      * @var array additional data to be merged into every config (e.g. aliases)
      */
     protected $addition = [];
-
-    /**
-     * @var IOInterface
-     */
-    protected $io;
 
     /**
      * @var array collected variables
@@ -174,20 +168,6 @@ class Builder
     public function loadConfig($name)
     {
         return $this->loadFile($this->getOutputPath($name));
-    }
-
-    public function setIo(IOInterface $io)
-    {
-        $this->io = $io;
-    }
-
-    protected function writeError($text)
-    {
-        if (isset($this->io)) {
-            $this->io->writeError("<error>$text</error>");
-        } else {
-            echo $text . "\n";
-        }
     }
 
     public function getVars()
