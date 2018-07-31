@@ -92,71 +92,114 @@ class Package
         return $aliases;
     }
 
+    /**
+     * @return string package pretty name, like: vendor/name
+     */
     public function getPrettyName(): string
     {
         return $this->package->getPrettyName();
     }
 
+    /**
+     * @return string package version, like: 3.0.16.0, 9999999-dev
+     */
     public function getVersion(): string
     {
         return $this->package->getVersion();
     }
 
+    /**
+     * @return string package human friendly version, like: 5.x-dev d9aed42, 2.1.1, dev-master f6561bf
+     */
     public function getFullPrettyVersion(): string
     {
         return $this->package->getFullPrettyVersion();
     }
 
+    /**
+     * @return string package CVS revision, like: 3a4654ac9655f32888efc82fb7edf0da517d8995
+     */
     public function getSourceReference(): string
     {
         return $this->package->getSourceReference();
     }
 
+    /**
+     * @return string package dist revision, like: 3a4654ac9655f32888efc82fb7edf0da517d8995
+     */
     public function getDistReference(): string
     {
         return $this->package->getDistReference();
     }
 
+    /**
+     * @return bool is package complete
+     */
     public function isComplete(): bool
     {
         return $this->package instanceof CompletePackageInterface;
     }
 
+    /**
+     * @return bool is this a root package
+     */
     public function isRoot(): bool
     {
         return $this->package instanceof RootPackageInterface;
     }
 
+    /**
+     * @return string package type, like: package, library
+     */
     public function getType(): string
     {
         return $this->getRawValue('type') ?? $this->package->getType();
     }
 
+    /**
+     * @return array autoload configuration array
+     */
     public function getAutoload(): array
     {
         return $this->getRawValue('autoload') ?? $this->package->getAutoload();
     }
 
+    /**
+     * @return array autoload-dev configuration array
+     */
     public function getDevAutoload(): array
     {
         return $this->getRawValue('autoload-dev') ?? $this->package->getDevAutoload();
     }
 
+    /**
+     * @return array requre configuration array
+     */
     public function getRequires(): array
     {
         return $this->getRawValue('require') ?? $this->package->getRequires();
     }
 
+    /**
+     * @return array requre-dev configuration array
+     */
     public function getDevRequires(): array
     {
         return $this->getRawValue('require-dev') ?? $this->package->getDevRequires();
     }
 
+    /**
+     * @return array extra configuration array
+     */
     public function getExtra(): array
     {
         return $this->getRawValue('extra') ?? $this->package->getExtra();
     }
 
+    /**
+     * @param string $name option name
+     * @return mixed raw value from composer.json if available
+     */
     public function getRawValue(string $name)
     {
         if ($this->data === null) {
@@ -166,6 +209,9 @@ class Package
         return $this->data[$name] ?? null;
     }
 
+    /**
+     * @return mixed all raw data from composer.json if available
+     */
     public function getRawData(): array
     {
         if ($this->data === null) {
@@ -176,7 +222,7 @@ class Package
     }
 
     /**
-     * @return array
+     * @return array composer.json contents as array
      */
     protected function readRawData(): array
     {
