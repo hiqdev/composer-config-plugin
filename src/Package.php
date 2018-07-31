@@ -127,7 +127,7 @@ class Package
     /**
      * @return string package CVS revision, like: 3a4654ac9655f32888efc82fb7edf0da517d8995
      */
-    public function getSourceReference(): string
+    public function getSourceReference(): ?string
     {
         return $this->package->getSourceReference();
     }
@@ -135,7 +135,7 @@ class Package
     /**
      * @return string package dist revision, like: 3a4654ac9655f32888efc82fb7edf0da517d8995
      */
-    public function getDistReference(): string
+    public function getDistReference(): ?string
     {
         return $this->package->getDistReference();
     }
