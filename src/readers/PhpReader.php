@@ -10,8 +10,6 @@
 
 namespace hiqdev\composer\config\readers;
 
-use hiqdev\composer\config\Builder;
-
 /**
  * PhpReader - reads PHP files.
  *

@@ -122,7 +122,8 @@ class Builder
         return $this->outputDir . DIRECTORY_SEPARATOR . $name . '.php';
     }
 
-    protected function createConfig($name) {
+    protected function createConfig($name)
+    {
         $config = ConfigFactory::create($this, $name);
         $this->configs[$name] = $config;
 

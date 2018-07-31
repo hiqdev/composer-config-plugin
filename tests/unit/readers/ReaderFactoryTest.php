@@ -11,10 +11,10 @@
 namespace hiqdev\composer\config\tests\unit\configs;
 
 use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\readers\ReaderFactory;
 use hiqdev\composer\config\readers\EnvReader;
 use hiqdev\composer\config\readers\JsonReader;
 use hiqdev\composer\config\readers\PhpReader;
+use hiqdev\composer\config\readers\ReaderFactory;
 use hiqdev\composer\config\readers\YamlReader;
 
 /**

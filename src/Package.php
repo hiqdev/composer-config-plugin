@@ -1,4 +1,12 @@
 <?php
+/**
+ * Composer plugin for config assembling
+ *
+ * @link      https://github.com/hiqdev/composer-config-plugin
+ * @package   composer-config-plugin
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\composer\config;
 
@@ -250,7 +258,6 @@ class Package
         if ($skippable) {
             $file = substr($file, 1);
         }
-
 
         if (!$this->getFilesystem()->isAbsolutePath($file)) {
             $prefix = $this->isRoot()

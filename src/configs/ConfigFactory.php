@@ -38,8 +38,7 @@ class ConfigFactory
     {
         $class = isset(static::$knownTypes[$name])
             ? static::$knownTypes[$name]
-            : Config::class
-        ;
+            : Config::class;
 
         return new $class($builder, $name);
     }

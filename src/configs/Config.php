@@ -11,8 +11,8 @@
 namespace hiqdev\composer\config\configs;
 
 use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\Helper;
 use hiqdev\composer\config\exceptions\FailedWriteException;
+use hiqdev\composer\config\Helper;
 use hiqdev\composer\config\readers\ReaderFactory;
 
 /**
@@ -123,7 +123,7 @@ class Config
         static::putFile($path, implode("\n\n", array_filter([
             'header'  => '<?php',
             'defines' => $requireDefines ? "require_once __DIR__ . '/defines.php';" : '',
-            'baseDir' => "\$baseDir = dirname(dirname(dirname(__DIR__)));",
+            'baseDir' => '$baseDir = dirname(dirname(dirname(__DIR__)));',
             'content' => $this->renderVars($data),
         ])));
     }
