@@ -4,15 +4,15 @@ List your config files in `composer.json` like the following:
 "extra": {
     "config-plugin": {
         "params": [
-            "src/config/params.php",
-            "?src/config/params-local.php"
+            "config/params.php",
+            "?config/params-local.php"
         ],
-        "common": "src/config/common.php",
+        "common": "config/common.php",
         "web": [
             "$common",
-            "src/config/web.php"
+            "config/web.php"
         ],
-        "other": "src/config/other.php"
+        "other": "config/other.php"
     }
 },
 ```
