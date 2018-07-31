@@ -123,7 +123,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function processPackage(Package $package)
     {
-        $extra = $package->getExtra();
+        $extra = $this->getExtra($package);
         $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
         $this->originalFiles[$package->getPrettyName()] = $files;
 
@@ -147,6 +147,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             'reference' => $package->getSourceReference() ?: $package->getDistReference(),
             'aliases' => $aliases,
         ]));
+    }
+    
+    protected function getExtra(CompletePackageInterface $package)
+    {
+        $path = $this->preparePath($package,'composer.json');
+        
+        return (json_decode(@file_get_contents($path), true))['extra'] ?? [];
     }
 
     protected function loadDotEnv(Package $package)
