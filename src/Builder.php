@@ -43,7 +43,7 @@ class Builder
 
     public function setOutputDir($outputDir)
     {
-        $this->outputDir = isset($outputDir) ? $outputDir : static::findOutputDir();
+        $this->outputDir = $outputDir ?: static::findOutputDir();
     }
 
     public function getOutputDir(): string
@@ -54,7 +54,13 @@ class Builder
     public static function rebuild($outputDir = null)
     {
         $builder = new self([], $outputDir);
-        $builder->buildUserConfigs($builder->loadConfig('__files'));
+        $files = $builder->getConfig('__files')->load();
+        $builder->buildUserConfigs($files->getValues());
+    }
+
+    public function rebuildUserConfigs()
+    {
+        $this->getConfig('__files')->load();
     }
 
     /**
@@ -137,11 +143,6 @@ class Builder
         }
 
         return $this->configs[$name];
-    }
-
-    public function loadConfig($name)
-    {
-        return $this->loadFile($this->getOutputPath($name));
     }
 
     public function getVars()

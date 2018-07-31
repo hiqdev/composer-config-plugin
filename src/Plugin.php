@@ -37,6 +37,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected $files = [
         'dotenv'  => [],
+        'aliases' => [],
         'defines' => [],
         'params'  => [],
     ];

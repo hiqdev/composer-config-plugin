@@ -54,7 +54,7 @@ class Config
         return $this->values;
     }
 
-    public function load(array $paths)
+    public function load(array $paths = [])
     {
         $configs = [];
         foreach ($paths as $path) {

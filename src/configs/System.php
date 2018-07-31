@@ -26,6 +26,8 @@ class System extends Config
     public function setValues(array $values)
     {
         $this->values = $values;
+
+        return $this;
     }
 
     public function mergeValues(array $values)
@@ -36,6 +38,11 @@ class System extends Config
     protected function writeFile(string $path, array $data)
     {
         $this->writePhpFile($path, $data, false);
+    }
+
+    public function load(array $paths = [])
+    {
+        return $this->setValues($this->loadFile($this->getOutputPath()));
     }
 
     public function build()
