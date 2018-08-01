@@ -42,7 +42,14 @@ class System extends Config
 
     public function load(array $paths = [])
     {
-        return $this->setValues($this->loadFile($this->getOutputPath()));
+        $path = $this->getOutputPath();
+        if (!file_exists($path)) {
+            return $this;
+        }
+
+        $this->values = array_merge($this->loadFile($path), $this->values);
+
+        return $this;
     }
 
     public function build()
