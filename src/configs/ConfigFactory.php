@@ -25,6 +25,7 @@ class ConfigFactory
     private static $knownTypes = [
         '__rebuild'     => Rebuild::class,
         '__files'       => System::class,
+        'dotenv'        => System::class,
         'aliases'       => System::class,
         'extensions'    => System::class,
         'params'        => Params::class,

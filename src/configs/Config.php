@@ -116,13 +116,14 @@ class Config
      * Writes complete PHP config file by full path.
      * @param string $path
      * @param array $data
-     * @param bool $requireDefines
+     * @param bool $withEnvAndDefines
      */
-    protected function writePhpFile(string $path, array $data, bool $requireDefines)
+    protected function writePhpFile(string $path, array $data, bool $withEnvAndDefines)
     {
         static::putFile($path, implode("\n\n", array_filter([
             'header'  => '<?php',
-            'defines' => $requireDefines ? "require_once __DIR__ . '/defines.php';" : '',
+            'dotenv'  => $withEnvAndDefines ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
+            'defines' => $withEnvAndDefines ? "require_once __DIR__ . '/defines.php';" : '',
             'baseDir' => '$baseDir = dirname(dirname(dirname(__DIR__)));',
             'content' => $this->renderVars($data),
         ])));
