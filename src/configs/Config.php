@@ -25,13 +25,25 @@ class Config
     const UNIX_DS = '/';
     const BASE_DIR_MARKER = '<<<base-dir>>>';
 
-    protected $builder;
-
+    /**
+     * @var string config name
+     */
     protected $name;
 
+    /**
+     * @var array sources - paths to config source files
+     */
     protected $sources = [];
 
+    /**
+     * @var array config value
+     */
     protected $values = [];
+
+    /**
+     * @var Builder
+     */
+    protected $builder;
 
     public function __construct(Builder $builder, string $name)
     {
