@@ -59,6 +59,9 @@
         }
     },
     "extra": {
-        "class": "hiqdev\\composer\\config\\Plugin"
+        "class": "hiqdev\\composer\\config\\Plugin",
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }
