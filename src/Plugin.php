@@ -24,7 +24,6 @@ use Composer\Script\ScriptEvents;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const YII2_PACKAGE_TYPE = 'yii2-extension';
     const EXTRA_OPTION_NAME = 'config-plugin';
 
     /**
@@ -127,10 +126,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $extra = $package->getExtra();
         $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
         $this->originalFiles[$package->getPrettyName()] = $files;
-
-        if (self::YII2_PACKAGE_TYPE !== $package->getType() && is_null($files)) {
-            return;
-        }
 
         if (is_array($files)) {
             $this->addFiles($package, $files);
