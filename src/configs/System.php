@@ -12,7 +12,7 @@ namespace hiqdev\composer\config\configs;
 
 /**
  * System class represents system configuration files:
- * __files, aliases, extensions.
+ * __files, aliases, packages.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */

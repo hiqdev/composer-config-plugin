@@ -118,7 +118,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Scans the given package and collects extensions data.
+     * Scans the given package and collects packages data.
      * @param Package $package
      */
     protected function processPackage(Package $package)
@@ -137,7 +137,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $aliases = $package->collectAliases();
 
         $this->builder->mergeAliases($aliases);
-        $this->builder->setExtension($package->getPrettyName(), array_filter([
+        $this->builder->setPackage($package->getPrettyName(), array_filter([
             'name' => $package->getPrettyName(),
             'version' => $package->getVersion(),
             'reference' => $package->getSourceReference() ?: $package->getDistReference(),

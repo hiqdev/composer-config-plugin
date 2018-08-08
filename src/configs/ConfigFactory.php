@@ -26,7 +26,7 @@ class ConfigFactory
         '__rebuild'     => Rebuild::class,
         '__files'       => System::class,
         'aliases'       => System::class,
-        'extensions'    => System::class,
+        'packages'      => System::class,
         'dotenv'        => DotEnv::class,
         'params'        => Params::class,
         'defines'       => Defines::class,

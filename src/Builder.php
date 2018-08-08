@@ -118,7 +118,7 @@ class Builder
     public function buildSystemConfigs(array $files)
     {
         $this->getConfig('__files')->setValues($files);
-        foreach (['__rebuild', '__files', 'aliases', 'extensions'] as $name) {
+        foreach (['__rebuild', '__files', 'aliases', 'packages'] as $name) {
             $this->getConfig($name)->build()->write();
         }
     }
@@ -160,8 +160,8 @@ class Builder
         $this->getConfig('aliases')->mergeValues($aliases);
     }
 
-    public function setExtension(string $name, array $data)
+    public function setPackage(string $name, array $data)
     {
-        $this->getConfig('extensions')->setValue($name, $data);
+        $this->getConfig('packages')->setValue($name, $data);
     }
 }
