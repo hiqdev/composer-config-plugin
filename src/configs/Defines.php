@@ -24,14 +24,21 @@ class Defines extends Config
             return [];
         }
 
-        $lines = file($path);
-        array_shift($lines);
+        return [$path];
+    }
 
-        return $lines;
+    public function buildRequires(): string
+    {
+        $res = [];
+        foreach ($this->values as $path) {
+            $res[] = "require '$path';";
+        }
+
+        return implode("\n", $res);
     }
 
     protected function writeFile(string $path, array $data)
     {
-        static::putFile($path, "<?php\n\n" . trim(implode('', $data)));
+        $this->writePhpFile($path, $this->buildRequires(), false);
     }
 }

@@ -127,23 +127,27 @@ class Config
     /**
      * Writes complete PHP config file by full path.
      * @param string $path
-     * @param array $data
+     * @param string|array $data
      * @param bool $withEnvAndDefines
      */
-    protected function writePhpFile(string $path, array $data, bool $withEnvAndDefines)
+    protected function writePhpFile(string $path, $data, bool $withEnvAndDefines)
     {
-        static::putFile($path, implode("\n\n", array_filter([
+        static::putFile($path, $this->replaceMarkers(implode("\n\n", array_filter([
             'header'  => '<?php',
-            'dotenv'  => $withEnvAndDefines ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
-            'defines' => $withEnvAndDefines ? "require_once __DIR__ . '/defines.php';" : '',
             'baseDir' => '$baseDir = dirname(dirname(dirname(__DIR__)));',
-            'content' => $this->renderVars($data),
-        ])));
+            'dotenv'  => $withEnvAndDefines ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
+            'defines' => $withEnvAndDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
+            'content' => is_array($data) ? $this->renderVars($data) : $data,
+        ]))) . "\n");
     }
 
     protected function renderVars(array $vars)
     {
-        $content = 'return ' . Helper::exportVar($vars) . ";\n";
+        return 'return ' . Helper::exportVar($vars) . ';';
+    }
+
+    protected function replaceMarkers(string $content): string
+    {
         $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
 
         return str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
