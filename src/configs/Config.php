@@ -66,7 +66,7 @@ class Config
         return $this->values;
     }
 
-    public function load(array $paths = [])
+    public function load(array $paths = []): self
     {
         $configs = [];
         foreach ($paths as $path) {
@@ -86,7 +86,7 @@ class Config
      * @param string $path
      * @return array configuration read from file
      */
-    protected function loadFile($path)
+    protected function loadFile($path): array
     {
         $reader = ReaderFactory::get($this->builder, $path);
 
@@ -98,28 +98,28 @@ class Config
      * @param mixed $name
      * @param array $configs
      */
-    public function build()
+    public function build(): self
     {
         $this->values = $this->calcValues($this->sources);
 
         return $this;
     }
 
-    public function write()
+    public function write(): self
     {
         $this->writeFile($this->getOutputPath(), $this->values);
 
         return $this;
     }
 
-    protected function calcValues(array $sources)
+    protected function calcValues(array $sources): array
     {
         $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
 
         return $this->substituteOutputDirs($values);
     }
 
-    protected function writeFile(string $path, array $data)
+    protected function writeFile(string $path, array $data): void
     {
         $this->writePhpFile($path, $data, true);
     }
@@ -130,7 +130,7 @@ class Config
      * @param string|array $data
      * @param bool $withEnvAndDefines
      */
-    protected function writePhpFile(string $path, $data, bool $withEnvAndDefines)
+    protected function writePhpFile(string $path, $data, bool $withEnvAndDefines): void
     {
         static::putFile($path, $this->replaceMarkers(implode("\n\n", array_filter([
             'header'  => '<?php',
@@ -141,7 +141,11 @@ class Config
         ]))) . "\n");
     }
 
-    protected function renderVars(array $vars)
+    /**
+     * @param array $vars array to be exported
+     * @return string
+     */
+    protected function renderVars(array $vars): string
     {
         return 'return ' . Helper::exportVar($vars) . ';';
     }
@@ -158,7 +162,7 @@ class Config
      * @param string $path
      * @param string $content
      */
-    protected static function putFile($path, $content)
+    protected static function putFile($path, $content): void
     {
         if (file_exists($path) && $content === file_get_contents($path)) {
             return;
@@ -176,7 +180,7 @@ class Config
      * @param array $data
      * @return array
      */
-    public function substituteOutputDirs(array $data)
+    public function substituteOutputDirs(array $data): array
     {
         $dir = static::normalizePath(dirname(dirname(dirname($this->getOutputDir()))));
 
@@ -190,7 +194,7 @@ class Config
      * @param string $ds directory separator
      * @return string
      */
-    public static function normalizePath($path, $ds = self::UNIX_DS)
+    public static function normalizePath($path, $ds = self::UNIX_DS): string
     {
         return rtrim(strtr($path, '/\\', $ds . $ds), $ds);
     }
@@ -202,7 +206,7 @@ class Config
      * @param string $alias
      * @return array
      */
-    public static function substitutePaths($data, $dir, $alias)
+    public static function substitutePaths($data, $dir, $alias): array
     {
         foreach ($data as &$value) {
             if (is_string($value)) {
@@ -222,7 +226,7 @@ class Config
      * @param string $alias
      * @return string
      */
-    protected static function substitutePath($path, $dir, $alias)
+    protected static function substitutePath($path, $dir, $alias): string
     {
         $end = $dir . self::UNIX_DS;
         $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';

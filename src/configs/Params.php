@@ -17,12 +17,12 @@ namespace hiqdev\composer\config\configs;
  */
 class Params extends Config
 {
-    protected function calcValues(array $sources)
+    protected function calcValues(array $sources): array
     {
         return $this->pushEnvVars(parent::calcValues($sources));
     }
 
-    protected function pushEnvVars($vars)
+    protected function pushEnvVars($vars): array
     {
         $env = $this->builder->getConfig('dotenv')->getValues();
         if (!empty($vars)) {

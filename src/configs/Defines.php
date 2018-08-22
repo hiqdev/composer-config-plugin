@@ -17,7 +17,7 @@ namespace hiqdev\composer\config\configs;
  */
 class Defines extends Config
 {
-    protected function loadFile($path)
+    protected function loadFile($path): array
     {
         parent::loadFile($path);
         if (pathinfo($path, PATHINFO_EXTENSION) !== 'php') {
@@ -37,7 +37,7 @@ class Defines extends Config
         return implode("\n", $res);
     }
 
-    protected function writeFile(string $path, array $data)
+    protected function writeFile(string $path, array $data): void
     {
         $this->writePhpFile($path, $this->buildRequires(), false);
     }

@@ -17,7 +17,7 @@ namespace hiqdev\composer\config\configs;
  */
 class Rebuild extends Config
 {
-    protected function writeFile(string $path, array $data)
+    protected function writeFile(string $path, array $data): void
     {
         static::putFile($path, file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '__rebuild.php'));
     }

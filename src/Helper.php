@@ -20,17 +20,12 @@ use ReflectionFunction;
  */
 class Helper
 {
-    public static function className()
-    {
-        return get_called_class();
-    }
-
     /**
      * Merges two or more arrays into one recursively.
      * Based on Yii2 yii\helpers\BaseArrayHelper::merge.
      * @return array the merged array
      */
-    public static function mergeConfig()
+    public static function mergeConfig(): array
     {
         $args = func_get_args();
         $res = array_shift($args) ?: [];
@@ -62,7 +57,7 @@ class Helper
      * @param Closure $closure
      * @return string
      */
-    public static function dumpClosure(Closure $closure)
+    public static function dumpClosure(Closure $closure): string
     {
         $res = 'function (';
         $fun = new ReflectionFunction($closure);
@@ -99,7 +94,7 @@ class Helper
      * @param mixed $value
      * @return string
      */
-    public static function exportVar($value)
+    public static function exportVar($value): string
     {
         $closures = self::collectClosures($value);
         $res = var_export($value, true);
@@ -114,7 +109,7 @@ class Helper
         return $res;
     }
 
-    public static function exportDefines(array $defines)
+    public static function exportDefines(array $defines): string
     {
         $res = '';
         foreach ($defines as $key => $value) {
@@ -131,7 +126,7 @@ class Helper
      * @param mixed $input will be changed
      * @return array array of found closures
      */
-    private static function collectClosures(&$input)
+    private static function collectClosures(&$input): array
     {
         static $closureNo = 1;
         $closures = [];

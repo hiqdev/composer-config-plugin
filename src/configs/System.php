@@ -18,29 +18,33 @@ namespace hiqdev\composer\config\configs;
  */
 class System extends Config
 {
-    public function setValue(string $name, $value)
+    public function setValue(string $name, $value): Config
     {
         $this->values[$name] = $value;
+
+        return $this;
     }
 
-    public function setValues(array $values)
+    public function setValues(array $values): Config
     {
         $this->values = $values;
 
         return $this;
     }
 
-    public function mergeValues(array $values)
+    public function mergeValues(array $values): Config
     {
         $this->values = array_merge($this->values, $values);
+
+        return $this;
     }
 
-    protected function writeFile(string $path, array $data)
+    protected function writeFile(string $path, array $data): void
     {
         $this->writePhpFile($path, $data, false);
     }
 
-    public function load(array $paths = [])
+    public function load(array $paths = []): Config
     {
         $path = $this->getOutputPath();
         if (!file_exists($path)) {
@@ -52,7 +56,7 @@ class System extends Config
         return $this;
     }
 
-    public function build()
+    public function build(): Config
     {
         $this->values = $this->substituteOutputDirs($this->values);
 
