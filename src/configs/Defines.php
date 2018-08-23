@@ -31,7 +31,7 @@ class Defines extends Config
     {
         $res = [];
         foreach ($this->values as $path) {
-            $res[] = "require '$path';";
+            $res[] = "require_once '$path';";
         }
 
         return implode("\n", $res);
@@ -39,6 +39,6 @@ class Defines extends Config
 
     protected function writeFile(string $path, array $data): void
     {
-        $this->writePhpFile($path, $this->buildRequires(), false);
+        $this->writePhpFile($path, $this->buildRequires(), true);
     }
 }
