@@ -51,6 +51,64 @@ class Helper
         return $res;
     }
 
+    public static function exportDefines(array $defines): string
+    {
+        $res = '';
+        foreach ($defines as $key => $value) {
+            $var = static::exportVar($value);
+            $res .= "defined('$key') or define('$key', $var);\n";
+        }
+
+        return $res;
+    }
+
+    /**
+     * Returns a parsable string representation of given value.
+     * In contrast to var_dump outputs Closures as PHP code.
+     * @param mixed $value
+     * @return string
+     */
+    public static function exportVar($value): string
+    {
+        $closures = self::collectClosures($value);
+        $res = var_export($value, true);
+        if (!empty($closures)) {
+            $subs = [];
+            foreach ($closures as $key => $closure) {
+                $subs["'" . $key . "'"] = self::dumpClosure($closure);
+            }
+            $res = strtr($res, $subs);
+        }
+
+        return $res;
+    }
+
+    /**
+     * Collects closures from given input.
+     * Substitutes closures with a tag.
+     * @param mixed $input will be changed
+     * @return array array of found closures
+     */
+    private static function collectClosures(&$input): array
+    {
+        static $closureNo = 1;
+        $closures = [];
+        if (is_array($input)) {
+            foreach ($input as &$value) {
+                if (is_array($value) || $value instanceof Closure) {
+                    $closures = array_merge($closures, self::collectClosures($value));
+                }
+            }
+        } elseif ($input instanceof Closure) {
+            ++$closureNo;
+            $key = "--==<<[[((Closure#$closureNo))]]>>==--";
+            $closures[$key] = $input;
+            $input = $key;
+        }
+
+        return $closures;
+    }
+
     /**
      * Dumps closure object to string.
      * Based on http://www.metashock.de/2013/05/dump-source-code-of-closure-in-php/.
@@ -86,63 +144,5 @@ class Helper
         }
 
         return rtrim($res, "\r\n ,");
-    }
-
-    /**
-     * Returns a parsable string representation of given value.
-     * In contrast to var_dump outputs Closures as PHP code.
-     * @param mixed $value
-     * @return string
-     */
-    public static function exportVar($value): string
-    {
-        $closures = self::collectClosures($value);
-        $res = var_export($value, true);
-        if (!empty($closures)) {
-            $subs = [];
-            foreach ($closures as $key => $closure) {
-                $subs["'" . $key . "'"] = self::dumpClosure($closure);
-            }
-            $res = strtr($res, $subs);
-        }
-
-        return $res;
-    }
-
-    public static function exportDefines(array $defines): string
-    {
-        $res = '';
-        foreach ($defines as $key => $value) {
-            $var = static::exportVar($value);
-            $res .= "defined('$key') or define('$key', $var);\n";
-        }
-
-        return $res;
-    }
-
-    /**
-     * Collects closures from given input.
-     * Substitutes closures with a tag.
-     * @param mixed $input will be changed
-     * @return array array of found closures
-     */
-    private static function collectClosures(&$input): array
-    {
-        static $closureNo = 1;
-        $closures = [];
-        if (is_array($input)) {
-            foreach ($input as &$value) {
-                if (is_array($value) || $value instanceof Closure) {
-                    $closures = array_merge($closures, self::collectClosures($value));
-                }
-            }
-        } elseif ($input instanceof Closure) {
-            ++$closureNo;
-            $key = "--==<<[[((Closure#$closureNo))]]>>==--";
-            $closures[$key] = $input;
-            $input = $key;
-        }
-
-        return $closures;
     }
 }
