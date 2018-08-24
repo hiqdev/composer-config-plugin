@@ -41,7 +41,7 @@ class System extends Config
 
     protected function writeFile(string $path, array $data): void
     {
-        $this->writePhpFile($path, $data, false);
+        $this->writePhpFile($path, $data, false, false);
     }
 
     public function load(array $paths = []): Config

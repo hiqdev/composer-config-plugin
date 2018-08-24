@@ -39,6 +39,6 @@ class Defines extends Config
 
     protected function writeFile(string $path, array $data): void
     {
-        $this->writePhpFile($path, $this->buildRequires(), true);
+        $this->writePhpFile($path, $this->buildRequires(), true, false);
     }
 }

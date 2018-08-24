@@ -121,22 +121,23 @@ class Config
 
     protected function writeFile(string $path, array $data): void
     {
-        $this->writePhpFile($path, $data, true);
+        $this->writePhpFile($path, $data, true, true);
     }
 
     /**
      * Writes complete PHP config file by full path.
      * @param string $path
      * @param string|array $data
-     * @param bool $withEnvAndDefines
+     * @param bool $withEnv
+     * @param bool $withDefines
      */
-    protected function writePhpFile(string $path, $data, bool $withEnvAndDefines): void
+    protected function writePhpFile(string $path, $data, bool $withEnv, bool $withDefines): void
     {
         static::putFile($path, $this->replaceMarkers(implode("\n\n", array_filter([
             'header'  => '<?php',
             'baseDir' => '$baseDir = dirname(dirname(dirname(__DIR__)));',
-            'dotenv'  => $withEnvAndDefines ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
-            'defines' => $withEnvAndDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
+            'dotenv'  => $withEnv ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
+            'defines' => $withDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
             'content' => is_array($data) ? $this->renderVars($data) : $data,
         ]))) . "\n");
     }
