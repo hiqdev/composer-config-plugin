@@ -2,6 +2,60 @@
 
 ## [Under development]
 
+- Changed to use `defines` files as is to keep values
+    - [34cfa36] 2018-08-24 Fixed writing `defines` with added merging env vars [@hiqsol]
+    - [3ec43a4] 2018-08-23 Changed `Defines` builder to `require_once` instead of require [@hiqsol]
+    - [7e6e4fa] 2018-08-13 Redone `defines` building, require all instead of assembling [@hiqsol]
+    - [6d2c277] 2018-08-03 Added `DotEnv` class, no defines and dotenv needed for dotenv [@hiqsol]
+- Reworked configuration files building
+    - [ed34c6e] 2018-08-23 csfixed [@hiqsol]
+    - [faf6cec] 2018-08-22 Added more type hinting [@hiqsol]
+    - [8ba86d9] 2018-08-08 Collecting all `packages` instead of yii2-extensions only [@hiqsol]
+    - [462c616] 2018-08-08 Removed check for `yii2-extension`, collecting aliases from all packages [@hiqsol]
+    - [7534700] 2018-08-04 Added `1.0.x-dev` branch-alias [@hiqsol]
+    - [22965f1] 2018-08-03 csfixed [@hiqsol]
+    - [1d78abf] 2018-08-03 Added merging ENV vars in normal configs [@hiqsol]
+    - [e88f547] 2018-08-01 Fixed `System::load()` to allow file not exist [@hiqsol]
+    - [19b80be] 2018-07-31 Fixed `Builder::rebuild()` by fixing aliases loading [@hiqsol]
+    - [3c7654c] 2018-07-31 Allowed return null in reference functions [@hiqsol]
+    - [39fc269] 2018-07-31 Changed recommended config path to `config` (was src/config) [@hiqsol]
+    - [03d7359] 2018-07-31 csfixed [@hiqsol]
+    - [f73714d] 2018-07-31 Added lot of phpdocs [@hiqsol]
+    - [3378133] 2018-07-31 Extracted package logic to `Package` class: prefer data from `composer.json` [@hiqsol]
+    - [4e4f6b9] 2018-07-30 Added `suggest` section to composer.json [@hiqsol]
+    - [8273a37] 2018-07-30 Moved aliases and extensions building to `Builder` [@hiqsol]
+    - [5f84f43] 2018-07-30 Removed `__addition` config and `Builder::files` , passing files explicitly [@hiqsol]
+    - [1d52609] 2018-07-30 Added `System` config `setValue()`, `mergeValues()` and `build()` [@hiqsol]
+    - [5ccb875] 2018-07-30 Removed expired `Yii.php` loading stuff [@hiqsol]
+    - [eba7d87] 2018-07-30 Removed `io` from `Builder` [@hiqsol]
+    - [b8e8baf] 2018-07-28 Extracted `Config::renderVars()` method [@hiqsol]
+    - [117b250] 2018-07-28 Removed `isSpecialConfig` (cleaning up) [@hiqsol]
+    - [540be97] 2018-07-25 Fixed `substitutePath()` to substitute also exact path again [@hiqsol]
+    - [1df0194] 2018-07-25 Merged rework [@hiqsol]
+    - [349da2d] 2018-07-25 HUGE refactoring out config classes [@hiqsol]
+    - [b08f320] 2018-07-25 Added tests for readers factory [@hiqsol]
+    - [c2d1320] 2018-07-25 Refactored readers to have builder [@hiqsol]
+    - [f4fd70b] 2018-07-25 Fixed `Helper::mergeConfig()` for empty arguments list [@hiqsol]
+    - [8a9d349] 2018-07-25 Moved `ReaderFactory` to readers dir [@hiqsol]
+    - [c02b3cd] 2018-07-25 csfixed [@hiqsol]
+    - [5596670] 2018-07-20 Fixed `Builder::substitutePath()` to substitute also exact path [@hiqsol]
+    - [77aa87a] 2018-07-10 Fixed collecting files list: adding only unique [@hiqsol]
+    - [c3e0699] 2018-07-10 renamed application to `app` [@hiqsol]
+    - [05af3cc] 2018-07-08 trying yii 3.0 version [@hiqsol]
+    - [8304c24] 2018-07-08 removed unused `$rawParams` [@hiqsol]
+    - [14a42b0] 2018-01-29 Merge pull request #5 from marclaporte/patch-1 [@hiqsol]
+    - [af29b9b] 2018-01-27 Fix a typo [marc@laporte.name]
+    - [b1a84e7] 2018-01-27 csfixed [@hiqsol]
+    - [6796608] 2017-11-30 still fixing to work in Windows [@hiqsol]
+    - [6621a38] 2017-11-30 Merge pull request #4 from loveorigami/patch-1 [@hiqsol]
+    - [2e358df] 2017-11-30 normalizeDir for windows path [loveorigami@mail.ru]
+    - [167ae38] 2017-11-30 quickfixed to `normalizePath` to force unix directory separator for substitutions to work in Windows [@hiqsol]
+    - [4c7e79d] 2017-11-19 added `normalizePath` to convert Windows backslashes to normal slashes [@hiqsol]
+    - [fdc740a] 2017-10-17 csfixed [@hiqsol]
+    - [2b9795d] 2017-10-17 fixed expects array error [@hiqsol]
+    - [05fff11] 2017-10-17 added pushing env vars into params with `pushEnvVars` [@hiqsol]
+    - [35823f1] 2017-09-27 disabled require Yii.php because it sets `Yii_` constants wrong [@hiqsol]
+    - [32105a5] 2017-09-27 added require Yii in `Plugin::initAutoload` [@hiqsol]
     - [67bf230] 2017-09-27 csfixed [@hiqsol]
     - [bea1b98] 2017-09-27 switched to phpunit 6 [@hiqsol]
     - [078c488] 2017-09-27 added links to app-organization article [@hiqsol]
@@ -278,3 +332,55 @@
 [67bf230]: https://github.com/hiqdev/composer-config-plugin/commit/67bf230
 [bea1b98]: https://github.com/hiqdev/composer-config-plugin/commit/bea1b98
 [078c488]: https://github.com/hiqdev/composer-config-plugin/commit/078c488
+[34cfa36]: https://github.com/hiqdev/composer-config-plugin/commit/34cfa36
+[3ec43a4]: https://github.com/hiqdev/composer-config-plugin/commit/3ec43a4
+[ed34c6e]: https://github.com/hiqdev/composer-config-plugin/commit/ed34c6e
+[faf6cec]: https://github.com/hiqdev/composer-config-plugin/commit/faf6cec
+[7e6e4fa]: https://github.com/hiqdev/composer-config-plugin/commit/7e6e4fa
+[8ba86d9]: https://github.com/hiqdev/composer-config-plugin/commit/8ba86d9
+[462c616]: https://github.com/hiqdev/composer-config-plugin/commit/462c616
+[7534700]: https://github.com/hiqdev/composer-config-plugin/commit/7534700
+[6d2c277]: https://github.com/hiqdev/composer-config-plugin/commit/6d2c277
+[22965f1]: https://github.com/hiqdev/composer-config-plugin/commit/22965f1
+[1d78abf]: https://github.com/hiqdev/composer-config-plugin/commit/1d78abf
+[e88f547]: https://github.com/hiqdev/composer-config-plugin/commit/e88f547
+[19b80be]: https://github.com/hiqdev/composer-config-plugin/commit/19b80be
+[3c7654c]: https://github.com/hiqdev/composer-config-plugin/commit/3c7654c
+[39fc269]: https://github.com/hiqdev/composer-config-plugin/commit/39fc269
+[03d7359]: https://github.com/hiqdev/composer-config-plugin/commit/03d7359
+[f73714d]: https://github.com/hiqdev/composer-config-plugin/commit/f73714d
+[3378133]: https://github.com/hiqdev/composer-config-plugin/commit/3378133
+[4e4f6b9]: https://github.com/hiqdev/composer-config-plugin/commit/4e4f6b9
+[8273a37]: https://github.com/hiqdev/composer-config-plugin/commit/8273a37
+[5f84f43]: https://github.com/hiqdev/composer-config-plugin/commit/5f84f43
+[1d52609]: https://github.com/hiqdev/composer-config-plugin/commit/1d52609
+[5ccb875]: https://github.com/hiqdev/composer-config-plugin/commit/5ccb875
+[eba7d87]: https://github.com/hiqdev/composer-config-plugin/commit/eba7d87
+[b8e8baf]: https://github.com/hiqdev/composer-config-plugin/commit/b8e8baf
+[117b250]: https://github.com/hiqdev/composer-config-plugin/commit/117b250
+[540be97]: https://github.com/hiqdev/composer-config-plugin/commit/540be97
+[1df0194]: https://github.com/hiqdev/composer-config-plugin/commit/1df0194
+[349da2d]: https://github.com/hiqdev/composer-config-plugin/commit/349da2d
+[b08f320]: https://github.com/hiqdev/composer-config-plugin/commit/b08f320
+[c2d1320]: https://github.com/hiqdev/composer-config-plugin/commit/c2d1320
+[f4fd70b]: https://github.com/hiqdev/composer-config-plugin/commit/f4fd70b
+[8a9d349]: https://github.com/hiqdev/composer-config-plugin/commit/8a9d349
+[c02b3cd]: https://github.com/hiqdev/composer-config-plugin/commit/c02b3cd
+[5596670]: https://github.com/hiqdev/composer-config-plugin/commit/5596670
+[77aa87a]: https://github.com/hiqdev/composer-config-plugin/commit/77aa87a
+[c3e0699]: https://github.com/hiqdev/composer-config-plugin/commit/c3e0699
+[05af3cc]: https://github.com/hiqdev/composer-config-plugin/commit/05af3cc
+[8304c24]: https://github.com/hiqdev/composer-config-plugin/commit/8304c24
+[14a42b0]: https://github.com/hiqdev/composer-config-plugin/commit/14a42b0
+[af29b9b]: https://github.com/hiqdev/composer-config-plugin/commit/af29b9b
+[b1a84e7]: https://github.com/hiqdev/composer-config-plugin/commit/b1a84e7
+[6796608]: https://github.com/hiqdev/composer-config-plugin/commit/6796608
+[6621a38]: https://github.com/hiqdev/composer-config-plugin/commit/6621a38
+[2e358df]: https://github.com/hiqdev/composer-config-plugin/commit/2e358df
+[167ae38]: https://github.com/hiqdev/composer-config-plugin/commit/167ae38
+[4c7e79d]: https://github.com/hiqdev/composer-config-plugin/commit/4c7e79d
+[fdc740a]: https://github.com/hiqdev/composer-config-plugin/commit/fdc740a
+[2b9795d]: https://github.com/hiqdev/composer-config-plugin/commit/2b9795d
+[05fff11]: https://github.com/hiqdev/composer-config-plugin/commit/05fff11
+[35823f1]: https://github.com/hiqdev/composer-config-plugin/commit/35823f1
+[32105a5]: https://github.com/hiqdev/composer-config-plugin/commit/32105a5

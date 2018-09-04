@@ -2,6 +2,9 @@
 
 ## [Under development]
 
+- Changed to use `defines` files as is to keep values ([@hiqsol])
+- Reworked configuration files building ([@hiqsol], [marc@laporte.name], [loveorigami@mail.ru])
+
 ## [0.2.5] - 2017-05-19
 
 - Added showing package dependencies hierarchy tree with `composer du -v` ([@hiqsol])
