@@ -136,6 +136,7 @@ class Config
         static::putFile($path, $this->replaceMarkers(implode("\n\n", array_filter([
             'header'  => '<?php',
             'baseDir' => '$baseDir = dirname(dirname(dirname(__DIR__)));',
+            'BASEDIR' => "defined('COMPOSER_CONFIG_PLUGIN_BASEDIR') or define('COMPOSER_CONFIG_PLUGIN_BASEDIR', \$baseDir);",
             'dotenv'  => $withEnv ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
             'defines' => $withDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
             'content' => is_array($data) ? $this->renderVars($data) : $data,
