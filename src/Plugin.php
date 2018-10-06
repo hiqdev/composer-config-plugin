@@ -41,6 +41,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         'params'  => [],
     ];
 
+    protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
+
     /**
      * @var array package name => configs as listed in `composer.json`
      */
@@ -304,6 +306,4 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(sprintf('%s - <fg=%s;options=bold>%s</> %s %s', $indent, $color, $name, $package->getFullPrettyVersion(), $showdeps));
         }
     }
-
-    protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
 }
