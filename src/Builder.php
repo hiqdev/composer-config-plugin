@@ -53,7 +53,7 @@ class Builder
 
     public static function rebuild($outputDir = null)
     {
-        $builder = new self([], $outputDir);
+        $builder = new self($outputDir);
         $files = $builder->getConfig('__files')->load();
         $builder->buildUserConfigs($files->getValues());
     }
