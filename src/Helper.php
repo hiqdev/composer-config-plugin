@@ -67,6 +67,7 @@ class Helper
      * In contrast to var_dump outputs Closures as PHP code.
      * @param mixed $value
      * @return string
+     * @throws \ReflectionException
      */
     public static function exportVar($value): string
     {
@@ -114,6 +115,7 @@ class Helper
      * Based on http://www.metashock.de/2013/05/dump-source-code-of-closure-in-php/.
      * @param Closure $closure
      * @return string
+     * @throws \ReflectionException
      */
     public static function dumpClosure(Closure $closure): string
     {

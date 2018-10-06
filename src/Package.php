@@ -75,6 +75,7 @@ class Package
     /**
      * Prepare aliases.
      * @param string 'psr-0' or 'psr-4'
+     * @param bool $dev
      * @return array
      */
     protected function prepareAliases($psr, $dev = false)
@@ -246,8 +247,7 @@ class Package
 
     /**
      * Builds path inside of a package.
-     * @param Package $package
-     * @param mixed $path can be absolute or relative
+     * @param string $file
      * @return string absolute paths will stay untouched
      */
     public function preparePath(string $file): string

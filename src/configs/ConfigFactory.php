@@ -33,6 +33,8 @@ class ConfigFactory
     ];
 
     /**
+     * @param Builder $builder
+     * @param string $name
      * @return Config
      */
     public static function create(Builder $builder, string $name)
