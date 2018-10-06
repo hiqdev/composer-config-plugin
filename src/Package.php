@@ -44,6 +44,8 @@ class Package
      */
     protected $filesystem;
 
+    private $composer;
+
     public function __construct(PackageInterface $package, Composer $composer)
     {
         $this->package = $package;
