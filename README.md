@@ -30,9 +30,9 @@ How it works?
 - Options collected during earlier steps could and should be used in later
   steps, e.g. `$_ENV` should be used for constants and parameters, which
   in turn should be used for configs
-- Files processing order is crucial to achieve expected behavior: options
+- File processing order is crucial to achieve expected behavior: options
   in root package have priority over options from included packages. It is described
-  below in **Files processing order** section.
+  below in **File processing order** section.
 - Collected configs are written as PHP files in
   `vendor/hiqdev/composer-config-plugin-output`
   directory along with information needed to rebuild configs on demand
