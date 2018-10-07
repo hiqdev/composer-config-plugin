@@ -24,7 +24,7 @@ use Composer\Script\ScriptEvents;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const EXTRA_OPTION_NAME = 'config-plugin';
+    private const EXTRA_OPTION_NAME = 'config-plugin';
 
     /**
      * @var Package[] the array of active composer packages
