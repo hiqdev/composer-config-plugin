@@ -73,7 +73,7 @@ class Builder
         if ($vendor) {
             $dir = $vendor . '/hiqdev/' . basename(dirname(__DIR__));
         } else {
-            $dir = dirname(__DIR__);
+            $dir = \dirname(__DIR__);
         }
 
         return $dir . static::OUTPUT_DIR_SUFFIX;
