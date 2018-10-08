@@ -24,7 +24,7 @@ use Composer\Script\ScriptEvents;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const EXTRA_OPTION_NAME = 'config-plugin';
+    private const EXTRA_OPTION_NAME = 'config-plugin';
 
     /**
      * @var Package[] the array of active composer packages
@@ -40,6 +40,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         'defines' => [],
         'params'  => [],
     ];
+
+    protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
 
     /**
      * @var array package name => configs as listed in `composer.json`
@@ -304,6 +306,4 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(sprintf('%s - <fg=%s;options=bold>%s</> %s %s', $indent, $color, $name, $package->getFullPrettyVersion(), $showdeps));
         }
     }
-
-    protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
 }

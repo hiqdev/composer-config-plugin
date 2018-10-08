@@ -20,8 +20,6 @@ use hiqdev\composer\config\Builder;
  */
 class ConfigFactory
 {
-    private static $loaders;
-
     private static $knownTypes = [
         '__rebuild'     => Rebuild::class,
         '__files'       => System::class,
@@ -33,13 +31,13 @@ class ConfigFactory
     ];
 
     /**
+     * @param Builder $builder
+     * @param string $name
      * @return Config
      */
-    public static function create(Builder $builder, string $name)
+    public static function create(Builder $builder, string $name): Config
     {
-        $class = isset(static::$knownTypes[$name])
-            ? static::$knownTypes[$name]
-            : Config::class;
+        $class = static::$knownTypes[$name] ?? Config::class;
 
         return new $class($builder, $name);
     }

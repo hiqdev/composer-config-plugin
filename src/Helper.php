@@ -27,20 +27,20 @@ class Helper
      */
     public static function mergeConfig(): array
     {
-        $args = func_get_args();
+        $args = \func_get_args();
         $res = array_shift($args) ?: [];
         foreach ($args as $items) {
-            if (!is_array($items)) {
+            if (!\is_array($items)) {
                 continue;
             }
             foreach ($items as $k => $v) {
-                if (is_int($k)) {
+                if (\is_int($k)) {
                     if (isset($res[$k])) {
                         $res[] = $v;
                     } else {
                         $res[$k] = $v;
                     }
-                } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
+                } elseif (\is_array($v) && isset($res[$k]) && \is_array($res[$k])) {
                     $res[$k] = self::mergeConfig($res[$k], $v);
                 } else {
                     $res[$k] = $v;
@@ -67,6 +67,7 @@ class Helper
      * In contrast to var_dump outputs Closures as PHP code.
      * @param mixed $value
      * @return string
+     * @throws \ReflectionException
      */
     public static function exportVar($value): string
     {
@@ -93,9 +94,9 @@ class Helper
     {
         static $closureNo = 1;
         $closures = [];
-        if (is_array($input)) {
+        if (\is_array($input)) {
             foreach ($input as &$value) {
-                if (is_array($value) || $value instanceof Closure) {
+                if (\is_array($value) || $value instanceof Closure) {
                     $closures = array_merge($closures, self::collectClosures($value));
                 }
             }
@@ -114,6 +115,7 @@ class Helper
      * Based on http://www.metashock.de/2013/05/dump-source-code-of-closure-in-php/.
      * @param Closure $closure
      * @return string
+     * @throws \ReflectionException
      */
     public static function dumpClosure(Closure $closure): string
     {

@@ -10,6 +10,8 @@
 
 namespace hiqdev\composer\config\readers;
 
+use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
+
 /**
  * EnvReader - reads `.env` files.
  *

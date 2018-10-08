@@ -95,8 +95,7 @@ class Config
 
     /**
      * Merges given configs and writes at given name.
-     * @param mixed $name
-     * @param array $configs
+     * @return Config
      */
     public function build(): self
     {
@@ -130,6 +129,8 @@ class Config
      * @param string|array $data
      * @param bool $withEnv
      * @param bool $withDefines
+     * @throws FailedWriteException
+     * @throws \ReflectionException
      */
     protected function writePhpFile(string $path, $data, bool $withEnv, bool $withDefines): void
     {
@@ -146,6 +147,7 @@ class Config
     /**
      * @param array $vars array to be exported
      * @return string
+     * @throws \ReflectionException
      */
     protected function renderVars(array $vars): string
     {
@@ -163,6 +165,7 @@ class Config
      * Writes file if content changed.
      * @param string $path
      * @param string $content
+     * @throws FailedWriteException
      */
     protected static function putFile($path, $content): void
     {
