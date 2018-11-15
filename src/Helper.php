@@ -35,6 +35,10 @@ class Helper
             }
             foreach ($items as $k => $v) {
                 if (\is_int($k)) {
+                    /// XXX skip repeated values
+                    if (\in_array($v, $res, true))  {
+                        continue;
+                    }
                     if (isset($res[$k])) {
                         $res[] = $v;
                     } else {
