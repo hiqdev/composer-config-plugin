@@ -93,7 +93,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPostAutoloadDump(Event $event)
     {
-        $this->io->writeError('<info>Assembling config files</info>');
+        $this->io->overwriteError('<info>Assembling config files</info>');
 
         $this->builder = new Builder();
 
