@@ -25,6 +25,7 @@ use Composer\Script\ScriptEvents;
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
     private const EXTRA_OPTION_NAME = 'config-plugin';
+    private const EXTRA_DEV_OPTION_NAME = 'config-plugin-dev';
 
     /**
      * @var Package[] the array of active composer packages
@@ -134,6 +135,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         if ($package->isRoot()) {
             $this->loadDotEnv($package);
+            if (!empty($extra[self::EXTRA_DEV_OPTION_NAME])) {
+                $this->addFiles($package, $extra[self::EXTRA_DEV_OPTION_NAME]);
+            }
         }
 
         $aliases = $package->collectAliases();
