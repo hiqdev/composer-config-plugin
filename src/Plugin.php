@@ -155,7 +155,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $path = $package->preparePath('.env');
         if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
-            array_push($this->files['dotenv'], $path);
+            $this->addFile($package, 'dotenv', $path);
         }
     }
 
@@ -174,19 +174,24 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 $paths = array_reverse($paths);
             }
             foreach ($paths as $path) {
-                if (!isset($this->files[$name])) {
-                    $this->files[$name] = [];
-                }
-                $path = $package->preparePath($path);
-                if (in_array($path, $this->files[$name], true)) {
-                    continue;
-                }
-                if ('defines' === $name) {
-                    array_unshift($this->files[$name], $path);
-                } else {
-                    array_push($this->files[$name], $path);
-                }
+                $this->addFile($package, $name, $path);
             }
+        }
+    }
+
+    protected function addFile(Package $package, string $name, string $path)
+    {
+        $path = $package->preparePath($path);
+        if (!isset($this->files[$name])) {
+            $this->files[$name] = [];
+        }
+        if (in_array($path, $this->files[$name], true)) {
+            return;
+        }
+        if ('defines' === $name) {
+            array_unshift($this->files[$name], $path);
+        } else {
+            array_push($this->files[$name], $path);
         }
     }
 
