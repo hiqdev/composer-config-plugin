@@ -100,6 +100,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->initAutoload();
         $this->scanPackages();
+        $this->reorderFiles();
         $this->showDepsTree();
 
         $this->builder->buildAllConfigs($this->files);
@@ -118,6 +119,49 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 $this->processPackage($package);
             }
         }
+    }
+
+    protected function reorderFiles(): void
+    {
+        foreach (array_keys($this->files) as $name) {
+            $this->files[$name] = $this->getAllFiles($name);
+        }
+        foreach ($this->files as $name => $files) {
+            $this->files[$name] = $this->orderFiles($files);
+        }
+    }
+
+    protected function getAllFiles(string $name): array
+    {
+        if (empty($this->files[$name])) {
+            return[];
+        }
+        $res = [];
+        foreach ($this->files[$name] as $file) {
+            if (strncmp($file, '$', 1) === 0) {
+                $res = array_merge($res, $this->getAllFiles(substr($file, 1)));
+            } else {
+                $res[] = $file;
+            }
+        }
+
+        return $res;
+    }
+
+    protected function orderFiles(array $files): array
+    {
+        if (empty($files)) {
+            return [];
+        }
+        $keys = array_combine($files, $files);
+        $res = [];
+        foreach ($this->orderedFiles as $file) {
+            if (isset($keys[$file])) {
+                $res[] = $file;
+            }
+        }
+
+        return $res;
     }
 
     /**
@@ -179,6 +223,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
+    protected $orderedFiles = [];
+
     protected function addFile(Package $package, string $name, string $path)
     {
         $path = $package->preparePath($path);
@@ -189,8 +235,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             return;
         }
         if ('defines' === $name) {
+            array_unshift($this->orderedFiles, $path);
             array_unshift($this->files[$name], $path);
         } else {
+            array_push($this->orderedFiles, $path);
             array_push($this->files[$name], $path);
         }
     }
