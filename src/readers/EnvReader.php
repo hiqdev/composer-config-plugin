@@ -10,6 +10,7 @@
 
 namespace hiqdev\composer\config\readers;
 
+use Dotenv\Dotenv;
 use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
 
 /**
@@ -21,15 +22,31 @@ class EnvReader extends AbstractReader
 {
     public function readRaw($path)
     {
-        if (!class_exists('Dotenv\Dotenv')) {
+        if (!class_exists(Dotenv::class)) {
             throw new UnsupportedFileTypeException('for .env support require `vlucas/phpdotenv` in your composer.json');
         }
         $info = pathinfo($path);
-        $dotenv = new \Dotenv\Dotenv($info['dirname'], $info['basename']);
+        $dotenv = $this->createDotenv($info['dirname'], $info['basename']);
         $oldenvs = $_ENV;
         $dotenv->load();
         $newenvs = $_ENV;
 
         return array_diff_assoc($newenvs, $oldenvs);
+    }
+
+    /**
+     * Creates Dotenv object.
+     * Supports both 2 and 3 version of `phpdotenv`
+     * @param mixed $dir
+     * @param mixed $file
+     * @return Dotenv
+     */
+    private function createDotenv($dir, $file)
+    {
+        if (method_exists(Dotenv::class, 'create')) {
+            return Dotenv::create($dir, $file);
+        } else {
+            return new Dotenv($dir, $file);
+        }
     }
 }
