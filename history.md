@@ -1,7 +1,24 @@
 # hiqdev/composer-config-plugin
 
-## [Under development]
+## [0.3.0] - 2019-04-11
 
+- Fixed config reading and merging
+    - [efcb091] 2019-04-11 Changed plugin versions to all dev-master [@hiqsol]
+    - [597227a] 2019-03-22 Added support for both 2nd and 3rd versions of `phpdotenv` [@hiqsol]
+    - [9f61a78] 2019-01-11 Added processing `UnsetArrayValue` and `ReplaceArrayValue`, allows to fix #20 [@hiqsol]
+    - [83bc091] 2019-01-11 Added substitution and files reordering, fixes #19 [@hiqsol]
+    - [0c8c821] 2018-12-20 Added `Plugin::addFile()` and used in loadDotEnv to prevent dublicating [@hiqsol]
+- Added dev-only configs
+    - [959c971] 2018-12-08 Added `config-plugin-dev` [@hiqsol]
+    - [faab5ed] 2018-12-05 Tuned output to fit composer 1.8+ [@hiqsol]
+    - [49f65f7] 2018-11-15 Added skiping repeated values [@hiqsol]
+    - [bf49430] 2018-10-08 Code style fixes (#16) [@samdark]
+    - [e3e4f78] 2018-10-07 There's no need to duplicate docs since they're all in the readme [@samdark]
+    - [f4ef5d2] 2018-10-07 More consistency [@samdark]
+    - [1d807d0] 2018-10-07 Improved readme [@samdark]
+    - [2543887] 2018-10-07 Explicitly declare PHP 7 requirement in composer.json [@samdark]
+    - [5cbfdac] 2018-10-07 Fix wrong constructor call arguments [@samdark]
+    - [99c5696] 2018-09-08 Added `COMPOSER_CONFIG_PLUGIN_BASEDIR` constant definition to generated configs [@hiqsol]
 - Changed to use `defines` files as is to keep values
     - [34cfa36] 2018-08-24 Fixed writing `defines` with added merging env vars [@hiqsol]
     - [3ec43a4] 2018-08-23 Changed `Defines` builder to `require_once` instead of require [@hiqsol]
@@ -44,11 +61,11 @@
     - [05af3cc] 2018-07-08 trying yii 3.0 version [@hiqsol]
     - [8304c24] 2018-07-08 removed unused `$rawParams` [@hiqsol]
     - [14a42b0] 2018-01-29 Merge pull request #5 from marclaporte/patch-1 [@hiqsol]
-    - [af29b9b] 2018-01-27 Fix a typo [marc@laporte.name]
+    - [af29b9b] 2018-01-27 Fix a typo [@marclaporte]
     - [b1a84e7] 2018-01-27 csfixed [@hiqsol]
     - [6796608] 2017-11-30 still fixing to work in Windows [@hiqsol]
     - [6621a38] 2017-11-30 Merge pull request #4 from loveorigami/patch-1 [@hiqsol]
-    - [2e358df] 2017-11-30 normalizeDir for windows path [loveorigami@mail.ru]
+    - [2e358df] 2017-11-30 normalizeDir for windows path [@loveorigami]
     - [167ae38] 2017-11-30 quickfixed to `normalizePath` to force unix directory separator for substitutions to work in Windows [@hiqsol]
     - [4c7e79d] 2017-11-19 added `normalizePath` to convert Windows backslashes to normal slashes [@hiqsol]
     - [fdc740a] 2017-10-17 csfixed [@hiqsol]
@@ -228,6 +245,12 @@
 [sol@hiqdev.com]: https://github.com/hiqsol
 [@edgardmessias]: https://github.com/edgardmessias
 [edgardmessias@gmail.com]: https://github.com/edgardmessias
+[@samdark]: https://github.com/samdark
+[sam@rmcreative.ru]: https://github.com/samdark
+[@loveorigami]: https://github.com/loveorigami
+[loveorigami@mail.ru]: https://github.com/loveorigami
+[@marclaporte]: https://github.com/marclaporte
+[marc@laporte.name]: https://github.com/marclaporte
 [e58cc7a]: https://github.com/hiqdev/composer-config-plugin/commit/e58cc7a
 [5b84dc8]: https://github.com/hiqdev/composer-config-plugin/commit/5b84dc8
 [827d606]: https://github.com/hiqdev/composer-config-plugin/commit/827d606
@@ -384,3 +407,19 @@
 [05fff11]: https://github.com/hiqdev/composer-config-plugin/commit/05fff11
 [35823f1]: https://github.com/hiqdev/composer-config-plugin/commit/35823f1
 [32105a5]: https://github.com/hiqdev/composer-config-plugin/commit/32105a5
+[efcb091]: https://github.com/hiqdev/composer-config-plugin/commit/efcb091
+[597227a]: https://github.com/hiqdev/composer-config-plugin/commit/597227a
+[9f61a78]: https://github.com/hiqdev/composer-config-plugin/commit/9f61a78
+[83bc091]: https://github.com/hiqdev/composer-config-plugin/commit/83bc091
+[0c8c821]: https://github.com/hiqdev/composer-config-plugin/commit/0c8c821
+[959c971]: https://github.com/hiqdev/composer-config-plugin/commit/959c971
+[faab5ed]: https://github.com/hiqdev/composer-config-plugin/commit/faab5ed
+[49f65f7]: https://github.com/hiqdev/composer-config-plugin/commit/49f65f7
+[bf49430]: https://github.com/hiqdev/composer-config-plugin/commit/bf49430
+[e3e4f78]: https://github.com/hiqdev/composer-config-plugin/commit/e3e4f78
+[f4ef5d2]: https://github.com/hiqdev/composer-config-plugin/commit/f4ef5d2
+[1d807d0]: https://github.com/hiqdev/composer-config-plugin/commit/1d807d0
+[2543887]: https://github.com/hiqdev/composer-config-plugin/commit/2543887
+[5cbfdac]: https://github.com/hiqdev/composer-config-plugin/commit/5cbfdac
+[99c5696]: https://github.com/hiqdev/composer-config-plugin/commit/99c5696
+[0.3.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...0.3.0

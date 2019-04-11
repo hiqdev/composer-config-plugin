@@ -1,9 +1,11 @@
 # hiqdev/composer-config-plugin
 
-## [Under development]
+## [0.3.0] - 2019-04-11
 
+- Fixed config reading and merging ([@hiqsol])
+- Added dev-only configs ([@hiqsol], [@samdark])
 - Changed to use `defines` files as is to keep values ([@hiqsol])
-- Reworked configuration files building ([@hiqsol], [marc@laporte.name], [loveorigami@mail.ru])
+- Reworked configuration files building ([@hiqsol], [@marclaporte], [@loveorigami])
 
 ## [0.2.5] - 2017-05-19
 
@@ -89,6 +91,12 @@
 [sol@hiqdev.com]: https://github.com/hiqsol
 [@edgardmessias]: https://github.com/edgardmessias
 [edgardmessias@gmail.com]: https://github.com/edgardmessias
+[@samdark]: https://github.com/samdark
+[sam@rmcreative.ru]: https://github.com/samdark
+[@loveorigami]: https://github.com/loveorigami
+[loveorigami@mail.ru]: https://github.com/loveorigami
+[@marclaporte]: https://github.com/marclaporte
+[marc@laporte.name]: https://github.com/marclaporte
 [Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
@@ -106,3 +114,4 @@
 [0.2.3]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.2...0.2.3
 [0.2.4]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...0.2.4
 [0.2.5]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...0.2.5
+[0.3.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...0.3.0
