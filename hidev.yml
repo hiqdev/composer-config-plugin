@@ -39,5 +39,14 @@ package:
 
 plugins:
     hiqdev/composer-config-plugin:  "dev-master"
-    hiqdev/hidev-php:               "*"
-    hiqdev/hidev-hiqdev:            "*"
+    hiqdev/hidev-php:               "dev-master"
+    hiqdev/hidev-hiqdev:            "dev-master"
+    hiqdev/hidev-readme:            "dev-master"
+    hiqdev/hidev-chkipper:          "dev-master"
+    hiqdev/hidev-composer:          "dev-master"
+    hiqdev/hidev-license:           "dev-master"
+    hiqdev/hidev-php-cs-fixer:      "dev-master"
+    hiqdev/hidev-phpstan:           "dev-master"
+    hiqdev/hidev-phpunit:           "dev-master"
+    hiqdev/hidev-scrutinizer:       "dev-master"
+    hiqdev/hidev-travis:            "dev-master"
