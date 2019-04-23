@@ -12,8 +12,6 @@ namespace hiqdev\composer\config;
 
 use Closure;
 use ReflectionFunction;
-use yii\helpers\UnsetArrayValue;
-use yii\helpers\ReplaceArrayValue;
 
 /**
  * Helper class.
@@ -36,9 +34,9 @@ class Helper
                 continue;
             }
             foreach ($items as $k => $v) {
-                if ($v instanceof UnsetArrayValue) {
+                if ($v instanceof \yii\helpers\UnsetArrayValue || $v instanceof \Yiisoft\Arrays\UnsetArrayValue) {
                     unset($res[$k]);
-                } elseif ($v instanceof ReplaceArrayValue) {
+                } elseif ($v instanceof \yii\helpers\ReplaceArrayValue || $v instanceof \Yiisoft\Arrays\ReplaceArrayValue) {
                     $res[$k] = $v->value;
                 } elseif (\is_int($k)) {
                     /// XXX skip repeated values
