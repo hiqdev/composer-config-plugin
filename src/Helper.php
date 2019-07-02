@@ -12,6 +12,7 @@ namespace hiqdev\composer\config;
 
 use Closure;
 use ReflectionFunction;
+use Riimu\Kit\PHPEncoder\PHPEncoder;
 
 /**
  * Helper class.
@@ -71,7 +72,7 @@ class Helper
     }
 
     /**
-     * Returns a parsable string representation of given value.
+     * Returns PHP-executable string representation of given value.
      * In contrast to var_dump outputs Closures as PHP code.
      * @param mixed $value
      * @return string
@@ -80,7 +81,7 @@ class Helper
     public static function exportVar($value): string
     {
         $closures = self::collectClosures($value);
-        $res = var_export($value, true);
+        $res = static::encodeVar($value);
         if (!empty($closures)) {
             $subs = [];
             foreach ($closures as $key => $closure) {
@@ -90,6 +91,29 @@ class Helper
         }
 
         return $res;
+    }
+
+    /**
+     * Riimu/Kit-PHPEncoder based `var_export` alternative.
+     * @param mixed $value
+     * @return string
+     */
+    public static function encodeVar($value): string
+    {
+        return static::getEncoder()->encode($value);
+    }
+
+    private static $encoder;
+
+    private static function getEncoder()
+    {
+        if (static::$encoder === null) {
+            static::$encoder = new PHPEncoder([
+                'object.format' => 'serialize',
+            ]);
+        }
+
+        return static::$encoder;
     }
 
     /**
@@ -142,7 +166,7 @@ class Helper
             }
             $str .= '$' . $arg->name;
             if ($arg->isOptional()) {
-                $str .= ' = ' . var_export($arg->getDefaultValue(), true);
+                $str .= ' = ' . \var_export($arg->getDefaultValue(), true);
             }
             $args[] = $str;
         }
