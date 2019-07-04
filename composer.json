@@ -44,7 +44,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.1",
         "composer-plugin-api": "^1.0",
         "riimu/kit-phpencoder": "^2.4"
     },
