@@ -27,11 +27,14 @@ class EnvReader extends AbstractReader
         }
         $info = pathinfo($path);
         $dotenv = $this->createDotenv($info['dirname'], $info['basename']);
-        $oldenvs = $_ENV;
         $dotenv->load();
-        $newenvs = $_ENV;
 
-        return array_diff_assoc($newenvs, $oldenvs);
+        return $_ENV;
+        #  $oldenvs = $_ENV;
+        #  $dotenv->load();
+        #  $newenvs = $_ENV;
+
+        #  return array_diff_assoc($newenvs, $oldenvs);
     }
 
     /**
