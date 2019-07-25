@@ -143,14 +143,23 @@ class Config
      */
     protected function writePhpFile(string $path, $data, bool $withEnv, bool $withDefines): void
     {
+        $depth = $this->findDepth();
         static::putFile($path, $this->replaceMarkers(implode("\n\n", array_filter([
             'header'  => '<?php',
-            'baseDir' => '$baseDir = dirname(dirname(dirname(__DIR__)));',
+            'baseDir' => "\$baseDir = dirname(__DIR__, $depth);",
             'BASEDIR' => "defined('COMPOSER_CONFIG_PLUGIN_BASEDIR') or define('COMPOSER_CONFIG_PLUGIN_BASEDIR', \$baseDir);",
             'dotenv'  => $withEnv ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
             'defines' => $withDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
             'content' => is_array($data) ? $this->renderVars($data) : $data,
         ]))) . "\n");
+    }
+
+    private function findDepth()
+    {
+        $outDir = dirname($this->getOutputPath());
+        $diff = substr($outDir, strlen($this->getBaseDir()));
+
+        return substr_count($diff, '/');
     }
 
     /**
@@ -196,7 +205,7 @@ class Config
      */
     public function substituteOutputDirs(array $data): array
     {
-        $dir = static::normalizePath(dirname(dirname(dirname($this->getOutputDir()))));
+        $dir = static::normalizePath($this->getBaseDir());
 
         return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
     }
@@ -257,6 +266,11 @@ class Config
         }
 
         return $skippable . $result;
+    }
+
+    public function getBaseDir(): string
+    {
+        return dirname(__DIR__, 5);
     }
 
     public function getOutputDir(): string
