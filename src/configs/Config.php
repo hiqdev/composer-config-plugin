@@ -51,6 +51,15 @@ class Config
         $this->name = $name;
     }
 
+    public function clone(Builder $builder)
+    {
+        $config = new Config($builder, $this->name);
+        $config->sources = $this->sources;
+        $config->values = $this->values;
+
+        return $config;
+    }
+
     public function getBuilder(): Builder
     {
         return $this->builder;
