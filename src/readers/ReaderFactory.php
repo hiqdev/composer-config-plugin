@@ -32,27 +32,37 @@ class ReaderFactory
 
     public static function get(Builder $builder, $path)
     {
-        $ext = pathinfo($path, PATHINFO_EXTENSION);
-        $class = static::findClass($ext);
-        if (empty(static::$loaders[$class])) {
-            static::$loaders[$class] = static::create($builder, $ext);
+        $type = static::detectType($path);
+        $class = static::findClass($type);
+        $uniqid = $class . ':' . spl_object_hash($builder);
+        if (empty(static::$loaders[$uniqid])) {
+            static::$loaders[$uniqid] = static::create($builder, $type);
         }
 
-        return static::$loaders[$class];
+        return static::$loaders[$uniqid];
     }
 
-    public static function findClass($ext)
+    public static function detectType($path)
     {
-        if (empty(static::$knownReaders[$ext])) {
-            throw new UnsupportedFileTypeException("unsupported extension: $ext");
+        if (strncmp(basename($path), '.env.', 5) === 0) {
+            return 'env';
         }
 
-        return static::$knownReaders[$ext];
+        return pathinfo($path, PATHINFO_EXTENSION);
     }
 
-    public static function create(Builder $builder, $ext)
+    public static function findClass($type)
     {
-        $class = static::findClass($ext);
+        if (empty(static::$knownReaders[$type])) {
+            throw new UnsupportedFileTypeException("unsupported file type: $type");
+        }
+
+        return static::$knownReaders[$type];
+    }
+
+    public static function create(Builder $builder, $type)
+    {
+        $class = static::findClass($type);
 
         return new $class($builder);
     }
