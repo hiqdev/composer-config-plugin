@@ -22,6 +22,13 @@ use Composer\Util\Filesystem;
  */
 class Package
 {
+    const EXTRA_FILES_OPTION_NAME           = 'config-plugin';
+    const EXTRA_DEV_FILES_OPTION_NAME       = 'config-plugin-dev';
+    const EXTRA_OUTPUT_DIR_OPTION_NAME      = 'config-plugin-output-dir';
+    const EXTRA_ALTERNATIVES_OPTION_NAME    = 'config-plugin-alternatives';
+
+    private $options = ['output-dir', 'alternatives'];
+
     protected $package;
 
     /**
@@ -197,6 +204,46 @@ class Package
     public function getDevRequires(): array
     {
         return $this->getRawValue('require-dev') ?? $this->package->getDevRequires();
+    }
+
+    /**
+     * @return array files array
+     */
+    public function getFiles(): array
+    {
+        return $this->getExtraValue(self::EXTRA_FILES_OPTION_NAME, []);
+    }
+
+    /**
+     * @return array dev-files array
+     */
+    public function getDevFiles(): array
+    {
+        return $this->getExtraValue(self::EXTRA_DEV_FILES_OPTION_NAME, []);
+    }
+
+    /**
+     * @return array output-dir option
+     */
+    public function getOutputDir(): ?string
+    {
+        return $this->getExtraValue(self::EXTRA_OUTPUT_DIR_OPTION_NAME);
+    }
+
+    /**
+     * @return array alternatives array
+     */
+    public function getAlternatives(): array
+    {
+        return $this->getExtraValue(self::EXTRA_ALTERNATIVES_OPTION_NAME, []);
+    }
+
+    /**
+     * @return array alternatives array
+     */
+    public function getExtraValue($key, $default = null)
+    {
+        return $this->getExtra()[$key] ?? $default;
     }
 
     /**
