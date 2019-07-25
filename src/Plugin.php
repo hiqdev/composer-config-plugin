@@ -24,20 +24,22 @@ use Composer\Script\ScriptEvents;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    const EXTRA_OPTION_NAME = 'config-plugin';
-    const EXTRA_DEV_OPTION_NAME = 'config-plugin-dev';
-
     /**
      * @var Package[] the array of active composer packages
      */
     protected $packages;
+
+    private $alternatives = [];
+
+    private $outputDir;
+
+    private $rootPackage;
 
     /**
      * @var array config name => list of files
      */
     protected $files = [
         'dotenv'  => [],
-        'aliases' => [],
         'defines' => [],
         'params'  => [],
     ];
@@ -103,7 +105,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->reorderFiles();
         $this->showDepsTree();
 
+        $this->builder->setOutputDir($this->outputDir);
         $this->builder->buildAllConfigs($this->files);
+
+        $save = $this->files;
+        foreach ($this->alternatives as $alt => $files) {
+            $this->files = $save;
+            $builder = $this->builder->createAlternative($alt);
+            $this->addFiles($this->rootPackage, $files);
+            $builder->buildAllConfigs($this->files);
+        }
     }
 
     protected function initAutoload()
@@ -170,18 +181,21 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function processPackage(Package $package)
     {
-        $extra = $package->getExtra();
-        $files = isset($extra[self::EXTRA_OPTION_NAME]) ? $extra[self::EXTRA_OPTION_NAME] : null;
+        $files = $package->getFiles();
         $this->originalFiles[$package->getPrettyName()] = $files;
 
-        if (is_array($files)) {
+        if (!empty($files)) {
             $this->addFiles($package, $files);
         }
         if ($package->isRoot()) {
+            $this->rootPackage = $package;
             $this->loadDotEnv($package);
-            if (!empty($extra[self::EXTRA_DEV_OPTION_NAME])) {
-                $this->addFiles($package, $extra[self::EXTRA_DEV_OPTION_NAME]);
+            $devFiles = $package->getDevFiles();
+            if (!empty($devFiles)) {
+                $this->addFiles($package, $devFiles);
             }
+            $this->alternatives = $package->getAlternatives();
+            $this->outputDir = $package->getOutputDir();
         }
 
         $aliases = $package->collectAliases();

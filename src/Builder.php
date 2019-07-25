@@ -41,6 +41,17 @@ class Builder
         $this->setOutputDir($outputDir);
     }
 
+    public function createAlternative($name): Builder
+    {
+        $dir = $this->outputDir . DIRECTORY_SEPARATOR . $name;
+        $alt = new static($dir);
+        foreach (['aliases', 'packages'] as $key) {
+            $alt->configs[$key] = $this->getConfig($key)->clone($alt);
+        }
+
+        return $alt;
+    }
+
     public function setOutputDir($outputDir)
     {
         $this->outputDir = $outputDir ?: static::findOutputDir();
@@ -143,6 +154,16 @@ class Builder
         }
 
         return $this->configs[$name];
+    }
+
+    public function getVar($name, $key)
+    {
+        $config = $this->configs[$name] ?? null;
+        if (empty($config)) {
+            return null;
+        }
+
+        return $config->getValues()[$key] ?? null;
     }
 
     public function getVars()
