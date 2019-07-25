@@ -109,9 +109,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->builder->buildAllConfigs($this->files);
 
         $save = $this->files;
-        foreach ($this->alternatives as $alt => $files) {
+        foreach ($this->alternatives as $name => $files) {
             $this->files = $save;
-            $builder = $this->builder->createAlternative($alt);
+            $builder = $this->builder->createAlternative($name);
             $this->addFiles($this->rootPackage, $files);
             $builder->buildAllConfigs($this->files);
         }
