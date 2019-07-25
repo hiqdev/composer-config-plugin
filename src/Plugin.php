@@ -16,6 +16,8 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use hiqdev\composer\config\exceptions\FailedReadException;
+use hiqdev\composer\config\readers\ReaderFactory;
 
 /**
  * Plugin class.
@@ -194,8 +196,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             if (!empty($devFiles)) {
                 $this->addFiles($package, $devFiles);
             }
-            $this->alternatives = $package->getAlternatives();
             $this->outputDir = $package->getOutputDir();
+            $alternatives = $package->getAlternatives();
+            if (is_string($alternatives)) {
+                $this->alternatives = $this->readConfig($package, $alternatives);
+            } else {
+                $this->alternatives = $alternatives;
+            }
         }
 
         $aliases = $package->collectAliases();
@@ -207,6 +214,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             'reference' => $package->getSourceReference() ?: $package->getDistReference(),
             'aliases' => $aliases,
         ]));
+    }
+
+    private function readConfig($package, $file): array
+    {
+        $path = $package->preparePath($file);
+        if (!file_exists($path)) {
+            throw new FailedReadException("failed read file: $file");
+        }
+        $reader = ReaderFactory::get($this->builder, $path);
+
+        return $reader->read($path);
+
     }
 
     protected function loadDotEnv(Package $package)

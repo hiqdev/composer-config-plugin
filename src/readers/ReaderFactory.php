@@ -34,12 +34,15 @@ class ReaderFactory
     {
         $type = static::detectType($path);
         $class = static::findClass($type);
-        $uniqid = $class . ':' . spl_object_hash($builder);
-        if (empty(static::$loaders[$uniqid])) {
-            static::$loaders[$uniqid] = static::create($builder, $type);
-        }
 
-        return static::$loaders[$uniqid];
+        return static::create($builder, $type);
+
+        #$uniqid = $class . ':' . spl_object_hash($builder);
+        #if (empty(static::$loaders[$uniqid])) {
+        #    static::$loaders[$uniqid] = static::create($builder, $type);
+        #}
+
+        #return static::$loaders[$uniqid];
     }
 
     public static function detectType($path)

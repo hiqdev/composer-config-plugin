@@ -231,11 +231,11 @@ class Package
     }
 
     /**
-     * @return array alternatives array
+     * @return mixed alternatives array or path to config
      */
-    public function getAlternatives(): array
+    public function getAlternatives()
     {
-        return $this->getExtraValue(self::EXTRA_ALTERNATIVES_OPTION_NAME, []);
+        return $this->getExtraValue(self::EXTRA_ALTERNATIVES_OPTION_NAME);
     }
 
     /**
