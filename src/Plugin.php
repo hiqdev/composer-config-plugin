@@ -200,8 +200,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $alternatives = $package->getAlternatives();
             if (is_string($alternatives)) {
                 $this->alternatives = $this->readConfig($package, $alternatives);
-            } else {
+            } elseif (is_array($alternatives)) {
                 $this->alternatives = $alternatives;
+            } elseif (!empty($alternatives)) {
+                throw new BadConfigurationException('alternatives must be array or path to configuration file');
             }
         }
 
