@@ -144,9 +144,10 @@ class Config
     protected function writePhpFile(string $path, $data, bool $withEnv, bool $withDefines): void
     {
         $depth = $this->findDepth();
+        $baseDir = $depth>0 ? "dirname(__DIR__, $depth)" : '__DIR__';
         static::putFile($path, $this->replaceMarkers(implode("\n\n", array_filter([
             'header'  => '<?php',
-            'baseDir' => "\$baseDir = dirname(__DIR__, $depth);",
+            'baseDir' => "\$baseDir = $baseDir;",
             'BASEDIR' => "defined('COMPOSER_CONFIG_PLUGIN_BASEDIR') or define('COMPOSER_CONFIG_PLUGIN_BASEDIR', \$baseDir);",
             'dotenv'  => $withEnv ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
             'defines' => $withDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
@@ -159,7 +160,7 @@ class Config
         $outDir = dirname($this->getOutputPath());
         $diff = substr($outDir, strlen($this->getBaseDir()));
 
-        return substr_count($diff, '/');
+        return substr_count($diff, DIRECTORY_SEPARATOR);
     }
 
     /**

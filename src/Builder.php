@@ -54,7 +54,14 @@ class Builder
 
     public function setOutputDir($outputDir)
     {
-        $this->outputDir = $outputDir ?: static::findOutputDir();
+        $this->outputDir = $outputDir
+            ? static::buildAbsPath($this->getBaseDir(), $outputDir)
+            : static::findOutputDir();
+    }
+
+    public function getBaseDir(): string
+    {
+        return dirname(__DIR__, 4);
     }
 
     public function getOutputDir(): string
@@ -79,7 +86,7 @@ class Builder
      * @param string $vendor path to vendor dir
      * @return string
      */
-    public static function findOutputDir($vendor = null)
+    public static function findOutputDir($vendor = null): string
     {
         if ($vendor) {
             $dir = $vendor . '/hiqdev/' . basename(dirname(__DIR__));
@@ -98,7 +105,12 @@ class Builder
      */
     public static function path($filename, $vendor = null)
     {
-        return static::findOutputDir($vendor) . DIRECTORY_SEPARATOR . $filename . '.php';
+        return static::buildAbsPath(static::findOutputDir($vendor), $filename . '.php');
+    }
+
+    public static function buildAbsPath(string $dir, string $file): string
+    {
+        return strncmp($file, DIRECTORY_SEPARATOR, 1) === 0 ? $file : $dir . DIRECTORY_SEPARATOR . $file;
     }
 
     /**
