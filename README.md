@@ -67,6 +67,7 @@ List your config files in `composer.json` like the following:
 
 ```json
 "extra": {
+    "config-plugin-output-dir": "path/relative-to-composer-json",
     "config-plugin": {
         "params": [
             "config/params.php",
@@ -156,8 +157,9 @@ Above can be shortened to `composer du -v`.
 - You can see the list of configs and files that plugin has detected and uses
 to build configs. It is located in `vendor/hiqdev/composer-config-plugin/output/__files.php`.
 
-- You can see the assembled configs in
-`vendor/hiqdev/composer-config-plugin-output` directory.
+- You can see the assembled configs in the output directory which is
+`vendor/hiqdev/composer-config-plugin-output` by default and can be configured
+with `config-plugin-output-dir` extra option in `composer.json`.
 
 ## Known issues
 
