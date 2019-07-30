@@ -22,7 +22,7 @@ class ReaderFactory
 {
     private static $loaders;
 
-    private static $knownReaders = [
+    protected static $knownReaders = [
         'env'   => EnvReader::class,
         'php'   => PhpReader::class,
         'json'  => JsonReader::class,

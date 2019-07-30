@@ -16,6 +16,7 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use hiqdev\composer\config\exceptions\BadConfigurationException;
 use hiqdev\composer\config\exceptions\FailedReadException;
 use hiqdev\composer\config\readers\ReaderFactory;
 
