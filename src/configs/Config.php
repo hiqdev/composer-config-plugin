@@ -159,7 +159,7 @@ class Config
         $outDir = dirname($this->getOutputPath());
         $diff = substr($outDir, strlen($this->getBaseDir()));
 
-        return substr_count($diff, '/');
+        return substr_count($diff, chr(92));
     }
 
     /**
