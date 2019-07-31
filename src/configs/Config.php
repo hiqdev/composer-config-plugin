@@ -129,7 +129,7 @@ class Config
 
     protected function writeFile(string $path, array $data): void
     {
-        $this->writePhpFile($path, $data, true, true);
+        $this->writePhpFile($path, $data);
     }
 
     /**
@@ -141,7 +141,7 @@ class Config
      * @throws FailedWriteException
      * @throws \ReflectionException
      */
-    protected function writePhpFile(string $path, $data, bool $withEnv, bool $withDefines): void
+    protected function writePhpFile(string $path, $data): void
     {
         $depth = $this->findDepth();
         $baseDir = $depth>0 ? "dirname(__DIR__, $depth)" : '__DIR__';
@@ -149,10 +149,26 @@ class Config
             'header'  => '<?php',
             'baseDir' => "\$baseDir = $baseDir;",
             'BASEDIR' => "defined('COMPOSER_CONFIG_PLUGIN_BASEDIR') or define('COMPOSER_CONFIG_PLUGIN_BASEDIR', \$baseDir);",
-            'dotenv'  => $withEnv ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
-            'defines' => $withDefines ? $this->builder->getConfig('defines')->buildRequires() : '',
+            'dotenv'  => $this->withEnv() ? "\$_ENV = array_merge((array) require __DIR__ . '/dotenv.php', (array) \$_ENV);" : '',
+            'defines' => $this->withDefines() ? $this->builder->getConfig('defines')->buildRequires() : '',
+            'params'  => $this->withParams() ? "\$params = require __DIR__ . '/params.php';" : '',
             'content' => is_array($data) ? $this->renderVars($data) : $data,
         ]))) . "\n");
+    }
+
+    private function withEnv(): bool
+    {
+        return !in_array(static::class, [System::class, DotEnv::class], true);
+    }
+
+    private function withDefines(): bool
+    {
+        return !in_array(static::class, [System::class, DotEnv::class, Defines::class], true);
+    }
+
+    private function withParams(): bool
+    {
+        return !in_array(static::class, [System::class, DotEnv::class, Defines::class, Params::class], true);
     }
 
     private function findDepth()

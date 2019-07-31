@@ -36,9 +36,4 @@ class Defines extends Config
 
         return implode("\n", $res);
     }
-
-    protected function writeFile(string $path, array $data): void
-    {
-        $this->writePhpFile($path, $this->buildRequires(), true, false);
-    }
 }

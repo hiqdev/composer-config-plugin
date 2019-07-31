@@ -17,8 +17,4 @@ namespace hiqdev\composer\config\configs;
  */
 class DotEnv extends Config
 {
-    protected function writeFile(string $path, array $data): void
-    {
-        $this->writePhpFile($path, $data, false, false);
-    }
 }

@@ -39,11 +39,6 @@ class System extends Config
         return $this;
     }
 
-    protected function writeFile(string $path, array $data): void
-    {
-        $this->writePhpFile($path, $data, false, false);
-    }
-
     public function load(array $paths = []): Config
     {
         $path = $this->getOutputPath();
