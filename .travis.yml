@@ -1,20 +1,26 @@
 language: php
+
 php:
-    - 7.1
-dist: trusty
-cache:
-    directories:
-        - $HOME/.composer/cache
-before_install:
-    - 'composer self-update'
-    - 'composer --version'
-    - 'wget http://hiqdev.com/hidev/hidev.phar -O hidev.phar && chmod a+x hidev.phar'
-    - './hidev.phar --version'
-    - './hidev.phar travis/before-install'
+  - 7.2
+  - 7.3
+
+# faster builds on new travis setup not using sudo
 sudo: false
+
+# cache vendor dirs
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 install:
-    - './hidev.phar travis/install'
+  - travis_retry composer self-update && composer --version
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - travis_retry composer install --prefer-dist --no-interaction
+
 script:
-    - './hidev.phar travis/script'
+  - |
+    vendor/bin/phpunit $PHPUNIT_FLAGS --coverage-clover=coverage.clover
+
 after_script:
-    - './hidev.phar travis/after-script'
+  - wget -c https://scrutinizer-ci.com/ocular.phar
+  - php php-ocular code-coverage:upload --format=php-clover coverage.clover
