@@ -11,8 +11,10 @@
 namespace hiqdev\composer\config;
 
 use Closure;
+use Opis\Closure\ReflectionClosure;
 use ReflectionFunction;
 use Riimu\Kit\PHPEncoder\PHPEncoder;
+use Opis\Closure\SerializableClosure;
 
 /**
  * Helper class.
@@ -151,32 +153,6 @@ class Helper
      */
     public static function dumpClosure(Closure $closure): string
     {
-        $res = 'function (';
-        $fun = new ReflectionFunction($closure);
-        $args = [];
-        foreach ($fun->getParameters() as $arg) {
-            $str = '';
-            if ($arg->isArray()) {
-                $str .= 'array ';
-            } elseif ($arg->getClass()) {
-                $str .= $arg->getClass()->name . ' ';
-            }
-            if ($arg->isPassedByReference()) {
-                $str .= '&';
-            }
-            $str .= '$' . $arg->name;
-            if ($arg->isOptional()) {
-                $str .= ' = ' . \var_export($arg->getDefaultValue(), true);
-            }
-            $args[] = $str;
-        }
-        $res .= implode(', ', $args);
-        $res .= ') {' . PHP_EOL;
-        $lines = file($fun->getFileName());
-        for ($i = $fun->getStartLine(); $i < $fun->getEndLine(); ++$i) {
-            $res .= $lines[$i];
-        }
-
-        return rtrim($res, "\r\n ,");
+        return (new ReflectionClosure($closure))->getCode();
     }
 }

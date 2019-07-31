@@ -1,0 +1,27 @@
+<?php
+namespace hiqdev\composer\config\tests\unit;
+
+use hiqdev\composer\config\Helper;
+use PHPUnit\Framework\TestCase;
+
+class HelperTest extends TestCase
+{
+    public function testDumpClosure(): void
+    {
+        $params = ['test' => 42];
+        $closure = static function () use ($params) {
+            return $params['test'];
+        };
+
+        $closureDump = Helper::dumpClosure($closure);
+
+        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }", $closureDump);
+    }
+
+    private function assertSameWithoutLE($expected, $actual, string $message = ''): void
+    {
+        $expected = preg_replace('/\R/', "\n", $expected);
+        $actual = preg_replace('/\R/', "\n", $actual);
+        $this->assertSame($expected, $actual, $message);
+    }
+}
