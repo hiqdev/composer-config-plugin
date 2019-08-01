@@ -11,10 +11,7 @@
 namespace hiqdev\composer\config;
 
 use Closure;
-use Opis\Closure\ReflectionClosure;
-use ReflectionFunction;
 use Riimu\Kit\PHPEncoder\PHPEncoder;
-use Opis\Closure\SerializableClosure;
 
 /**
  * Helper class.
@@ -75,32 +72,13 @@ class Helper
 
     /**
      * Returns PHP-executable string representation of given value.
-     * In contrast to var_dump outputs Closures as PHP code.
+     * Uses Riimu/Kit-PHPEncoder based `var_export` alternative.
+     * And Opis/Closure to dump closures as PHP code.
      * @param mixed $value
      * @return string
      * @throws \ReflectionException
      */
     public static function exportVar($value): string
-    {
-        $closures = self::collectClosures($value);
-        $res = static::encodeVar($value);
-        if (!empty($closures)) {
-            $subs = [];
-            foreach ($closures as $key => $closure) {
-                $subs["'" . $key . "'"] = self::dumpClosure($closure);
-            }
-            $res = strtr($res, $subs);
-        }
-
-        return $res;
-    }
-
-    /**
-     * Riimu/Kit-PHPEncoder based `var_export` alternative.
-     * @param mixed $value
-     * @return string
-     */
-    public static function encodeVar($value): string
     {
         return static::getEncoder()->encode($value);
     }
@@ -110,49 +88,19 @@ class Helper
     private static function getEncoder()
     {
         if (static::$encoder === null) {
-            static::$encoder = new PHPEncoder([
-                'object.format' => 'serialize',
-            ]);
+            static::$encoder = static::createEncoder();
         }
 
         return static::$encoder;
     }
 
-    /**
-     * Collects closures from given input.
-     * Substitutes closures with a tag.
-     * @param mixed $input will be changed
-     * @return array array of found closures
-     */
-    private static function collectClosures(&$input): array
+    private static function createEncoder()
     {
-        static $closureNo = 1;
-        $closures = [];
-        if (\is_array($input)) {
-            foreach ($input as &$value) {
-                if (\is_array($value) || $value instanceof Closure) {
-                    $closures = array_merge($closures, self::collectClosures($value));
-                }
-            }
-        } elseif ($input instanceof Closure) {
-            ++$closureNo;
-            $key = "--==<<[[((Closure#$closureNo))]]>>==--";
-            $closures[$key] = $input;
-            $input = $key;
-        }
+        $encoder = new PHPEncoder([
+            'object.format' => 'serialize',
+        ]);
+        $encoder->addEncoder(new ClosureEncoder(), true);
 
-        return $closures;
-    }
-
-    /**
-     * Dumps closure object to string.
-     * Based on http://www.metashock.de/2013/05/dump-source-code-of-closure-in-php/.
-     * @param Closure $closure
-     * @return string
-     * @throws \ReflectionException
-     */
-    public static function dumpClosure(Closure $closure): string
-    {
-        return (new ReflectionClosure($closure))->getCode();
+        return $encoder;
     }
 }

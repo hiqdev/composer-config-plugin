@@ -1,4 +1,5 @@
 <?php
+
 namespace hiqdev\composer\config\tests\unit;
 
 use hiqdev\composer\config\Helper;
@@ -6,16 +7,16 @@ use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase
 {
-    public function testDumpClosure(): void
+    public function testExportClosure(): void
     {
         $params = ['test' => 42];
         $closure = static function () use ($params) {
             return $params['test'];
         };
 
-        $closureDump = Helper::dumpClosure($closure);
+        $exportedClosure = Helper::exportVar($closure);
 
-        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }", $closureDump);
+        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }", $exportedClosure);
     }
 
     private function assertSameWithoutLE($expected, $actual, string $message = ''): void
