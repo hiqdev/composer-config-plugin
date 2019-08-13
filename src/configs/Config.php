@@ -14,6 +14,7 @@ use hiqdev\composer\config\Builder;
 use hiqdev\composer\config\exceptions\FailedWriteException;
 use hiqdev\composer\config\Helper;
 use hiqdev\composer\config\readers\ReaderFactory;
+use ReflectionException;
 
 /**
  * Config class represents output configuration file.
@@ -139,7 +140,7 @@ class Config
      * @param bool $withEnv
      * @param bool $withDefines
      * @throws FailedWriteException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function writePhpFile(string $path, $data): void
     {
@@ -182,7 +183,7 @@ class Config
     /**
      * @param array $vars array to be exported
      * @return string
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function renderVars(array $vars): string
     {
@@ -207,8 +208,9 @@ class Config
         if (file_exists($path) && $content === file_get_contents($path)) {
             return;
         }
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
+        $dirname = dirname($path);
+        if (!file_exists($dirname) && !mkdir($dirname, 0777, true) && !is_dir($dirname)) {
+            throw new FailedWriteException(sprintf('Directory "%s" was not created', $dirname));
         }
         if (false === file_put_contents($path, $content)) {
             throw new FailedWriteException("Failed write file $path");
@@ -273,10 +275,9 @@ class Config
         if ($skippable) {
             $path = substr($path, 1);
         }
-        $result = (substr($path, 0, strlen($dir)) === $dir) ? $alias . substr($path, strlen($dir) - 1) : $path;
         if ($path === $dir) {
             $result = $alias;
-        } elseif (substr($path, 0, strlen($end)) === $end) {
+        } elseif (strpos($path, $end) === 0) {
             $result = $alias . substr($path, strlen($end) - 1);
         } else {
             $result = $path;
