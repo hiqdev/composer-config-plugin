@@ -155,7 +155,7 @@ composer dump-autoload --verbose
 Above can be shortened to `composer du -v`.
 
 - You can see the list of configs and files that plugin has detected and uses
-to build configs. It is located in `vendor/hiqdev/composer-config-plugin/output/__files.php`.
+to build configs. It is located in `vendor/hiqdev/composer-config-plugin-output/__files.php`.
 
 - You can see the assembled configs in the output directory which is
 `vendor/hiqdev/composer-config-plugin-output` by default and can be configured
