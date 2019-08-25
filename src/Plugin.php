@@ -171,11 +171,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $res = [];
         foreach ($this->orderedFiles as $file) {
             if (isset($keys[$file])) {
-                $res[] = $file;
+                $res[$file] = $file;
             }
         }
 
-        return $res;
+        return array_values($res);
     }
 
     /**
