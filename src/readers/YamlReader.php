@@ -11,6 +11,7 @@
 namespace hiqdev\composer\config\readers;
 
 use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlReader - reads YAML files.
@@ -21,10 +22,10 @@ class YamlReader extends AbstractReader
 {
     public function readRaw($path)
     {
-        if (!class_exists('Symfony\Component\Yaml\Yaml')) {
-            throw new UnsupportedFileTypeException('for YAML support require `symfony/yaml` in your composer.json');
+        if (!class_exists(Yaml::class)) {
+            throw new UnsupportedFileTypeException("for YAML support require `symfony/yaml` in your composer.json (reading $path)");
         }
 
-        return \Symfony\Component\Yaml\Yaml::parse($this->getFileContents($path));
+        return Yaml::parse($this->getFileContents($path));
     }
 }
