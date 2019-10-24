@@ -26,14 +26,28 @@ class Params extends Config
     {
         $env = $this->builder->getConfig('dotenv')->getValues();
         if (!empty($vars)) {
-            foreach (array_keys($vars) as $key) {
-                $envKey = strtoupper(strtr($key, '.', '_'));
-                if (isset($env[$envKey])) {
-                    $vars[$key] = $env[$envKey];
+            foreach ($vars as $key => &$value) {
+                if (is_array($value)) {
+                    foreach (array_keys($value) as $subkey) {
+                        $envKey = $this->getEnvKey($key . '_' . $subkey);
+                        if (isset($env[$envKey])) {
+                            $value[$subkey] = $env[$envKey];
+                        }
+                    }
+                } else {
+                    $envKey = $this->getEnvKey($key);
+                    if (isset($env[$envKey])) {
+                        $vars[$key] = $env[$envKey];
+                    }
                 }
             }
         }
 
         return $vars;
+    }
+
+    private function getEnvKey(string $key): string
+    {
+        return strtoupper(strtr($key, '.', '_'));
     }
 }
