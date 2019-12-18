@@ -48,6 +48,6 @@ class Params extends Config
 
     private function getEnvKey(string $key): string
     {
-        return strtoupper(strtr($key, '.', '_'));
+        return strtoupper(strtr($key, '.-', '__'));
     }
 }
