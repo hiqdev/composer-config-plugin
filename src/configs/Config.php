@@ -78,17 +78,40 @@ class Config
 
     public function load(array $paths = []): self
     {
+        $this->sources = $this->loadFiles($paths);
+
+        return $this;
+    }
+
+    protected function loadFiles(array $paths): array
+    {
+        switch (count($paths)) {
+        case 0:
+            return [];
+        case 1:
+            return [$this->loadFile(reset($paths))];
+        }
+
         $configs = [];
         foreach ($paths as $path) {
-            $config = $this->loadFile($path);
-            if (!empty($config)) {
-                $configs[] = $config;
+            $cs = $this->loadFiles($this->glob($path));
+            foreach ($cs as $config) {
+                if (!empty($config)) {
+                    $configs[] = $config;
+                }
             }
         }
 
-        $this->sources = $configs;
+        return $configs;
+    }
 
-        return $this;
+    protected function glob(string $path): array
+    {
+        if (strpos($path, '*') === FALSE) {
+            return [$path];
+        }
+
+        return glob($path);
     }
 
     /**
