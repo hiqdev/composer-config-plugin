@@ -145,7 +145,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function getAllFiles(string $name): array
+    protected function getAllFiles(string $name, array $stack = []): array
     {
         if (empty($this->files[$name])) {
             return[];
@@ -153,7 +153,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $res = [];
         foreach ($this->files[$name] as $file) {
             if (strncmp($file, '$', 1) === 0) {
-                $res = array_merge($res, $this->getAllFiles(substr($file, 1)));
+                if (!in_array($name, $stack, true)) {
+                    $res = array_merge($res, $this->getAllFiles(substr($file, 1), array_merge($stack, [$name])));
+                }
             } else {
                 $res[] = $file;
             }
