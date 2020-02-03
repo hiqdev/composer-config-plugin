@@ -90,7 +90,7 @@ class Builder
     {
         $baseDir = $baseDir ?: static::findBaseDir();
         $path = "$baseDir/composer.json";
-        $data = json_decode(file_get_contents($path), true);
+        $data = @json_decode(file_get_contents($path), true);
         $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
 
         return $dir ? static::buildAbsPath($baseDir, $dir) : static::defaultOutputDir($baseDir);
