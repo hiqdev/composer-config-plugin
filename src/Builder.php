@@ -83,13 +83,33 @@ class Builder
 
     /**
      * Returns default output dir.
+     * @param string $baseDir path to project base dir
+     * @return string
+     */
+    public static function findOutputDir(string $baseDir = null): string
+    {
+        $baseDir = $baseDir ?: static::findBaseDir();
+        $path = "$baseDir/composer.json";
+        $data = json_decode(file_get_contents($path), true);
+        $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
+
+        return $dir ? static::buildAbsPath($baseDir, $dir) : static::defaultOutputDir($baseDir);
+    }
+
+    public static function findBaseDir(): string
+    {
+        return dirname(__DIR__, 4);
+    }
+
+    /**
+     * Returns default output dir.
      * @param string $vendor path to vendor dir
      * @return string
      */
-    public static function findOutputDir($vendor = null): string
+    public static function defaultOutputDir($baseDir = null): string
     {
-        if ($vendor) {
-            $dir = $vendor . '/hiqdev/' . basename(dirname(__DIR__));
+        if ($baseDir) {
+            $dir = $baseDir . '/vendor/hiqdev/' . basename(dirname(__DIR__));
         } else {
             $dir = \dirname(__DIR__);
         }
@@ -100,12 +120,12 @@ class Builder
     /**
      * Returns full path to assembled config file.
      * @param string $filename name of config
-     * @param string $vendor path to vendor dir
+     * @param string $baseDir path to base dir
      * @return string absolute path
      */
-    public static function path($filename, $vendor = null)
+    public static function path($filename, $baseDir = null)
     {
-        return static::buildAbsPath(static::findOutputDir($vendor), $filename . '.php');
+        return static::buildAbsPath(static::findOutputDir($baseDir), $filename . '.php');
     }
 
     public static function buildAbsPath(string $dir, string $file): string
