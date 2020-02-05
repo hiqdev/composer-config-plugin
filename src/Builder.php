@@ -89,7 +89,7 @@ class Builder
     public static function findOutputDir(string $baseDir = null): string
     {
         $baseDir = $baseDir ?: static::findBaseDir();
-        $path = "$baseDir/composer.json";
+        $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
         $data = @json_decode(file_get_contents($path), true);
         $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
 
@@ -109,7 +109,7 @@ class Builder
     public static function defaultOutputDir($baseDir = null): string
     {
         if ($baseDir) {
-            $dir = $baseDir . '/vendor/hiqdev/' . basename(dirname(__DIR__));
+            $dir = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'hiqdev' . DIRECTORY_SEPARATOR . basename(dirname(__DIR__));
         } else {
             $dir = \dirname(__DIR__);
         }
