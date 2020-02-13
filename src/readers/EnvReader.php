@@ -26,30 +26,26 @@ class EnvReader extends AbstractReader
             throw new UnsupportedFileTypeException('for .env support require `vlucas/phpdotenv` in your composer.json');
         }
         $info = pathinfo($path);
-        $dotenv = $this->createDotenv($info['dirname'], $info['basename']);
-        $dotenv->overload();
+        $this->loadDotenv($info['dirname'], $info['basename']);
 
         return $_ENV;
-        #  $oldenvs = $_ENV;
-        #  $dotenv->load();
-        #  $newenvs = $_ENV;
-
-        #  return array_diff_assoc($newenvs, $oldenvs);
     }
 
     /**
-     * Creates Dotenv object.
-     * Supports both 2 and 3 version of `phpdotenv`
+     * Creates and loads Dotenv object.
+     * Supports all 2, 3 and 4 version of `phpdotenv`
      * @param mixed $dir
      * @param mixed $file
-     * @return Dotenv
+     * @return Dotenv\Dotenv
      */
-    private function createDotenv($dir, $file)
+    private function loadDotenv($dir, $file)
     {
-        if (method_exists(Dotenv::class, 'create')) {
-            return Dotenv::create($dir, $file);
+        if (method_exists(Dotenv::class, 'createMutable')) {
+            Dotenv::createMutable($dir, $file)->load();
+        } elseif (method_exists(Dotenv::class, 'create')) {
+            Dotenv::create($dir, $file)->overload();
         } else {
-            return new Dotenv($dir, $file);
+            (new Dotenv($dir, $file))->overload();
         }
     }
 }
