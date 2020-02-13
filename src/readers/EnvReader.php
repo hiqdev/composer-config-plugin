@@ -27,29 +27,29 @@ class EnvReader extends AbstractReader
         }
         $info = pathinfo($path);
         $dotenv = $this->createDotenv($info['dirname'], $info['basename']);
-        $dotenv->overload();
-
+        if (method_exists($dotenv, 'load')) {
+            $dotenv->load();
+        } else {
+            $dotenv->overload();
+        }
         return $_ENV;
-        #  $oldenvs = $_ENV;
-        #  $dotenv->load();
-        #  $newenvs = $_ENV;
-
-        #  return array_diff_assoc($newenvs, $oldenvs);
     }
 
     /**
      * Creates Dotenv object.
-     * Supports both 2 and 3 version of `phpdotenv`
+     * Supports all 2, 3 and 4 version of `phpdotenv`
      * @param mixed $dir
      * @param mixed $file
-     * @return Dotenv
+     * @return Dotenv\Dotenv
      */
     private function createDotenv($dir, $file)
     {
+        if (method_exists(Dotenv::class, 'createImmutable')) {
+            return Dotenv::createImmutable($dir, $file);
+        }
         if (method_exists(Dotenv::class, 'create')) {
             return Dotenv::create($dir, $file);
-        } else {
-            return new Dotenv($dir, $file);
         }
+        return new Dotenv($dir, $file);
     }
 }
