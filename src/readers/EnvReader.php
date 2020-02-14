@@ -27,10 +27,10 @@ class EnvReader extends AbstractReader
         }
         $info = pathinfo($path);
         $dotenv = $this->createDotenv($info['dirname'], $info['basename']);
-        if (method_exists($dotenv, 'load')) {
-            $dotenv->load();
-        } else {
+        if (method_exists($dotenv, 'overload')) {
             $dotenv->overload();
+        } else {
+            $dotenv->load();
         }
         return $_ENV;
     }
