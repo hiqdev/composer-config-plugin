@@ -111,9 +111,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->builder->setOutputDir($this->outputDir);
         $this->builder->buildAllConfigs($this->files);
 
-        $save = $this->files;
+        $saveFiles = $this->files;
+        $saveEnv = $_ENV;
         foreach ($this->alternatives as $name => $files) {
-            $this->files = $save;
+            $this->files = $saveFiles;
+            $_ENV = $saveEnv;
             $builder = $this->builder->createAlternative($name);
             $this->addFiles($this->rootPackage, $files);
             $builder->buildAllConfigs($this->files);
