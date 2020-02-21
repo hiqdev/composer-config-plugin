@@ -197,10 +197,10 @@ class Config
 
     private function findDepth()
     {
-        $outDir = dirname($this->getOutputPath());
+        $outDir = dirname(self::normalizePath($this->getOutputPath()));
         $diff = substr($outDir, strlen($this->getBaseDir()));
 
-        return substr_count($diff, DIRECTORY_SEPARATOR);
+        return substr_count($diff, '/');
     }
 
     /**
