@@ -200,7 +200,7 @@ class Config
         $outDir = dirname(self::normalizePath($this->getOutputPath()));
         $diff = substr($outDir, strlen($this->getBaseDir()));
 
-        return substr_count($diff, '/');
+        return substr_count($diff, self::UNIX_DS);
     }
 
     /**
