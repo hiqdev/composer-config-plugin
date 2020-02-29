@@ -37,6 +37,9 @@ package:
         [english]:  https://hiqdev.com/pages/articles/app-organization
         [russian]:  https://habrahabr.ru/post/329286/
 
+readme:
+    forceRewrite: false
+
 plugins:
     hiqdev/composer-config-plugin:  "dev-master"
     hiqdev/hidev-php:               "dev-master"
