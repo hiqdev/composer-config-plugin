@@ -10,7 +10,6 @@
 
 namespace hiqdev\composer\config;
 
-use Closure;
 use Riimu\Kit\PHPEncoder\PHPEncoder;
 
 /**
