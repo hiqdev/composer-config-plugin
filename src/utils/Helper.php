@@ -11,7 +11,6 @@
 namespace hiqdev\composer\config\utils;
 
 use Riimu\Kit\PHPEncoder\PHPEncoder;
-use hiqdev\composer\config\utils\RemoveArrayKeys;
 
 /**
  * Helper class.

@@ -3,6 +3,7 @@
 namespace hiqdev\composer\config\tests\unit;
 
 use hiqdev\composer\config\utils\Helper;
+use hiqdev\composer\config\utils\RemoveArrayKeys;
 use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase
@@ -24,5 +25,24 @@ class HelperTest extends TestCase
         $expected = preg_replace('/\R/', "\n", $expected);
         $actual = preg_replace('/\R/', "\n", $actual);
         $this->assertSame($expected, $actual, $message);
+    }
+
+    public function testFixRemoveArrayKeys()
+    {
+        $config = [
+            'a' => '1',
+            'b' => '2',
+            'c' => [
+                'd' => 4,
+                'remove' => new RemoveArrayKeys(),
+                'e' => 5,
+            ],
+        ];
+
+        $fixed = $config;
+        unset($fixed['c']['remove']);
+        $fixed['c'] = array_values($fixed['c']);
+
+        $this->assertEquals($fixed, Helper::fixConfig($config));
     }
 }
