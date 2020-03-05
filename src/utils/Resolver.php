@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\composer\config;
+namespace hiqdev\composer\config\utils;
 
 use hiqdev\composer\config\exceptions\CircularDependencyException;
 

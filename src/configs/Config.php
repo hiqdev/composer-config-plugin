@@ -12,7 +12,7 @@ namespace hiqdev\composer\config\configs;
 
 use hiqdev\composer\config\Builder;
 use hiqdev\composer\config\exceptions\FailedWriteException;
-use hiqdev\composer\config\Helper;
+use hiqdev\composer\config\utils\Helper;
 use hiqdev\composer\config\readers\ReaderFactory;
 use ReflectionException;
 

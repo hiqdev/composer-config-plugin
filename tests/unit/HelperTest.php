@@ -2,7 +2,7 @@
 
 namespace hiqdev\composer\config\tests\unit;
 
-use hiqdev\composer\config\Helper;
+use hiqdev\composer\config\utils\Helper;
 use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase

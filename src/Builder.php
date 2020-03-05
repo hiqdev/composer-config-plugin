@@ -11,6 +11,7 @@
 namespace hiqdev\composer\config;
 
 use hiqdev\composer\config\configs\ConfigFactory;
+use hiqdev\composer\config\utils\Resolver;
 
 /**
  * Builder assembles config files.
