@@ -1,5 +1,15 @@
 # hiqdev/composer-config-plugin
 
+## [0.4.0] - 2020-03-05
+
+- Fixed config assembling on Windows ([@samdark])
+- Added configuring of output dir ([@hiqsol])
+- Added building alternative configs ([@hiqsol])
+- Added support for `vlucas/phpdotenv` v4 ([seliga.honza@gmail.com])
+- Better work with env vars ([@hiqsol])
+- Used `riimu/kit-phpencoder` for variable exporting ([@hiqsol])
+- Bug fixes ([@hiqsol], [@SilverFire], [@samdark], [soul11201@gmail.com], [jomon.entero@gmail.com], [machour@gmail.com])
+
 ## [0.3.0] - 2019-04-11
 
 - Fixed config reading and merging ([@hiqsol])
@@ -97,7 +107,7 @@
 [loveorigami@mail.ru]: https://github.com/loveorigami
 [@marclaporte]: https://github.com/marclaporte
 [marc@laporte.name]: https://github.com/marclaporte
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.3.0...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -115,3 +125,4 @@
 [0.2.4]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.3...0.2.4
 [0.2.5]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.4...0.2.5
 [0.3.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...0.3.0
+[0.4.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.3.0...0.4.0

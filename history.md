@@ -1,5 +1,56 @@
 # hiqdev/composer-config-plugin
 
+## [0.4.0] - 2020-03-05
+
+- Fixed config assembling on Windows
+    - [217fcbe] 2020-02-21 Fix building config with custom dir under Windows [@samdark]
+    - [341d3ad] 2020-02-06 Fix config assembly on Windows [@samdark]
+- Added configuring of output dir
+    - [892eb6b] 2020-02-03 Fixed `findOutputDir` to work properly when output dir is not default [@hiqsol]
+    - [2a84e31] 2020-01-21 Removed unused `OutputDir` class [@hiqsol]
+    - [4d68359] 2020-02-20 Fixed problem with env vars leaking between alternatives [@hiqsol]
+    - [0d92a2d] 2019-07-30 Added `config-plugin-output-dir` option description [@hiqsol]
+    - [7e7b36e] 2019-07-30 Fixed writing to changed output dir [@hiqsol]
+    - [8a6a588] 2019-07-25 Fixed taking proper dirname depth [@hiqsol]
+    - [f1b4ff1] 2019-07-25 Added `OutputDir` NOT finished [@hiqsol]
+- Added building alternative configs
+    - [e06125e] 2019-07-26 Fixed getting alternatives [@hiqsol]
+    - [6a4eb47] 2019-07-25 Fixed bugs in getting alternatives, allowed alternatives file [@hiqsol]
+    - [7317438] 2019-07-25 Added building `alternatives` [@hiqsol]
+    - [b1c9639] 2019-07-25 Added more get extra values methods to `Package` class [@hiqsol]
+    - [42f3c4e] 2019-07-25 Added `Config::clone()` [@hiqsol]
+    - [910c127] 2019-07-25 Changed `EnvReader` to return all ENV values (was only new) [@hiqsol]
+    - [1d6dd28] 2019-07-25 Fixed `ReaderFactory` to distinguish builders [@hiqsol]
+- Added support for `vlucas/phpdotenv` v4
+    - [1db8b15] 2020-02-13 Added support for `vlucas/phpdotenv` v4 [seliga.honza@gmail.com]
+- Better work with env vars
+    - [d038a30] 2019-12-18 Allowed `-` in params for pushing env vars [@hiqsol]
+    - [7fa31d1] 2019-10-24 Allowed to push env vars into config arrays [@hiqsol]
+- Used `riimu/kit-phpencoder` for variable exporting
+    - [594aaab] 2019-07-02 Used `riimu/kit-phpencoder` for variable exporting [@hiqsol]
+- Bug fixes
+    - [c18a233] 2020-03-05 Added test for `RemoveArrayKeys` [@hiqsol]
+    - [c84e82e] 2020-03-05 Refactored out `utils` dir [@hiqsol]
+    - [7d445fa] 2020-03-04 Added `RemoveArrayKeys` fix utility [@hiqsol]
+    - [4a6b89c] 2020-02-29 Disabled readme generation by hidev [@hiqsol]
+    - [fc0df4c] 2020-02-03 Disabled warning if `composer.json` not readable [@hiqsol]
+    - [0ebcdea] 2020-01-17 Prevented infinite recursion in `getAllFiles()` #48 [@hiqsol]
+    - [3fd5c38] 2020-01-11 Enabled wildcard config paths [@hiqsol]
+    - [d238de7] 2019-08-13 Config::putFile() should throw an exception when dir can not be created [@SilverFire]
+    - [e2e8c7b] 2019-08-25 Fixing files doubling #42 [@hiqsol]
+    - [3babef6] 2019-08-25 Extended error message for better debugging [@hiqsol]
+    - [266138a] 2019-08-20 Update README.md [@SilverFire]
+    - [3e18cbe] 2019-08-01 Greatly simplified export of closures [@hiqsol]
+    - [fb5a5d8] 2019-07-31 Fix #39: use opis/closure for dumping closure code [@samdark]
+    - [b5fe4d5] 2019-07-31 Added `$params` initialization in configs [@hiqsol]
+    - [ef8a42c] 2019-07-31 Redone travis config and require-dev phpunit [@hiqsol]
+    - [a0401ea] 2019-07-31 Returned back memoization in ReaderFactory [@hiqsol]
+    - [3d9bb59] 2019-07-31 Add issue and pull request templates [@samdark]
+    - [77a8eac] 2019-07-04 Raised PHP version requirement to 7.1 #32 [@hiqsol]
+    - [b36d5ad] 2019-07-04 add 7.0 [soul11201@gmail.com]
+    - [820a9e6] 2019-05-12 Update Plugin.php [jomon.entero@gmail.com]
+    - [4f8d841] 2019-04-23 Check both old & new Yii Array helpers classes [machour@gmail.com]
+
 ## [0.3.0] - 2019-04-11
 
 - Fixed config reading and merging
@@ -295,7 +346,7 @@
 [ab86c3c]: https://github.com/hiqdev/composer-config-plugin/commit/ab86c3c
 [e447659]: https://github.com/hiqdev/composer-config-plugin/commit/e447659
 [e1565a6]: https://github.com/hiqdev/composer-config-plugin/commit/e1565a6
-[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...HEAD
+[Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.3.0...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.6...0.0.7
@@ -423,3 +474,45 @@
 [5cbfdac]: https://github.com/hiqdev/composer-config-plugin/commit/5cbfdac
 [99c5696]: https://github.com/hiqdev/composer-config-plugin/commit/99c5696
 [0.3.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.2.5...0.3.0
+[c18a233]: https://github.com/hiqdev/composer-config-plugin/commit/c18a233
+[c84e82e]: https://github.com/hiqdev/composer-config-plugin/commit/c84e82e
+[7d445fa]: https://github.com/hiqdev/composer-config-plugin/commit/7d445fa
+[4a6b89c]: https://github.com/hiqdev/composer-config-plugin/commit/4a6b89c
+[217fcbe]: https://github.com/hiqdev/composer-config-plugin/commit/217fcbe
+[4d68359]: https://github.com/hiqdev/composer-config-plugin/commit/4d68359
+[1db8b15]: https://github.com/hiqdev/composer-config-plugin/commit/1db8b15
+[341d3ad]: https://github.com/hiqdev/composer-config-plugin/commit/341d3ad
+[fc0df4c]: https://github.com/hiqdev/composer-config-plugin/commit/fc0df4c
+[892eb6b]: https://github.com/hiqdev/composer-config-plugin/commit/892eb6b
+[2a84e31]: https://github.com/hiqdev/composer-config-plugin/commit/2a84e31
+[0ebcdea]: https://github.com/hiqdev/composer-config-plugin/commit/0ebcdea
+[3fd5c38]: https://github.com/hiqdev/composer-config-plugin/commit/3fd5c38
+[d038a30]: https://github.com/hiqdev/composer-config-plugin/commit/d038a30
+[7fa31d1]: https://github.com/hiqdev/composer-config-plugin/commit/7fa31d1
+[d238de7]: https://github.com/hiqdev/composer-config-plugin/commit/d238de7
+[e2e8c7b]: https://github.com/hiqdev/composer-config-plugin/commit/e2e8c7b
+[3babef6]: https://github.com/hiqdev/composer-config-plugin/commit/3babef6
+[266138a]: https://github.com/hiqdev/composer-config-plugin/commit/266138a
+[3e18cbe]: https://github.com/hiqdev/composer-config-plugin/commit/3e18cbe
+[fb5a5d8]: https://github.com/hiqdev/composer-config-plugin/commit/fb5a5d8
+[b5fe4d5]: https://github.com/hiqdev/composer-config-plugin/commit/b5fe4d5
+[ef8a42c]: https://github.com/hiqdev/composer-config-plugin/commit/ef8a42c
+[a0401ea]: https://github.com/hiqdev/composer-config-plugin/commit/a0401ea
+[3d9bb59]: https://github.com/hiqdev/composer-config-plugin/commit/3d9bb59
+[0d92a2d]: https://github.com/hiqdev/composer-config-plugin/commit/0d92a2d
+[7e7b36e]: https://github.com/hiqdev/composer-config-plugin/commit/7e7b36e
+[e06125e]: https://github.com/hiqdev/composer-config-plugin/commit/e06125e
+[6a4eb47]: https://github.com/hiqdev/composer-config-plugin/commit/6a4eb47
+[8a6a588]: https://github.com/hiqdev/composer-config-plugin/commit/8a6a588
+[f1b4ff1]: https://github.com/hiqdev/composer-config-plugin/commit/f1b4ff1
+[7317438]: https://github.com/hiqdev/composer-config-plugin/commit/7317438
+[b1c9639]: https://github.com/hiqdev/composer-config-plugin/commit/b1c9639
+[42f3c4e]: https://github.com/hiqdev/composer-config-plugin/commit/42f3c4e
+[910c127]: https://github.com/hiqdev/composer-config-plugin/commit/910c127
+[1d6dd28]: https://github.com/hiqdev/composer-config-plugin/commit/1d6dd28
+[77a8eac]: https://github.com/hiqdev/composer-config-plugin/commit/77a8eac
+[b36d5ad]: https://github.com/hiqdev/composer-config-plugin/commit/b36d5ad
+[594aaab]: https://github.com/hiqdev/composer-config-plugin/commit/594aaab
+[820a9e6]: https://github.com/hiqdev/composer-config-plugin/commit/820a9e6
+[4f8d841]: https://github.com/hiqdev/composer-config-plugin/commit/4f8d841
+[0.4.0]: https://github.com/hiqdev/composer-config-plugin/compare/0.3.0...0.4.0
