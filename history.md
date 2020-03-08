@@ -1,6 +1,6 @@
 # hiqdev/composer-config-plugin
 
-## [0.4.0] - 2020-03-05
+## [0.4.0] - 2020-03-08
 
 - Fixed config assembling on Windows
     - [217fcbe] 2020-02-21 Fix building config with custom dir under Windows [@samdark]
@@ -22,7 +22,7 @@
     - [910c127] 2019-07-25 Changed `EnvReader` to return all ENV values (was only new) [@hiqsol]
     - [1d6dd28] 2019-07-25 Fixed `ReaderFactory` to distinguish builders [@hiqsol]
 - Added support for `vlucas/phpdotenv` v4
-    - [1db8b15] 2020-02-13 Added support for `vlucas/phpdotenv` v4 [seliga.honza@gmail.com]
+    - [1db8b15] 2020-02-13 Added support for `vlucas/phpdotenv` v4 [@jseliga]
 - Better work with env vars
     - [d038a30] 2019-12-18 Allowed `-` in params for pushing env vars [@hiqsol]
     - [7fa31d1] 2019-10-24 Allowed to push env vars into config arrays [@hiqsol]
@@ -47,9 +47,9 @@
     - [a0401ea] 2019-07-31 Returned back memoization in ReaderFactory [@hiqsol]
     - [3d9bb59] 2019-07-31 Add issue and pull request templates [@samdark]
     - [77a8eac] 2019-07-04 Raised PHP version requirement to 7.1 #32 [@hiqsol]
-    - [b36d5ad] 2019-07-04 add 7.0 [soul11201@gmail.com]
-    - [820a9e6] 2019-05-12 Update Plugin.php [jomon.entero@gmail.com]
-    - [4f8d841] 2019-04-23 Check both old & new Yii Array helpers classes [machour@gmail.com]
+    - [b36d5ad] 2019-07-04 add 7.0 [@noname007]
+    - [820a9e6] 2019-05-12 Update Plugin.php [@jomonkj]
+    - [4f8d841] 2019-04-23 Check both old & new Yii Array helpers classes [@machour]
 
 ## [0.3.0] - 2019-04-11
 
@@ -302,6 +302,14 @@
 [loveorigami@mail.ru]: https://github.com/loveorigami
 [@marclaporte]: https://github.com/marclaporte
 [marc@laporte.name]: https://github.com/marclaporte
+[@jseliga]: https://github.com/jseliga
+[seliga.honza@gmail.com]: https://github.com/jseliga
+[@machour]: https://github.com/machour
+[machour@gmail.com]: https://github.com/machour
+[@jomonkj]: https://github.com/jomonkj
+[jomon.entero@gmail.com]: https://github.com/jomonkj
+[@noname007]: https://github.com/noname007
+[soul11201@gmail.com]: https://github.com/noname007
 [e58cc7a]: https://github.com/hiqdev/composer-config-plugin/commit/e58cc7a
 [5b84dc8]: https://github.com/hiqdev/composer-config-plugin/commit/5b84dc8
 [827d606]: https://github.com/hiqdev/composer-config-plugin/commit/827d606

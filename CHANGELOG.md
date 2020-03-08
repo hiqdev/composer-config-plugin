@@ -1,14 +1,14 @@
 # hiqdev/composer-config-plugin
 
-## [0.4.0] - 2020-03-05
+## [0.4.0] - 2020-03-08
 
 - Fixed config assembling on Windows ([@samdark])
 - Added configuring of output dir ([@hiqsol])
 - Added building alternative configs ([@hiqsol])
-- Added support for `vlucas/phpdotenv` v4 ([seliga.honza@gmail.com])
+- Added support for `vlucas/phpdotenv` v4 ([@jseliga])
 - Better work with env vars ([@hiqsol])
 - Used `riimu/kit-phpencoder` for variable exporting ([@hiqsol])
-- Bug fixes ([@hiqsol], [@SilverFire], [@samdark], [soul11201@gmail.com], [jomon.entero@gmail.com], [machour@gmail.com])
+- Bug fixes ([@hiqsol], [@SilverFire], [@samdark], [@noname007], [@jomonkj], [@machour])
 
 ## [0.3.0] - 2019-04-11
 
@@ -107,6 +107,14 @@
 [loveorigami@mail.ru]: https://github.com/loveorigami
 [@marclaporte]: https://github.com/marclaporte
 [marc@laporte.name]: https://github.com/marclaporte
+[@jseliga]: https://github.com/jseliga
+[seliga.honza@gmail.com]: https://github.com/jseliga
+[@machour]: https://github.com/machour
+[machour@gmail.com]: https://github.com/machour
+[@jomonkj]: https://github.com/jomonkj
+[jomon.entero@gmail.com]: https://github.com/jomonkj
+[@noname007]: https://github.com/noname007
+[soul11201@gmail.com]: https://github.com/noname007
 [Under development]: https://github.com/hiqdev/composer-config-plugin/compare/0.3.0...HEAD
 [0.0.9]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/hiqdev/composer-config-plugin/compare/0.0.7...0.0.8
