@@ -24,7 +24,7 @@
         "ext-json": "*",
         "composer-plugin-api": "^1.0|^2.0",
         "composer/composer": "^1.0|^2.0",
-        "opis/closure": "3.6.x-dev@dev",
+        "opis/closure": "4.5.0@dev",
         "riimu/kit-phpencoder": "^2.4",
         "yiisoft/files": "^1.0"
     },
